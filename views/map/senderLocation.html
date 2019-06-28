@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+
+		<style>
+			#map {
+				width: 100%;
+			}
+			
+			#button {
+				width: 100%;
+			}
+			
+			.mui-content {}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">快递员实时位置</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div id="map">
+
+			</div>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="button" style="height: 55px!important;margin: 0px !important;">拨打快递员电话</button>
+			<!--
+        	作者：wanping89@yeah.net
+        	时间：2017-12-25
+        	描述：快递员的电话
+       		 -->
+			<input type="hidden" id="phone" value="" />
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script src="../../js/myStorage.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			// 创建地图实例  
+			var map = null;
+			var orderId;
+
+			mui.plusReady(function() {
+				//设置底部按钮的位置
+				var mapHeight = plus.display.resolutionHeight - 34 - parseInt(document.getElementById("header").style.height);
+				document.getElementById("map").style.height = mapHeight + "px";
+				var self = plus.webview.currentWebview();
+				document.getElementById("phone").value = self.phonenumber;
+				orderId = self.orderId;
+				var map = new plus.maps.Map('map', {
+					zoom: 18
+				});
+				getLocation();
+
+				/**
+				 * 5秒更新一次快递员的经纬度
+				 */
+				var timer = setInterval(function() {
+					getLocation();
+				}, 5000);
+				document.getElementById('button').addEventListener('tap', function() {
+					var phone = document.getElementById("phone").value;
+					plus.device.dial(phone, false);
+
+				});
+
+				var old_back = mui.back;
+				mui.back = function() {
+					clearInterval(timer);
+					old_back();
+				}
+
+				function getLocation() {
+					app.tokenAjax_Get({
+						url: API_URL_GET_SENDER_LOCATION + orderId,
+						success: function(result) {
+							if(result.status == 1) {
+								var senderPoint = result.data;
+								var point = new plus.maps.Point(senderPoint.longitude, senderPoint.latitude);
+								map.clearOverlays(); // 清除地图覆盖物
+								app.addMarkerByDrawLine(map, '../../images/map/sender.png', point);
+								plus.nativeUI.closeWaiting();
+								mui.currentWebview.show();
+							}
+						},
+						error: function(xhr) {
+							app.httpError(xhr);
+							plus.nativeUI.closeWaiting();
+							mui.currentWebview.show();
+						}
+					});
+				}
+			})
+		</script>
+	</body>
+
+</html>

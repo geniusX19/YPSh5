@@ -1,0 +1,63 @@
+
+		.list {
+			height: 140px;
+			width: 96%;
+			margin-left: 2%;
+			margin-top: 10px;
+			margin-bottom: 5px;
+			background-color: #FFFFFF;
+			border-radius: 15px;
+		}
+		
+		.listBody {
+			padding: 5px;
+			height: 50px;
+			color: #929292;
+			border-bottom: 1px solid #DDDDDD;
+			background: ;
+		}
+		
+		.listHeaher {
+			padding: 6px;
+			height: 40px;
+		}
+		
+		.button {
+			float: right;
+			margin-right: 15px;
+			padding: 10px;
+			color: white;
+		}
+		button{
+			font-size: 12px !important;
+			border: none !important;
+			color: white !important;
+		}
+		
+		.name {
+			float: left;
+			padding: 5px;
+			width: 160px;
+		}
+		
+		.status {
+			float: right;
+			padding: 6px;
+			width: 80px;
+			font-size: 15px;
+		}
+		
+		.address {
+			float: left;
+			padding-left: 33px;
+			font-size: 12px !important;
+		}
+		
+		.price-div {
+			float: right;
+			padding: 6px;
+			width: 80px;
+			padding-right: 9px;
+			color: #000000;
+			font-size: 15px;
+		}

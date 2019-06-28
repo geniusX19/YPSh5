@@ -1,0 +1,346 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<style>
+			.mui-numbox {
+				width: 140px;
+				background: white;
+			}
+			
+			.mui-input-row {
+				height: 42px !important;
+				padding-top: 0px;
+			}
+			
+			label,
+			input {
+				font-size: 15px !important;
+			}
+			
+			.type-picker {
+				display: inline-block;
+				width: 60px;
+				height: 28px;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				font-size: 13px;
+				text-align: center;
+				margin: 5px;
+				font-family: "黑体" !important;
+				border-radius: 3px;
+				background-color: #EEEEEE;
+			}
+			
+			.select-content {
+				position: relative;
+				top: -15px;
+				padding: 3px;
+				text-align: center;
+				height: 120px !important;
+				margin-bottom: -10px;
+			}
+			
+			.size-picker {
+				display: inline-block;
+				width: 135px;
+				height: 28px;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				font-size: 13px;
+				margin: 5px;
+				text-align: center;
+				font-family: "黑体" !important;
+				border-radius: 3px;
+				background-color: #EEEEEE;
+			}
+			
+			.size-content {
+				position: relative;
+				top: -15px;
+				padding: 5px;
+				text-align: center;
+				height: 90px !important;
+				margin-bottom: -10px;
+			}
+			
+			.vehicle-picker {
+				display: inline-block;
+				height: 28px;
+				padding: 5px;
+				padding-bottom: 5px;
+				font-size: 13px;
+				margin: 5px;
+				text-align: center;
+				font-family: "黑体" !important;
+				border-radius: 3px;
+				background-color: #EEEEEE;
+			}
+			
+			.none-border-bottom:after {
+				background-color: white !important;
+			}
+			
+			.picker-active {
+				background: #3da0c5;
+				color: white;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-arrowleft mui-pull-left "></a>
+			<h1 class="mui-title">编辑物品信息</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<form class="mui-input-group">
+				<div class="mui-input-row none-border-bottom">
+					<label>物品类型</label>
+					<input id='showTypePicker' type="hidden" class="" placeholder="请选择物品类型" readonly="readonly">
+				</div>
+				<div class="mui-input-row select-content input-area">
+
+					<span class="type-picker">食品</span>
+					<span class="type-picker">饮料</span>
+					<span class="type-picker">鲜花</span>
+					<span class="type-picker">蛋糕</span>
+					<span class="type-picker">水果</span>
+					<span class="type-picker">生鲜</span>
+					<span class="type-picker">文件</span>
+					<span class="type-picker">证件</span>
+					<span class="type-picker">数码</span>
+					<span class="type-picker">衣帽</span>
+					<span class="type-picker">建材</span>
+					<span class="type-picker">其他</span>
+				</div>
+				<div class="mui-input-row none-border-bottom">
+					<span style="margin-left: 15px;font-size: 16px;">总体积(cm*cm*cm)<a href="../goods_explain.html" style="color: orangered; font-family: '微软雅黑';"><span class="mui-icon mui-icon-help"></span></a>
+					</span>
+					<input id='showSizePicker' type="hidden" class="" placeholder="请选择包裹尺寸" readonly="readonly">
+				</div>
+				<div class="mui-input-row size-content input-area">
+					<span class="size-picker" data="SMALL">小件(30*30*30)</span>
+					<span class="size-picker" data='MIDDLE'>中件(50*50*30)</span>
+					<span class="size-picker" data="BIG">大件(100*100*50)</span>
+					<span class="size-picker" data='VERY_BIG'>超大件(150*150*100)</span>
+				</div>
+				<div class="mui-input-row " id="vehicleDiv" style="display: none;">
+					<label>交通工具</label>
+					<input id='vehicle' type="hidden" class="" placeholder="请选择交通工具" style="overflow: auto;" readonly="readonly">
+					<div class="vehicle-content input-area" id="vehicle-content-choose">
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<label>重量(kg)</label>
+					<div class="mui-numbox" data-numbox-step='1' data-numbox-min='1' data-numbox-max='' style="float: left;">
+						<button class="mui-btn mui-btn-numbox-minus number-btn" type="button">-</button>
+						<input id='weight' type="number" class="mui-input-numbox number-btn">
+						<button class="mui-btn mui-btn-numbox-plus number-btn" type="button">+</button>
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<label>物品名称</label>
+					<input type="text" class="" placeholder="可不填" id="name">
+				</div>
+				<div class="mui-input-row">
+					<label>备注</label>
+					<input id='marker' type="text" class="" placeholder="备注" style="overflow: auto;">
+				</div>
+			</form>
+			<p style="text-indent:1em;color: #808080; font-size: 13px;margin-top: 2px;">温馨提示：请根据实际物品选择重量、尺寸，如有不符可能导致配送无法完成</div>
+
+		<button id="button" type="button" class="mui-btn mui-btn-blue mui-btn-block" style="margin-left:25%;width: 50%;">保存</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var goodsInformation;
+			var itemId;
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				goodsInformation = self.goodsInformation;
+				itemId = goodsInformation.id;
+				var nameInput = document.getElementById("name");
+				var weightInput = document.getElementById("weight");
+				var remarkInput = document.getElementById("marker");
+				var showUserPickerButton = document.getElementById('showTypePicker');
+				var showSizePickerButton = document.getElementById('showSizePicker');
+				var showVehiclePickerButton = document.getElementById("vehicle");
+				var vehicleDiv = document.getElementById("vehicleDiv");
+
+				//记录之前的内容
+				if(goodsInformation) {
+					nameInput.value = goodsInformation.name == goodsInformation.type ? "" : goodsInformation.name;
+					weightInput.value = goodsInformation.weight || "";
+					remarkInput.value = goodsInformation.remark || "";
+					showUserPickerButton.value = goodsInformation.type || "";
+					mui.each(document.getElementsByClassName("type-picker"), function(index, element) {
+						if(this.innerHTML == showUserPickerButton.value) {
+							this.className = this.className + " picker-active";
+						}
+					})
+					showSizePickerButton.value = goodsInformation.size;
+					mui.each(document.getElementsByClassName("size-picker"), function(index, element) {
+						var data = this.getAttribute("data");
+						if(data == goodsInformation.size) {
+							this.className = this.className + " picker-active";
+						}
+
+					})
+					chooseVehicle(goodsInformation.size);
+					if(goodsInformation.vehicle) {
+						showVehiclePickerButton.value = goodsInformation.vehicle;
+						mui.each(document.getElementsByClassName("vehicle-picker"), function(index, element) {
+							var data = this.getAttribute("data");
+							if(data == goodsInformation.vehicle) {
+								this.className = this.className + " picker-active";
+							}
+						})
+					}
+				}
+				//物品类型选择
+				mui('.select-content').on('tap', '.type-picker', function() {
+					pickerBlur();
+					if(this.className.indexOf("picker-active") > 0) {
+						return;
+					}
+					var pickerList = document.getElementsByClassName("type-picker");
+					mui.each(pickerList, function(index, element) {
+						var classList = element.className;
+						if(classList.indexOf("picker-active") > 0) {
+							element.className = classList.replace("picker-active", "");
+						}
+					})
+					this.className = this.className + " picker-active";
+					showUserPickerButton.value = this.innerHTML;
+				})
+				//物品大小选择
+				mui('.size-content').on('tap', '.size-picker', function() {
+					pickerBlur();
+					if(this.className.indexOf("picker-active") > 0) {
+						return;
+					}
+					var pickerList = document.getElementsByClassName("size-picker");
+					mui.each(pickerList, function(index, element) {
+						var classList = element.className;
+						if(classList.indexOf("picker-active") > 0) {
+							element.className = classList.replace("picker-active", "");
+						}
+					})
+					this.className = this.className + " picker-active";
+					var data = this.getAttribute("data");
+					chooseVehicle(data);
+					showSizePickerButton.value = data;
+				})
+				document.getElementById("button").addEventListener('tap', function() {
+					var type = showUserPickerButton.value;
+					if(type == null || type.length == 0) {
+						mui.toast("请选择物品类型");
+					}
+					var volume = showSizePickerButton.value;
+					var vehicle = showVehiclePickerButton.value;
+
+					if(volume == null || volume.length == 0) {
+						mui.toast("请选择物品尺寸");
+						return;
+					} else if(volume === "BIG" || volume === "VERY_BIG") {
+						if(vehicle == "" || vehicle.length == 0) {
+							mui.toast("大件和超大件物品必须选择交通工具");
+							return;
+						}
+					}
+					//重量
+					var weight = weightInput.value;
+					if(weight == null || weight.length == 0 || isNaN(weight)) {
+						mui.toast('物品重量不能为空');
+						return;
+					}
+					var remark = remarkInput.value;
+					var name = nameInput.value;
+					if(name == null || name.length == 0) {
+						name = type;
+					}
+					var data = {
+						itemId: itemId,
+						name: name,
+						type: type,
+						size: volume,
+						vehicle: vehicle,
+						weight: weight,
+						remark: remark
+					}
+					var main = plus.webview.getWebviewById('goodsList');
+					mui.fire(main, 'editGoods', {
+						"data": data
+					});
+					app.tokenAjax({
+						url: API_URL_POST_ITEM_SAVE + app.getCustomerId(),
+						data: JSON.stringify(data),
+						success: function(result) {
+							mui.back();
+						},
+						error: function(err) {}
+					});
+
+				})
+
+				function chooseVehicle(size) {
+					//交通工具选择
+					if(size === "VERY_BIG") {
+						//只能选择小货车
+						var car = '<span class="vehicle-picker picker-active" data="TRUCK">小货车</span>';
+						document.getElementById("vehicle-content-choose").innerHTML = car;
+						//自动将小货车赋值给隐藏域
+						showVehiclePickerButton.value = "TRUCK";
+						//显示div
+						vehicleDiv.style.display = "block";
+
+					} else if(size === "BIG") {
+						var car = '<span class="vehicle-picker" data="VAN">面包车或机动三轮车</span><span class="vehicle-picker" data="TRUCK">小货车</span>';
+						document.getElementById("vehicle-content-choose").innerHTML = car;
+						//绑定选择交通工具的事件
+						mui('#vehicle-content-choose').on('tap', '.vehicle-picker', function() {
+							pickerBlur();
+							var pickerList = document.getElementsByClassName("vehicle-picker");
+							mui.each(pickerList, function(index, element) {
+								var classList = element.className;
+								if(classList.indexOf("picker-active") > 0) {
+									element.className = classList.replace("picker-active", "");
+								}
+							})
+							this.className = this.className + " picker-active";
+							var data = this.getAttribute("data");
+							showVehiclePickerButton.value = data;
+						})
+						//显示div
+						vehicleDiv.style.display = "block";
+						showVehiclePickerButton.value = "";
+					} else {
+						vehicleDiv.style.display = "none";
+						showVehiclePickerButton.value = "";
+					}
+
+				}
+			})
+			//让当前页面所有input失去焦点, 关闭软键盘 /
+			function pickerBlur() {
+				var inputs = document.getElementsByTagName("input");
+				for(var i = 0; i < inputs.length; i++) {
+					inputs[i].blur();
+				}
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,495 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<style type="text/css">
+			#person {
+				position: relative;
+				top: -80px;
+				left: 70%;
+				right: 0px;
+				width: 30%;
+				height: 80px;
+				border-left: 1px solid #D8D8D8;
+				border-bottom: 1px solid #D8D8D8;
+			}
+			#A1 {
+				margin-left: 25%;
+				width: 50%;
+				margin-top: 10px;
+			}
+			textarea {
+				border: none;
+				border-bottom: 1px solid rgba(0, 0, 0, .2) !important;
+			}
+			.mui-checkbox input[type=checkbox]:checked:before,
+			.mui-radio input[type=radio]:checked:before {
+				color: red;
+			}
+			.mui-table-view-cell:after {
+				background-color: white !important;
+			}
+			.mui-table-view-cell {
+				padding-top: 5px;
+				height: 32px !important;
+			}
+			#quick {
+				font-size: 16px;
+			}
+			.detail-textarea {
+				border-bottom: 1px solid #c8c7cc !important;
+			}
+			.detail-textarea:after {
+				background-color: white !important;
+			}
+			.mui-table-view:before{
+				background-color: #FFFFFF !important;
+			}
+			.mui-navigate-right:after, .mui-push-left:after, .mui-push-right:after{
+				color: #000000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"></h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div style="background: white;height: 35px;padding-top: 10px;padding-left: 10px;font-weight: 450;"id="sub_title">
+				发件地址
+			</div>
+			<form class="mui-input-group">
+				<ul class="mui-table-view" style="height: auto !important;"id="quick">
+					<li class="mui-table-view-cell  search-class" >
+						<span class="mui-navigate-right" id="normal">快速检索位置 :<span style="float: right;margin-right: 20px;font-size: 16px; " id="poiName"></span></span>
+						<span id="tooLong" class="mui-navigate-right" style="display: ;float: right;margin-right: 20px;"></span>
+					</li>
+					<li class="mui-table-view-cell" style="height:auto !important;color: #AFAFAF;font-size: 14px;" id="address">
+					</li>
+				</ul>
+				<div class="mui-input-row detail-textarea">
+					<textarea rows="1" class="" placeholder="请输入如门牌号等" id="detailAddress" style="font-size: 12px;"></textarea>
+				</div>
+				<div style="height: 80px; margin-bottom: 20px;">
+					<div class="mui-input-row" style="width: 70%; ">
+						<label>姓名</label>
+						<input type="text" class="" placeholder="" id="name">
+					</div>
+					<div class="mui-input-row" style="width: 70%;">
+						<label>号码</label>
+						<input type="number" class="" placeholder="" id="phone">
+					</div>
+					<div id="person" style="" align="center">
+						<label><span class="mui-icon mui-icon-personadd" style="font-size: 58px;color: #FF5053;"></span></label>
+						<br/>
+						<span>选择联系人</span>
+					</div>
+				</div>
+			</form>
+			<div class="mui-input-row mui-checkbox mui-left" style="font-size: 15px;margin-top: -15px;">
+				<label>保存到常用地址</label>
+				<input id="checkboxSave" name="checkbox1" value="Item 1" type="checkbox">
+			</div>
+			<div class="reader" style="height: 210px;;background-color: white;">
+				<div class="title" style="height: 50px;padding: 12px;font-size: 15px;">
+					<span class="mui-icon mui-icon-compose" style="color: #EC971F;"></span>智能地址填写
+				</div>
+				<textarea id="smartInput" name="smartInput" rows="4" cols="" style="margin-left: 2%;width: 95%;border: 1px solid darkgrey;font-size: 13px;" placeholder="长按粘贴整段地址（可包含姓名和手机号），自动识别其中的姓名、电话、地址；格式为：姓名,电话,地址。 例：壹用户，13900000000，安徽省合肥市××区××路××大厦××号"></textarea>
+				<div align="right">
+					<button id="smartCommit" style="margin-right: 10px;margin-top: -8px;" type="button" class="mui-btn mui-btn-blue" disabled="disabled">提交</button>
+				</div>
+			</div>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="A1">确认</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			//从地图页面传过来的经纬度
+			var mapLat;
+			var mapLon;
+			var id;
+			var flag; //标志用于判断该页面打开的收件人还是发件人地址  send ，receive
+			var addressDescription;
+			var poiName = "";
+			mui.init({
+				preloadPages: [{
+					url: '../phoneBook/phoneBook.html',
+					id: 'phoneBook',
+					styles: {
+
+					},
+					extras: {
+						"html": "senderAddressEdit"
+					}
+				}]
+			})
+			/***
+			 * 自定义事件
+			 */
+			window.addEventListener("chooseContact", function(e) {
+				var name = e.detail.name;
+				var phone = e.detail.phoneNumber;
+				document.getElementById("name").value = name;
+				document.getElementById("phone").value = app.outputCurrentPhoneNumber(phone);
+			});
+
+			mui.plusReady(function() {
+				var smartTextEle = document.getElementById('smartInput');
+
+				var self = plus.webview.currentWebview();
+				flag = self.flag;
+				//页面名字
+				var pageName = self.pageName;
+
+				var oldPageTitle = self.oldPageTitle;
+				if(flag == "send" || flag == "receive") {
+					document.getElementById("checkboxSave").checked = true;
+				}
+				var title = app.showFlagName(flag);
+				var name = self.name || '';
+				var phone = self.phone || '';
+				//详细地址
+				var detail = self.detailAddress || '';
+				mapLat = self.lat || '';
+				mapLon = self.lon || "";
+				//poi
+				poiName = self.poiName || "";
+				id = self.addressId;
+				//poi-address
+				addressDescription = self.address || '';
+				if(poiName.length > 10) {
+					var tooLong = document.getElementById("tooLong");
+					tooLong.innerHTML = poiName;
+					tooLong.style.display = "";
+					document.getElementById("normal").style.display = 'none';
+				} else {
+					document.getElementById("poiName").innerHTML = poiName || "";
+					document.getElementById("tooLong").style.display = "none";
+					document.getElementById("normal").style.display = '';
+				}
+				document.getElementsByClassName("mui-title")[0].innerHTML = title;
+				document.getElementById("name").value = name;
+				document.getElementById("phone").value = phone;
+				document.getElementById("address").innerHTML = addressDescription.trim();
+				document.getElementById("detailAddress").value = detail;
+
+				document.getElementById('person').addEventListener('tap', function() {
+					app.openWindow('../phoneBook/phoneBook.html', "phoneBook", {
+						"html": "senderAddressEdit"
+					})
+				})
+				//快速选择
+				document.getElementById('quick').addEventListener('tap', function() {
+					app.inputBlur();
+					app.openMapWindow('../map/map.html','map', {
+							"html": "senderAddressEdit",
+							"lon": mapLon,
+							"lat": mapLat,
+							"address": poiName,
+							"poiAddress": addressDescription
+					});
+				});
+
+				smartTextEle.addEventListener('input', function() {
+					var v = this.value;
+					if(v) {
+						document.getElementById("smartCommit").removeAttribute("disabled");
+					} else {
+						document.getElementById("smartCommit").setAttribute("disabled", "disabled");
+					}
+				})
+
+				document.getElementById('smartCommit').addEventListener('tap', function() {
+					var a = smartTextEle.value;
+					//解析
+					parseAddress(a);
+
+				})
+				app.initNativeObjects();
+				//保存
+				document.getElementById('A1').addEventListener('tap', function() {
+					var isSave = document.getElementById("checkboxSave").checked;
+
+					var main = plus.webview.getWebviewById("subpage_senderList");
+					var name = document.getElementById("name").value;
+					var resultLat = mapLat || lat;
+					var resiltLon = mapLon || lon;
+
+					if(name == '' || name.length == 0) {
+						mui.toast('姓名不能为空');
+						return;
+					}
+					var phone = document.getElementById("phone").value;
+					phone = app.outputCurrentPhoneNumber(phone);
+					if(!app.checkPhone(phone)) {
+						mui.toast('请填写正确的手机号码')
+						return;
+					}
+					var address = document.getElementById("address").innerHTML;
+					if(address == '' || address.length == 0) {
+						mui.toast('快速检索位置信息不能为空');
+						return;
+					}
+					var detailAddress = document.getElementById("detailAddress").value || "";
+					if(!(resultLat || resiltLon)) {
+						mui.toast("未能正确的识别地址的经纬度，请重试");
+						return;
+					}
+					var ajaxData = {
+						"name": name,
+						"phonenumber": phone,
+						"addressName": address,
+						"addressDetail": detailAddress,
+						"longitude": resiltLon,
+						"latitude": resultLat,
+						"poiName": poiName
+					}
+					plus.nativeUI.showWaiting();
+					var a = plus.webview.getWebviewById('subpage_senderList');
+					if(a){
+						a.close('none',0);
+					}
+					var b = plus.webview.getWebviewById('senderList');
+					if(b){
+						b.close('none',0);
+					}
+					/**
+					 * ajax
+					 */
+					if(flag == "send") { //发件人的地址编辑
+						app.tokenAjax({
+							url: editStarterAddressURL(id),
+							data: ajaxData,
+							success: function(data) {
+								plus.nativeUI.closeWaiting()
+								if(data.status == 1) {
+									mui.toast('修改成功');
+									app.openWindow(pageName + ".html", pageName, {
+										"title": oldPageTitle
+									});
+
+								} else {
+									mui.toast(data.msg);
+								}
+							},
+							error: function(xhr) {
+								plus.nativeUI.closeWaiting()
+								app.httpError(xhr.status);
+							}
+						});
+					} else if(flag == "receive") { //编辑收件人地址
+						app.tokenAjax({
+							url: editReceiverAddressURL(id),
+							data: ajaxData,
+							success: function(data) {
+								plus.nativeUI.closeWaiting()
+								if(data.status == 1) {
+									mui.toast('修改成功');
+									app.openWindow(pageName + ".html", pageName, {
+										"title": oldPageTitle
+									});
+
+								} else {
+									mui.toast(data.msg);
+								}
+							},
+							error: function(xhr) {
+								plus.nativeUI.closeWaiting()
+								app.httpError(xhr.status);
+							}
+						});
+
+					} else {
+						plus.nativeUI.closeWaiting();
+						mui.toast('保存失败，请重试')
+					}
+				});
+				window.addEventListener("reLonLatAddress", function(e) {
+					poiName = e.detail.address;
+					addressDescription = e.detail.addressDescription;
+					mapLon = e.detail.lon;
+					mapLat = e.detail.lat;
+					if(poiName.length > 11) {
+						var tooLong = document.getElementById("tooLong");
+						tooLong.innerHTML = poiName;
+						tooLong.style.display = "";
+						document.getElementById("normal").style.display = 'none';
+					} else {
+						document.getElementById("poiName").innerHTML = poiName || "";
+						document.getElementById("tooLong").style.display = "none";
+						document.getElementById("normal").style.display = '';
+					}
+					document.getElementById("address").innerHTML = addressDescription;
+					plus.webview.close(plus.webview.getWebviewById("map"), "none", 0);
+					setTimeout(function() {
+						app.showInput(document.getElementById("detailAddress"));
+					}, 20);
+				});
+			});
+
+			function queryLocationURL(address, city) {
+				var url = "https://api.map.baidu.com/geocoder/v2/?address=" + address + "&city=" + city + "&output=json&ak=iOYBmDKHicYmzZigGIGnurrPf1YMKlEj"
+				//var url = "https://api.map.baidu.com/geocoder/v2/?address=" + address + "&city=" + city + "&output=json&ak=B9wXVqeX0Qpcy7Mp2sZQe9h7VE2GardO"
+				return url;
+			}
+
+			function parseAddress(e) {
+				plus.nativeUI.showWaiting("识别中..");
+				var name = "";
+				var phone = "";
+				var address = "";
+				if(!e) {
+					plus.nativeUI.closeWaiting();
+				}
+				var oArr = new Array();
+
+				var a = e.indexOf("，");
+				var b = e.indexOf(",");
+
+				if(a != -1 && b == -1) {
+					//包含，不含,
+					var arr = e.split("，");
+					mui.each(arr, function(index, element) {
+						oArr.push(element);
+					});
+				} else if(a == -1 && b != -1) {
+					//不包含，含,
+					var arr = e.split(",");
+					mui.each(arr, function(index, element) {
+						oArr.push(element);
+					})
+				} else if(a != -1 && b != -1) {
+					var arr1 = e.split("，");
+					mui.each(arr1, function(index, ele) {
+						var arr2 = ele.split(",");
+						mui.each(arr2, function(index, element) {
+							oArr.push(element);
+						})
+					})
+				} else {
+					//先抓取电话号码
+					var pattern = /((0\d{2,3}-\d{7,8})|(((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}))/g;
+					var p = e.match(pattern);
+
+					if(p) {
+						//过滤掉空字符串
+						var arr = e.split(p).filter(filter);
+						oArr.push(p);
+						var l = arr.length;
+						if(l == 2) {
+							oArr = oArr.concat(arr);
+						} else if(l == 1) {
+							//尝试使用空格符来切割
+							var arr_1 = arr[0].split(" ").filter(filter);
+							oArr = oArr.concat(arr_1);
+						}
+
+					} else {
+						oArr.push(e);
+					}
+				}
+				var oLength = oArr.length;
+				if(oLength == 1) {
+					address = oArr[0];
+				} else {
+					mui.each(oArr, function(index, element) {
+						var len = element.length;
+						if(PHONE_PATTERN.test(element)) {
+							phone = element;
+						} else if(0 < len && len <= 5) {
+							name = element;
+						} else {
+							address = element;
+						}
+					})
+				}
+
+				//从百度拿经纬度
+				var url = queryLocationURL(address, myStorage.getItem("area_city"));
+				mui.ajax(url, {
+					dataType: "json",
+					success: function(result) {
+						document.getElementById("name").value = name;
+						document.getElementById("phone").value = phone;
+						poiName = "";
+						showPoi('');
+						document.getElementById("address").innerHTML = "";
+						if(result.status == 0) {
+							var location = result.result.location;
+							mapLon = location.lng;
+							mapLat = location.lat;
+							document.getElementById("address").innerHTML = address;
+							if(result.result.confidence <= 40) {
+								mui.toast('该地址描述的信息定位准确度低,建议手动检索地址');
+							} else {
+								mui.toast('解析成功')
+							}
+						} else {
+							mui.toast("地址解析失败，请手动检索地址");
+						}
+						plus.nativeUI.closeWaiting();
+					},
+					error: function(err) {
+						plus.nativeUI.closeWaiting();
+						document.getElementById("name").value = name;
+						document.getElementById("phone").value = phone;
+						poiName = "";
+						showPoi('');
+						document.getElementById("address").innerHTML = "";
+
+					}
+				})
+
+			}
+
+			function filter(v) {
+				return v.length > 0;
+			}
+
+			function convertData(ajaxData) {
+				return {
+					name: ajaxData.name,
+					phonenumber: ajaxData.phonenumber,
+					addressName: ajaxData.addressName,
+					addressDetail: ajaxData.addressDetail,
+					longitude: ajaxData.longitude,
+					latitude: ajaxData.latitude,
+					addressId: "",
+					poiName: ajaxData.poiName
+				};
+			}
+
+			function customevent(eventName, data) {
+				var main = plus.webview.getWebviewById('order');
+				mui.fire(main, eventName, {
+					'data': data
+				});
+				mui.back();
+			}
+			function showPoi(poiName) {
+				if(poiName.length > 10) {
+					var tooLong = document.getElementById("tooLong");
+					tooLong.innerHTML = poiName;
+					tooLong.style.display = "";
+					document.getElementById("normal").style.display = 'none';
+				} else {
+					document.getElementById("poiName").innerHTML = poiName || "";
+					document.getElementById("tooLong").style.display = "none";
+					document.getElementById("normal").style.display = '';
+				}
+			}
+		</script>
+	</body>
+
+</html>

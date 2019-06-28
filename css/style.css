@@ -1,0 +1,33 @@
+.ui-page-login,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+.mui-content {
+	height: 100%;
+}
+
+.title-back {
+	color: white !important;
+}
+
+.mui-btn-blue,
+.mui-btn-primary,
+input[type=submit] {
+	color: #fff;
+	border: 1px solid #4dbeca !important;
+	background-color:  #4dbeca  !important;
+}
+
+.mui-switch.mui-active {
+	border-color: orangered;
+	background-color: orangered;
+}
+
+.mui-bar {
+	background: #FFFFFF;
+}
+

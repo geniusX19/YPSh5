@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/showLoading.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/couponCommon.css" />
+	</head>
+	<style>
+		em {
+			color: #C9302C;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">红包</h1>
+		</header>
+		<div class="mui-content" id="" style="min-height:550px;width:100%;padding: 5px;">
+			<div class="mui-content mui-content mui-scroll-wrapper" id="pullrefresh">
+				<div id="content" style="min-height:100px;width: 100%;margin-top: 0px;">
+
+				</div>
+			</div>
+		</div>
+		<div align="center" style="font-size: 13px;margin-top: 15px;margin-bottom: 15px;color: gray;">我是有底线的~</div>
+
+		<script src="../../js/mui.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/showLoading.js"></script>
+		<script type="text/javascript">
+			var pageIndex = 0;
+			var pageSize = 5;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						height: 50, //可选.默认50.触发上拉加载拖动距离
+						auto: false, //可选,默认false.自动上拉加载一次
+						contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+						contentnomore: '没有了~', //可选，请求完毕若没有更多数据时显示的提醒内容；
+						callback: pullupRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				}
+			});
+
+			mui.plusReady(function() {
+				getData();
+
+			})
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+
+				setTimeout(function() {
+					getData();
+				}, 1500);
+			}
+
+			function getData() {
+
+				var data = {
+					"id": app.getCustomerId(),
+					"pageIndex": pageIndex,
+					"pageSize": pageSize
+				}
+
+				app.tokenAjax({
+					url: API_URL_POST_FIND_HISTORY_COUPON_LIST,
+					data: data,
+					success: function(result) {
+						if(result.status == 1) {
+							pageIndex++;
+							var data = result.data;
+							console.log(JSON.stringify(data));
+							var content = document.getElementById("content");
+							if(data.length == 0) {
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+								return;
+							} else {
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(false); //参数为true代表没有更多数据了。
+							}
+							mui.each(data, function(index, element) {
+								var minprice = element.minPrice;
+								var min;
+								if(minprice <= 8) {
+									min = "满任意金额可用";
+								} else {
+									min = "满" + minprice + "元可用"
+								}
+								var div = couponTemplate(element.couponId, element.couponPrice, min, element.couponName, element.expireDate, element.used, element.expired,element.couponType);
+								if(div) {
+									content.innerHTML = content.innerHTML + div;
+								}
+							});
+						}
+					},
+					error: function(xhr) {
+						app.httpError(xhr.status);
+					}
+				});
+			}
+			/**
+			 * 模板
+			 * @param {Object} id  红包id
+			 * @param {Object} couponPrice 红包的价格
+			 * @param {Object} min  使用的最低价格说明
+			 * @param {Object} name 红包名称
+			 * @param {Object} expireDate  到期时间
+			 */
+			function couponTemplate(id, couponPrice, min, name, expireDate, isUsed, isExpired,type) {
+				if(isUsed) {
+					var alreadyUsedTemplate = '<div class="template" style="opacity: 0.4;"><input type="hidden" value="' + id +
+						'" class="ss"/><div class="price-area"><div  align="center"><div class="" style="color: red;"><span style="font-size: 13px;">¥</span><b style="font-size: 25px; vertical-align: calc(-8px);"class="price">' +
+						+couponPrice + '</b></div><div class="restrict">' + min + '</div></div></div><div class="name-area"><div><b class="name" style="font-size: 15px;">' + name + '</b></div><div style="font-size: 10px;font-style: italic;color: gray;line-height:20px;"><span class="expire-time">' + expireDate + '</span>到期	<br><em>' + app.getCouponType(type) + '</em></div></div><div class="result-area" ><img src="../../images/hongbao/used.svg" style="width: 60px;height: 60px;" /></div></div>';
+					return alreadyUsedTemplate;
+				}
+				if(isExpired) {
+					var expiredTemplate = '<div class="template" style="opacity: 0.4;"><input type="hidden" value="' + id +
+						'" class="ss"/><div class="price-area"><div  align="center"><div class="" style="color: red;"><span style="font-size: 13px;">¥</span><b style="font-size: 25px; vertical-align: calc(-8px);"class="price">' +
+						+couponPrice + '</b></div><div class="restrict">' + min + '</div></div></div><div class="name-area"><div><b class="name" style="font-size: 15px;">' + name + '</b></div><div style="font-size: 10px;font-style: italic;color: gray;line-height:20px;"><span class="expire-time">' + expireDate + '</span>到期	<br><em>' + app.getCouponType(type) + '</em></div></div><div class="result-area" ><img src="../../images/hongbao/expire.svg" style="width: 60px;height: 60px;"/></div></div>';
+					return expiredTemplate;
+				}
+			}
+		</script>
+	</body>
+
+</html>

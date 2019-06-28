@@ -1,0 +1,734 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<style>
+			#user_head_div {
+				background: url(../../images/user/background.jpg);
+				background-repeat: no-repeat;
+				background-size: cover;
+				opacity: 0.7;
+			}
+			
+			.img {
+				position: absolute;
+				top: 30px;
+				left: calc(35%);
+				width: 106px;
+				height: 106px;
+				padding: 2px;
+				border-radius: 53px;
+				border: 1px white solid;
+				opacity: 1 !important;
+			}
+			#head-icon {
+				width: 100px;
+				height: 100px;
+				border-radius: 50px;
+				background-repeat: no-repeat;
+				background-size: cover;
+				opacity: 1 !important;
+				background-color: white;
+			}
+			li a {
+				font-family: "宋体";
+			}
+			.mui-table-view-cell {
+				font-size: 15px;
+			}
+			.mui-navigate-right {
+				margin-top: -13px !important;
+				font-size: 16px;
+			}
+			.icon-content {
+				position: relative;
+				left: 20px;
+				vertical-align: calc(11%);
+			}
+			.mui-table-view img {
+				left: 20%;
+			}
+			.mui-switch.mui-active {
+				border-color: #4CD964;
+				background-color: #4CD964;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mui-content" style="padding-bottom: 20px !important;">
+			<div style="width: 100%;height: 160px;padding: 5px;" id="user_head_div">
+				<div style="height: 20px;position: relative; top: 130px;">
+					<div style="width:50%;">
+						<span id="showName" style="font-size: 16px;color: #FFFFFF;font-family: '楷体';overflow: hidden !important;">壹用户</span>
+					</div>
+					<div id="hongbao" style="  position:relative;  top: -30px; text-align: right;">
+						<img src="../../images/hongbao/hongbao.png" style="width:20px;height: 25px;position: relative; top: 4px; margin-right: -2px;" />
+						<span id="" style="font-size: 8px;color: white;">
+							<b id="hongbao_count" style="font-size: 15px;">红包</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div style="" class="img" align="center">
+				<div>
+					<img id="head-icon" src="../../images/user/head-icon.svg" />
+				</div>
+			</div>
+			<div>
+				<!--这里放置真实显示的DOM内容-->
+				<div>
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" id="userName">
+							<a class="mui-navigate-right">
+								<span class="mui-icon iconfont icon-worldcup-nickname" style="color: #81b9fc; font-size: 22px;"></span> <span class="icon-content">用户名</span>
+								<span style="float: right;padding-right: 5px;color: #C0C0C0;font-family: '楷体';font-size: 12px;line-height:200%;">设置昵称 <span style="color: white;">></span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-collapse" id="A2">
+							<a class="mui-navigate-right" href=" # ">
+								<span class="mui-icon iconfont icon-osm-guanlianzhanghao-" style="color: #f2b6b5 ;font-size: 22px;"></span> <span class="icon-content">帐号关联</span>
+							</a>
+							<div class="mui-table-view mui-table-view-chevron" style="padding-left: 30%;height: 60px;padding-top: 10px;">
+								<img src="../../images/phone_call.svg" style="height: 30px;width: 30px;" id="phone_call" />
+								<span style="padding-left: 40px;"></span>
+								<img src="../../images/qq.png" style="height: 30px;width: 30px;" id="qq" />
+								<span style="padding-left: 40px;"></span>
+								<img src="../../images/weixin.png" style="height: 30px;width: 30px;" id="weixin" />
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div style="margin-top:10px;">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" id="customerAccount">
+							<a class="mui-navigate-right">
+								<span class="mui-icon iconfont icon-zhanghuanquan" style="font-size: 22px;color:#75cbe3"></span> <span class="icon-content">我的账户</span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell" id="seo" style="color: #fc8b40;">
+							<a class="mui-navigate-right">
+								<span class="mui-icon iconfont icon-kongzhuangtai20" style="color: #fc8b40;; font-size: 25px;"></span> <span class="icon-content" style="left: 17px;">邀请好友,赢取现金奖励</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div style="margin-top:10px;" id="A3">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" id="validate" style="">
+							<a class="">
+								<span class="mui-icon iconfont icon-yanzheng-copy" style="color: #2AC845 ;font-size: 25px;"></span> <span class="icon-content" style="left: 17px;font-size: 16px;">开启配送员验证</span>
+								<div class="mui-switch" id="mySwitch">
+									<div class="mui-switch-handle"></div>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell" id="receiveAddress" style="">
+							<a class="mui-navigate-right">
+								<span class="mui-icon iconfont icon-shoujianren" style="color: #b78afb ;font-size: 25px;"></span> <span class="icon-content" style="left: 17px;">常用收件地址</span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell" id="sendAddress">
+							<a class="mui-navigate-right">
+								<span class="mui-icon iconfont icon-jijianren" style="color: #fc9a52; font-size: 25px;"></span> <span class="icon-content" style="left: 17px;">常用发件地址</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div style="margin-top:10px;">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" id="customerServices" style="">
+							<a class="mui-navigate-right">
+								<span class="mui-icon iconfont icon-kefu" style="font-size: 22px;color:#DAA520"></span> <span class="icon-content">我的客服</span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell" id="feedback">
+							<a class="mui-navigate-right">
+								<span class="mui-icon iconfont icon-tongyong-jianyiyufankui" style="color:#808000; font-size: 25px;"></span> <span class="icon-content" style="left: 17px;">反馈与建议</span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell" id="share">
+							<a class="mui-navigate-right">
+								<span class="mui-icon iconfont icon-fenxiang" style="color:#398439; font-size: 25px;"></span> <span class="icon-content" style="left: 17px;">分享给朋友</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div style="margin-top:10px;margin-bottom: 2.4em;" id="iphoneba">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" id="settings" style="">
+							<a class="mui-navigate-right">
+								<span class="mui-icon iconfont icon-shezhi" style="font-size: 22px;color: #b3b2b4;"></span> <span class="icon-content">设置</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="mui-popup mui-popup-in" style="display: none;">
+			<div class="mui-popup-inner">
+				<div class="mui-popup-title">提示</div>
+				<div class="mui-popup-text">请输入昵称</div>
+				<div class="mui-popup-input"><input type="text" autofocus="" id="usernameInput" placeholder="好名字让别人更容易记住你"></div>
+			</div>
+			<div class="mui-popup-buttons"><span class="mui-popup-button" id="cancel">取消</span><span class="mui-popup-button mui-popup-button-bold" id="submit">确认</span></div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var flag = false,
+				shareServices = null;
+			window.onload = function() {
+				app.tokenAjax_Get({
+					url: API_URL_GET_VALIDATE_SENDER + app.getCustomerId(),
+					success: function(result) {
+						if(result.status == 1) {
+							if(result.data) {
+								myStorage.setItem("validateSender", true);
+								mui("#mySwitch").switch().toggle();
+							}
+						}
+					},
+					error: function(xhr) {}
+				});
+			}
+
+			mui.plusReady(function() {
+				console.log(plus.device.model)
+				if(plus.device.model ===  "iPhoneX") {
+					document.getElementsByClassName("img")[0].style.top = '44px';
+				}
+				if(plus.device.model ===  "iPhone8") {
+					 document.getElementById("iphoneba")[0].style.marginBottom = '3.1em';
+				}
+				var titleView = plus.webview.currentWebview().getTitleNView();
+				titleView.setStyle({
+					height:(STATUSBARHEIGHT+44)+"px"
+				})
+				//获取用户的昵称
+				//先从本地加载
+				var username = myStorage.getItem("username");
+				var authname = myStorage.getItem("authname");
+				if(username) {
+					document.getElementById("showName").innerText = username;
+				} else if(authname) {
+					//三方登录的昵称
+					document.getElementById("showName").innerText = authname;
+				} else {
+					app.tokenAjax_Get({
+						url: API_URL_GET_USER_INFO + app.getCustomerId(),
+						success: function(data) {
+							var name = '';
+							if(data.status == 1) {
+								//设置信息
+								username = setInfo(data.data);
+								if(username) {
+									myStorage.setItem("username", username);
+									document.getElementById("showName").innerText = username;
+								} else {
+									document.getElementById("showName").innerText = "壹用户";
+								}
+							} else {
+								mui.toast(data.msg);
+							}
+						},
+						error: function(xhr) {
+							app.httpError(xhr.status);
+						}
+					});
+				}
+
+				/**
+				 * 获取头像
+				 */
+				//从本地加载图片
+				var icon = myStorage.getItem("icon");
+				var authicon = myStorage.getItem("authicon");
+				if(icon) {
+					document.getElementById("head-icon").src = icon;
+					document.getElementById("user_head_div").style.backgroundImage = "url(" + icon + ")";
+
+				} else if(authicon) {
+					document.getElementById("head-icon").src = authicon;
+					document.getElementById("user_head_div").style.backgroundImage = "url(" + authicon + ")";
+				} else { //从服务器拿数据
+					app.tokenAjax_GetPoto({
+						url: API_URL_GET_USER_HEADER + app.getCustomerId(),
+						success: function(data) {
+							if(data.length > 0) {
+								//把图片的二进制流保存到本地
+								myStorage.setItem("icon", data);
+								document.getElementById("head-icon").src = data;
+								document.getElementById("user_head_div").style.backgroundImage = "url(" + data + ")";
+							} else {
+								document.getElementById("user_head_div").style.backgroundImage = "url(../../images/user/background.jpg)";
+							}
+						},
+						error: function(xhr) {
+							app.httpError(xhr.status);
+						}
+					});
+				}
+				/**
+				 * 修改头像
+				 */
+				document.getElementById('head-icon').addEventListener('tap', function() {
+					var a = [{
+						title: "拍照"
+					}, {
+						title: "从手机相册选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "修改头像",
+						cancel: "取消",
+						buttons: a
+					}, function(b) { /*actionSheet 按钮点击事件*/
+						switch(b.index) {
+							case 0:
+								break;
+							case 1:
+								getImage(); /*拍照*/
+								break;
+							case 2:
+								galleryImg(); /*打开相册*/
+								break;
+							default:
+								break;
+						}
+					})
+				});
+
+				//修改昵称
+				document.getElementById('userName').addEventListener('tap', function() {
+					document.getElementsByClassName("mui-popup")[0].style.display = "";
+					openMask();
+				});
+				//取消修改
+				document.getElementById('cancel').addEventListener('tap', function() {
+					document.getElementsByClassName("mui-popup")[0].style.display = "none";
+					closeMask();
+					app.inputBlur();
+				})
+				//确认修改
+				document.getElementById('submit').addEventListener('tap', function() {
+					document.getElementsByClassName("mui-popup")[0].style.display = "none";
+					closeMask();
+					var customerName = document.getElementById("usernameInput").value;
+					changeName(customerName, function(e) {
+						mui.toast(e);
+					});
+				});
+				//获取分享通道
+				app.getShareServices(shareServices, function(e) {
+					shareServices = e;
+				});
+				//分享
+				document.getElementById('share').addEventListener('tap', function() {
+					app.shareHref(shareServices, '壹配送-同城配送的整合者，最快半小时送达', " ", 'https://a.app.qq.com/o/simple.jsp?pkgname=com.yikesong.customer', ['_www/images/share/thumbs_logo.png']);
+				});
+				//推广
+				document.getElementById('seo').addEventListener('tap', function() {
+					var status_already = "ALREADY_IS_BUSINESSMAN", //已通过
+						status_apply = 'ALREADY_APPLIED', //已申请
+						status_not = 'NOT_APPLIED'; //还没有提出申请
+					plus.nativeUI.showWaiting();
+					app.tokenAjax_Get({
+						url: API_SERVER + '/api/customer/' + app.getCustomerId() + '/businessman/statusChecker',
+						success: function(data) {
+							var status = data.data;
+							if(status === status_already) { //已通过
+								//跳转账户
+								app.getSeoQrcode();
+								app.openWindowNoAutoShow('../seo/SEO.html', 'SEO');
+							} else if(status === status_apply) { //已申请
+								plus.nativeUI.closeWaiting();
+								plus.nativeUI.alert('正在审核中，请耐心等待。如申请已超过24小时，请联系客服4000-828-929', function(e) {}, '提示', '确认')
+							} else { //没有申请
+								//开通业务员功能
+								app.openWindowNoAutoShow('../seo/SEOAccount.html', 'SEOAccount');
+							}
+						},
+						error: function(xhr) {
+							plus.nativeUI.closeWaiting();
+						}
+					})
+					setTimeout(function() {
+						plus.nativeUI.closeWaiting();
+					}, 6000);
+
+				});
+				
+				
+				/**
+				 * 绑定 qq 微信
+				 * 
+				 */
+				document.getElementById('qq').addEventListener('tap', function() {
+					getoauth('qq');
+				});
+				document.getElementById('weixin').addEventListener('tap', function() {
+					getoauth('weixin');
+				});
+				/**
+				 * 绑定手机号
+				 */
+				document.getElementById('phone_call').addEventListener('tap', function() {
+					app.openWebView("../setting/bindPhone.html", "bindPhone");
+				});
+
+				/**收件地址**/
+				document.getElementById('receiveAddress').addEventListener('tap', function() {
+					app.openWindow('../addressOrder/senderList.html', 'senderList', {
+						'title': '收件人地址管理',
+						'flag': 'receive'
+					});
+					myStorage.setItem('flag', 'receive');
+
+				})
+				//发件地址管理
+				document.getElementById('sendAddress').addEventListener('tap', function() {
+					app.openWindow('../addressOrder/senderList.html', 'senderList', {
+						'title': '发件人地址管理',
+						'flag': 'send'
+					});
+					myStorage.setItem('flag', 'send');
+				});
+
+				/**
+				 * 设置
+				 */
+				document.getElementById('settings').addEventListener('tap', function() {
+					app.openWebView("../setting/setting.html", "setting");
+				});
+
+				/**
+				 * 客服
+				 */
+				document.getElementById('customerServices').addEventListener('tap', function() {
+					app.openWebView("../customerService/customerServices.html", "customerServices")
+				});
+
+				//我的账户
+				document.getElementById('customerAccount').addEventListener('tap', function() {
+					app.openWebView("../recharge/customerAccount.html", 'customerAccount');
+				})
+
+				/**
+				 * 反馈建议
+				 * 
+				 */
+				document.getElementById('feedback').addEventListener('tap', function() {
+					app.openWebView("../setting/feedback.html", "feedback");
+				});
+
+				/**
+				 * 红包页面
+				 */
+				document.getElementById('hongbao').addEventListener('tap', function() {
+					app.openWebView("../hongbao/redPacketList.html", "redPacketList");
+				})
+
+				//验证开启		
+				document.getElementById('mySwitch').addEventListener('tap', function() {
+					console.log()
+					var isActive = this.classList.contains("mui-active");
+					if(isActive) { //打开
+						app.tokenAjax_Get({
+							url: changeValidateSender(1),
+							success: function(result) {
+								console.log(JSON.stringify(result));
+								if(result.status == 1) {
+									mui.toast('验证开启');
+									myStorage.setItem("validateSender", true);
+								} else {
+									mui.toast('验证开启失败')
+									mui("#mySwitch").switch().toggle();
+								}
+							},
+							error: function(result) {
+								mui.toast('验证开启失败');
+								mui("#mySwitch").switch().toggle();
+							}
+						});
+					} else { //关闭
+						app.tokenAjax_Get({
+							url: changeValidateSender(0),
+							success: function(result) {
+								console.log(JSON.stringify(result));
+								if(result.status == 1) {
+									mui.toast('验证关闭');
+									myStorage.setItem("validateSender", false);
+								} else {
+									mui.toast('验证关闭失败');
+									mui("#mySwitch").switch().toggle();
+								}
+							},
+							error: function(result) {
+								mui.toast('验证关闭失败');
+								mui("#mySwitch").switch().toggle();
+							}
+						});
+					}
+
+				})
+
+			});
+
+			//拍照 
+			function getImage() {
+				var c = plus.camera.getCamera();
+				c.captureImage(function(e) {
+					plus.io.resolveLocalFileSystemURL(e, function(entry) {
+						var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+						uploadHead(s); /*上传图片*/
+					}, function(e) {
+						console.log("读取拍照文件错误：" + e.message);
+					});
+				}, function(s) {
+					console.log("error" + s);
+				}, {
+					filename: "_doc/head.png"
+				})
+			}
+
+			//本地相册选择 
+			function galleryImg() {
+				plus.gallery.pick(function(a) {
+					plus.io.resolveLocalFileSystemURL(a, function(entry) {
+						plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
+							root.getFile("head.png", {}, function(file) {
+								//文件已存在 
+								file.remove(function() {
+									console.log("file remove success");
+									entry.copyTo(root, 'head.png', function(e) {
+											var e = e.fullPath + "?version=" + new Date().getTime();
+											uploadHead(e); /*上传图片*/
+											//变更大图预览的src 
+											//目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现 
+										},
+										function(e) {
+											console.log('copy image fail:' + e.message);
+										});
+								}, function() {
+									console.log("delete image fail:" + e.message);
+								});
+							}, function() {
+								//文件不存在 
+								entry.copyTo(root, 'head.png', function(e) {
+										var path = e.fullPath + "?version=" + new Date().getTime();
+										uploadHead(path); /*上传图片*/
+									},
+									function(e) {
+										console.log('copy image fail:' + e.message);
+									});
+							});
+						}, function(e) {
+							console.log("get _www folder fail");
+						})
+					}, function(e) {
+						console.log("读取拍照文件错误：" + e.message);
+					});
+				}, function(a) {}, {
+					filter: "image"
+				})
+			};
+
+			//上传头像图片 
+			function uploadHead(imgPath) {
+				var mainImage = document.getElementById("head-icon");
+				mainImage.style.backgroundImage = "url(" + imgPath + ")";
+				var image = new Image();
+				image.src = imgPath;
+				image.onload = function() {
+					var imgData = getBase64Image(image);
+					var data = {
+						"headerIcon": imgData
+					};
+					app.tokenAjax({
+						url: API_URL_POST_UPLOAD_USER_HEAD + app.getCustomerId(),
+						data: JSON.stringify(data),
+						success: function(result) {
+							if(result.status == 1) {
+								//上传成功
+								//保存本地
+								myStorage.setItem("icon", imgData);
+								mui.toast('上传成功');
+								//修改头像和背景图
+								mainImage.src = imgData;
+								document.getElementById("head-icon").style.backgroundImage = "url(" + imgData + ")";
+								document.getElementById("user_head_div").style.backgroundImage = "url(" + imgData + ")";
+							} else {
+								mui.toast('上传失败');
+							}
+						},
+						error: function(xhr) {
+
+						}
+					});
+
+				}
+			}
+			//将图片压缩转成base64 
+			function getBase64Image(img) {
+				var canvas = document.createElement("canvas");
+				var width = img.width;
+				var height = img.height;
+				// calculate the width and height, constraining the proportions 
+				if(width > height) {
+					if(width > 400) {
+						height = Math.round(height *= 400 / width);
+						width = 400;
+					}
+				} else {
+					if(height > 400) {
+						width = Math.round(width *= 400 / height);
+						height = 400;
+					}
+				}
+				canvas.width = width; /*设置新的图片的宽度*/
+				canvas.height = height; /*设置新的图片的长度*/
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(img, 0, 0, width, height); /*绘图*/
+				var dataURL = canvas.toDataURL("image/png", 0.8);
+				return dataURL;
+				//return dataURL.replace("data:image/png;base64,", "");
+			}
+
+			/**
+			 * 设置本地的用户信息
+			 * @param {Object} data
+			 */
+			function setInfo(data) {
+				var headIcon = data.headIcon;
+				if(data.username) {
+					return data.username;
+				}
+				if(data.phonenumber) {
+					return data.phonenumber;
+				}
+			}
+			/**
+			 * 获取三方登录的openid
+			 * @param {Object} authId 三方登录的id qq、weixin等
+			 */
+			function getoauth(authId) {
+				var auth = null;
+				var openId = null;
+				var url = null;
+				/**
+				 * 获取三方列表
+				 */
+				plus.oauth.getServices(function(services) {
+					mui.each(services, function(index, element) {
+						if(element.id == authId) {
+							auth = element;
+						}
+					});
+					auth.login(function() {
+
+						/**
+						 * 登录成功后，获取用户信息
+						 */
+						auth.getUserInfo(function() {
+							if(authId == "qq") {
+								openId = auth.authResult.openid;
+								url = API_BIND_QQ + app.getCustomerId();
+							} else {
+								openId = auth.userInfo.openid;
+								url = API_BIND_WX + app.getCustomerId();
+							}
+							//后台保存openid
+							app.tokenAjax({
+								url: url,
+								data: {
+									"openId": openId
+								},
+								success: function(result) {
+									if(result.status == 1) {
+										mui.toast('绑定成功');
+									} else {
+										mui.toast(result.msg);
+									}
+								},
+								error: function(xhr) {
+									mui.toast('绑定失败');
+								}
+							});
+						}, function(error) {
+							mui.toast('获取' + getAuthName(authId) + "的用户信息失败");
+						});
+					}, function(error) {
+						mui.toast(getAuthName(auth) + "登录认证失败");
+					})
+				}, function(error) {
+					mui.toast('获取登录认证失败；' + error.message)
+				});
+			}
+
+			function getAuthName(authId) {
+				switch(authId) {
+					case "qq":
+						return "QQ";
+					case "weixin":
+						return "微信";
+					default:
+						return "不支持的三方类型";
+				}
+			}
+
+			function changeName(customerName, callback) {
+				document.getElementById("showName").innerText = customerName;
+				/**
+				 * ajax 发送到后台
+				 * 
+				 */
+				app.tokenAjax({
+					url: API_URL_CHANGENAME + app.getCustomerId(),
+					data: {
+						"username": customerName
+					},
+					success: function(data) {
+						if(data.status == 1) {
+							myStorage.setItem("username", customerName)
+							document.getElementById("showName").innerText = customerName;
+							return callback("修改成功");
+						} else {
+							return callback(data.msg);
+						}
+					},
+					error: function(xhr) {
+						return callback("修改失败");
+					}
+				});
+			}
+
+			function openMask() {
+				//打开遮罩蒙板
+				mask = mui.createMask(function() {
+					return flag;
+				}); //callback为用户点击蒙版时自动执行的回调；
+				mask.show(); //显示遮罩
+				main = plus.webview.getWebviewById("main");
+				mui.fire(main, 'openMask', {});
+			}
+
+			function closeMask() {
+				flag = true;
+				mask.close();
+				//同时通知父页面关闭遮罩蒙板
+				mui.fire(main, 'closeMask', {});
+			}
+		</script>
+	</body>
+
+</html>

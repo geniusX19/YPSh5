@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/sub-historyList-common.css" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style>
+		.mui-table-view-cell {
+			height: 60px;
+		}
+		
+		.mui-table-view:before,
+		.mui-table-view:after {
+			background-color: #FFFFFF;
+		}
+		
+		.moneny_2 {
+			display: inline-block;
+			height: 45px;
+			width: 20%;
+			color: #449D44;
+			font-size: 18px;
+			position: relative;
+			top: -10px;
+			text-align: right;
+		}
+		
+		.moneny_1 {
+			display: inline-block;
+			height: 45px;
+			width: 75%;
+			font-size: 14px;
+		}
+		
+		.money_time {
+			color: gray;
+			font-size: 12px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">累计收入明细</h1>
+		</header>
+
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll" style="margin-top: 10px;padding-bottom: 20px;">
+				<ul class="mui-table-view" id="content_area">
+				</ul>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			//计数
+			var count = 0,
+				pageSize = 11,
+				isAutoShow = true;
+
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						height: 50, //可选.默认50.触发上拉加载拖动距离
+						auto: true, //可选,默认false.自动上拉加载一次
+						contentrefresh: "加载中...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+						contentnomore: '没有了~', //可选，请求完毕若没有更多数据时显示的提醒内容；
+						callback: pullupRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据
+					}
+				}
+			});
+			mui.plusReady(function() {});
+
+			/**
+			 * 
+			 * @param {Object} time 奖励金的时间
+			 * @param {Object} info  奖励的信息
+			 * @param {Object} money 奖励金
+			 */
+			function getInnerHTML(time, info, money) {
+				var liEle = document.createElement('li');
+				liEle.setAttribute("class", "mui-table-view-cell");
+
+				var innerHtml = '<span class="moneny_1">\
+				        <span>' + info + '</span>\
+						<br />\
+						<span class="money_time"> ' + time + ' </span>\
+						</span>\
+						<span class="moneny_2"><span>' + money + '</span></span>\
+						';
+				liEle.innerHTML = innerHtml;
+				return liEle;
+			}
+
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				//查询未完成的订单
+				getData();
+			}
+
+			/**
+			 * 获取最近一年的订单
+			 */
+			function getData() {
+				var url = getBusinessManRewardsRecords(app.getCustomerId(), count, pageSize);
+				app.tokenAjax_Get({
+					url: url,
+					success: function(data) {
+						if(isAutoShow) {
+							plus.nativeUI.closeWaiting();
+							mui.currentWebview.show("slide-in-right");
+						}
+						isAutoShow = false;
+						if(data.status == 1) {
+							data = data.data.dataList;
+							app.openOrClosePullUpRefresh('#pullrefresh', data.length, count, pageSize, function(index) {
+								count = index;//赋值
+								var parentNode = document.getElementById("content_area");
+								mui.each(data, function(index, e) {
+									var money = "+" + parseFloat(e.amount).toFixed(2);
+									var child = getInnerHTML(app.getTimeString(e.createTime), e.type, money);
+									parentNode.appendChild(child);
+								})
+							});
+						}
+					},
+					error: function(xhr) {
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show();
+						app.httpError(xhr.status);
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

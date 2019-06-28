@@ -1,0 +1,88 @@
+
+@font-face {font-family: "iconfont";
+  
+  src:url('../fonts/iconfont.ttf') format('truetype'); /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+ 
+}
+.icon-worldcup-nickname:before { content: "\e615"; }
+
+.icon-shangwuhezuo:before { content: "\e66d"; }
+
+.icon-phone:before { content: "\e622"; }
+
+.icon-iconfonthome0:before { content: "\e611"; }
+
+.icon-hujiaozhuanyi:before { content: "\e678"; }
+
+.icon-yanzhengma:before { content: "\e68a"; }
+
+.icon-dingdan:before { content: "\e621"; }
+
+.icon-kongzhuangtai20:before { content: "\e6e9"; }
+
+.icon-zhanghuanquan:before { content: "\e66e"; }
+
+.icon-baoguofahuo:before { content: "\e884"; }
+
+.icon-tijikongjian:before { content: "\e89f"; }
+
+.icon-tongyong-jianyiyufankui:before { content: "\e619"; }
+
+.icon-dianhua:before { content: "\e649"; }
+
+.icon-kefu:before { content: "\e67a"; }
+
+.icon-shoujianren:before { content: "\e645"; }
+
+.icon-jijianren:before { content: "\e64d"; }
+
+.icon-huaqiangxincheng-icon-:before { content: "\e650"; }
+
+.icon-yonghuzhongxin_f:before { content: "\e671"; }
+
+.icon-shezhi:before { content: "\e62d"; }
+
+.icon-zhanghu:before { content: "\e64b"; }
+
+.icon-piliangshanchu:before { content: "\e61a"; }
+
+.icon-fenxiang:before { content: "\e664"; }
+
+.icon-fapiaoguanli:before { content: "\e616"; }
+
+.icon-hongbao:before { content: "\e937"; }
+
+.icon-yanzheng-copy:before { content: "\e6e8"; }
+
+.icon-xuanzhong:before { content: "\e657"; }
+
+.icon-tiji:before { content: "\e6dc"; }
+
+.icon-Bduanicon_zhanghuyue:before { content: "\e66c"; }
+
+.icon-chazhao:before { content: "\e62b"; }
+
+.icon-shangcheng_jifenrenwu:before { content: "\e610"; }
+
+.icon-osm-guanlianzhanghao-:before { content: "\e750"; }
+
+.icon-wupinfafang:before { content: "\e600"; }
+
+.icon-xuanzekuang:before { content: "\e667"; }
+
+.icon-piliangshanchu1:before { content: "\e62e"; }
+
+.icon-huozhongliang:before { content: "\e612"; }
+
+.icon-xuanzekuang-xuanzhong:before { content: "\e697"; }
+
+.icon-shanghuzhanghuguanli:before { content: "\e61b"; }
+

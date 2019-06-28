@@ -1,0 +1,22 @@
+.template{
+	height: 80px;
+	width: 100%;
+	margin-top: 15px;
+	background-color:white;
+	padding-top: 8px;
+	border-radius: 5px;
+}
+.price-area{
+	height: 100%;width:30%;padding-top:7px;float: left;
+}
+.restrict{
+	font-size: 11px;color: gray;
+}
+.name-area{
+height: 100%;width: 50%;float: left;padding-left: 10px;padding-top:12px;
+}
+.result-area{
+	height: 100%;width: 20%;float: left;padding-top: 12px;
+}
+
+

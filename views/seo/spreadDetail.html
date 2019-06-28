@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/sub-historyList-common.css" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style>
+		body,
+		html,
+		.mui-content {
+			background: #FFFFFF !important;
+		}
+		.mui-table-view-cell{
+			padding-bottom: 2px;
+			padding-top: 2px;
+		}
+		.mui-table-view:before,
+		.mui-table-view:after,
+		.mui-table-view-cell:after {
+			background-color: #E3E3E3;
+		}
+		.mui-table-view{
+			margin-top: 20px !important;
+		}
+		.mui-input-row label{
+			font-size: 15px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title"></h1>
+		</header>
+
+		<div id="pullrefresh" class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>姓名</label>
+						<input type="text" readonly="readonly" id="name">
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>手机号</label>
+						<input type="text" readonly="readonly" id="phone">
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>推广时间</label>
+						<input type="text" readonly="readonly" id="creatTime">
+					</div>
+				</li>
+					<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>推广类型</label>
+						<input type="text" readonly="readonly" id="type">
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>首单奖励</label>
+						<input type="text" readonly="readonly" value="0.00" id="firstOrder">
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>下单提成</label>
+						<input type="text" readonly="readonly" value="0.00" id="rewardTotal">
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				var  self = plus.webview.currentWebview();
+				var data = self.data;
+				document.getElementById("title").innerText = self.title;
+				document.getElementById("name").value = data.name;
+				document.getElementById("phone").value = data.phone;
+				document.getElementById("creatTime").value = data.createTime;
+				document.getElementById("type").value = data.type;
+				document.getElementById("firstOrder").value = data.firstOrder +" 元";
+				document.getElementById("rewardTotal").value = data.rewardTotal +" 元";
+			});
+		</script>
+	</body>
+
+</html>

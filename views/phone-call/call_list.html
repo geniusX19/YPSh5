@@ -1,0 +1,397 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/showLoading.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style>
+		.title-back {
+			margin-top: -7px !important;
+			color: orangered !important;
+			font-size: 40px !important;
+		}
+		.list {
+			height: 140px;
+			width: 96%;
+			margin-left: 2%;
+			border-radius: 10px;
+			margin-bottom: 5px;
+			background-color: #FFFFFF;
+			margin-top: 10px;
+		}
+		
+		.listBody {
+			padding: 5px;
+			height: 50px;
+			color: #929292;
+			border-bottom: 1px solid #DDDDDD;
+		}
+		
+		.listHeaher {
+			padding: 6px;
+			height: 40px;
+		}
+		
+		.button {
+			float: right;
+			margin-right: 15px;
+			padding: 10px;
+			color: #929292;
+		}
+		
+		button {
+			font-size: 12px !important;
+			background-color: #FF7F24 !important;
+			border-color: #FF7F24 !important;
+		}
+		
+		.name {
+			float: left;
+			padding: 5px;
+			width: 160px;
+		}
+		
+		.status {
+			float: right;
+			padding: 6px;
+			width: 80px;
+			font-size: 14px;
+			font-family: "微软雅黑";
+			/*font-weight: bold;*/
+		}
+		
+		.address {
+			margin-top: -5px;
+			float: left;
+			padding-left: 30px;
+			font-size: 12px !important;
+		}
+		
+		.price-div {
+			float: right;
+			padding: 6px;
+			width: 80px;
+			font-size: 12px;
+			font-family: "微软雅黑";
+			color: #000000;
+			/*font-weight: bold;*/
+		}
+		
+		.mui-popup {
+			position: fixed !important;
+			top: 45% !important;
+			width: 88% !important;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-arrowleft "></a>
+			<h1 class="mui-title">一键呼叫订单列表</h1>
+			<span class="mui-icon iconfont icon-kefu mui-pull-right" id="service"></span>
+		</header>
+		<div class="mui-content  mui-scroll-wrapper" id="pullrefresh">
+			<div class="mui-scroll" id="orderList">
+			</div>
+
+			<p style="width: 100%;text-align: center;margin-top: 50px;" id="msg"> 暂无订单</p>
+			<div class="list" id="template" style="display:none ;">
+				<div class="listarea">
+					<div style="width: 80px;height: 100px;position: absolute;right: 65px;padding-top: 12px;display: ;" class="senderArea">
+						<div align="center">
+							<img src="../../images/senderIcon.png" style="width: 40px; height: 45px;" />
+						</div>
+						<div class="senderName" align="center" style="font-size: 12px; color:grey">
+							小明
+						</div>
+					</div>
+					<div class="listHeaher">
+						<div class="name"><span style="color: orange;font-size: 15px;">NO:</span><span class="order" style="font-size: 13px;">0000000000</span></div>
+						<input type="hidden" class="hiddenOrderId" />
+
+						<div class="status" align="right"></div>
+					</div>
+					<div class="listBody">
+						<div class="address" style="">
+							<span style="font-size: 13px;">呼叫车型:<span class="order-type" >小货车</span></span>&nbsp;<span style="vertical-align: calc(1px);">|</span>&nbsp;<span style="font-size: 13px;">服务费¥<span class="tip">0</span></span>
+							<br />
+							<span class="order-time" style="margin: 0px;font-size: 12px;">2018-6-14 18:03:04</span>
+						</div>
+						<div class="price-div" align="right">
+							<span>¥</span><span class="price" style="font-size: 18px;vertical-align: calc(-5px) !important;">3</span>
+						</div>
+					</div>
+				</div>
+				<div>
+					<span style="position:relative;left:6px;top:18px;color:royalblue;font-size: 12px;display:none ;" class="tips">配送员预计在12分钟内接单 </span>
+					<div class="button">
+						<button type="button" data-loading-text="取消中" data-loading-icon="" class="mui-btn mui-btn-blue mui-btn-danger cancel-order" style="color: white; border-color: orangered;display: none;">取消</button>
+						<button type="button" data-loading-text="重新呼叫中" data-loading-icon="" class="mui-btn mui-btn-blue mui-btn-danger again-send-order" style="color: white; border-color: orangered;display: none;">重新呼叫</button>
+						<button type="button" data-loading-text="删除中" data-loading-icon="" class="mui-btn mui-btn-blue mui-btn-danger delete-order" style="color: white; border-color: orangered;display: none;">删除</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			var count = 0;
+			//记录每次取得条数是否等于10，用来判断下拉刷新是否向数据库发送请求
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style: 'circle', //必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+						color: '#4dbeca',
+						height: '100px', //可选,默认50px.下拉刷新控件的高度,
+						range: '150px', //可选 默认100px,控件可下拉拖拽的范围
+						offset: '0px', //可选 默认0px,下拉刷新控件的起始位置
+						callback: pulldownRefresh
+					},
+					up: {
+						height: 50, //可选.默认50.触发上拉加载拖动距离
+						auto: false, //可选,默认false.自动上拉加载一次
+						contentrefresh: "加载中...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+						contentnomore: '没有了~', //可选，请求完毕若没有更多数据时显示的提醒内容；
+						callback: pullupRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				}
+			});
+
+			function pulldownRefresh() {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPulldown(); //参数为true代表没有更多数据了。
+					mui('#pullrefresh').pullRefresh().refresh(true);
+				}, 1500);
+				count = 0;
+				document.getElementById("orderList").innerHTML = "";
+				getData();
+			}
+			
+			window.addEventListener('refresh',function(e){
+				pulldownRefresh();
+			});
+			window.onload = function() {
+				//查询订单
+				getData();
+				mui.plusReady(function() {
+					if(plus.device.model === IPHONEX){
+						document.getElementById("orderList").style.paddingBottom ='34px';
+					}
+					var confirmPay = plus.webview.getWebviewById("call_confirmPay");
+					if(confirmPay) {
+						confirmPay.close('none', 0);
+					}
+					var pay = plus.webview.getWebviewById("call_pay");
+					if(pay) {
+						pay.close('none', 0);
+					}
+					plus.nativeUI.closeWaiting();
+					//订单详情
+					mui('.mui-content').on('tap', '.listarea', function() {
+						var orderId = this.getElementsByClassName("hiddenOrderId")[0].value;
+						app.openWindow('call_detail.html', "call_detail", {
+							'orderId': orderId
+						});
+					});
+					//客服
+					document.getElementById('service').addEventListener('tap', function() {
+						app.openWebView("../customerService/customerServices.html", "customerServices");
+					});
+					//取消
+					mui('.mui-content').on('tap', '.cancel-order', function() {
+						mui(this).button("loading");
+						var btn = this;
+						var node = this.parentNode.parentNode.parentNode;
+						var orderId = node.getElementsByClassName("hiddenOrderId")[0].value;
+						var url = postRefundQuickcall(app.getCustomerId(), orderId);
+						app.tokenAjax({
+							url: url,
+							data: {},
+							success: function(data) {
+								mui(btn).button("reset");
+								if(data.status == 1) {
+									mui.toast('取消成功，订单金额将会在24小时内按原路返回至您的账户中')
+									setData(node, data.data);
+								} else {
+									mui.toast(data.msg);
+								};
+							},
+							error: function(xhr) {
+								mui(btn).button("reset");
+								app.httpError(xhr.status);
+							}
+
+						});
+
+					});
+					//重新派单
+					mui('.mui-content').on('tap', '.again-send-order', function() {
+						mui(this).button("loading");
+						var orderId = this.parentNode.parentNode.parentNode.getElementsByClassName("hiddenOrderId")[0].value;
+						var btn = this;
+						var url = postRecallQuickcall(app.getCustomerId(), orderId);
+						app.tokenAjax({
+							url: url,
+							data: {},
+							success: function(data) {
+								mui(btn).button("reset");
+								if(data.status == 1) {
+									mui.toast('重新派单成功');
+									//刷新页面
+									pulldownRefresh();
+								} else {
+									mui.toast(data.msg);
+								}
+							},
+							error: function(xhr) {
+								mui(btn).button("reset");
+								app.httpError(xhr.status);
+							}
+						});
+					});
+					mui('.mui-content').on('tap', '.delete-order', function() {
+						mui(this).button("loading");
+						var btn = this;
+						var node = this.parentNode.parentNode.parentNode;
+						var orderId = node.getElementsByClassName("hiddenOrderId")[0].value;
+						var url = postDeleteQuickcall(app.getCustomerId(), orderId);
+						app.tokenAjax({
+							url: url,
+							data: {},
+							success: function(data) {
+								mui(btn).button("reset");
+								if(data.status == 1) {
+									//删除节点
+									var orderlistNode = document.getElementById("orderList");
+									orderlistNode.removeChild(node);
+								} else {
+									mui.toast(data.msg);
+								};
+							},
+							error: function(xhr) {
+								mui(btn).button("reset");
+								app.httpError(xhr.status);
+							}
+						});
+					})
+				})
+			}
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					getData();
+				}, 1000);
+			}
+
+			function getData() {
+				var url = getPhoneCallList(app.getCustomerId(), count);
+				app.tokenAjax_Get({
+					url: url,
+					success: function(data) {
+						if(data.status == 1) {
+							count++;
+							var orderList = data.data.dataList;
+							try {
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(orderList.length < 5);
+							} catch(e) {}
+							document.getElementById("msg").style.display = "none";
+							var orderlistNode = document.getElementById("orderList");
+							mui.each(orderList, function(index, element) {
+								var node = document.getElementById('template').cloneNode(true);
+								node.style.display = ""; //显示
+								setData(node, element);
+								orderlistNode.appendChild(node);
+							});
+						}
+					},
+					error: function(xhr) {
+						app.httpError(xhr.status);
+					}
+				});
+			}
+
+			function getOrderStatus(s) {
+				switch(s) {
+					case 'CREATED':
+						return '未支付';
+					case 'CALLING':
+						return '待接单';
+					case 'WAIT_FOR_RESPONSE':
+						return '待接单';
+					case 'CANCELLED':
+						return '已取消';
+					case 'TIMEOUT':
+						return '已超时';
+					case 'ACCEPTED':
+						return '已接单';
+					case 'REFUND':
+						return '已取消';
+					case 'NODEAL':
+						return '已完成';
+					case 'FINISH':
+						return '已完成';
+					default:
+						return '';
+				}
+			}
+
+			function setData(node, element) {
+				var orderId = element.quickcallId;
+				var status = element.quickcallStatus;
+				var price = element.payPrice;
+				var senderName = element.senderName;
+				node.getElementsByClassName("order")[0].innerText = orderId;
+				node.getElementsByClassName("status")[0].innerText = getOrderStatus(status);
+				node.getElementsByClassName("order-type")[0].innerHTML = app.carType(element.vehicle);
+				node.getElementsByClassName("order-time")[0].innerHTML = app.getTimeString(parseInt(element.createTime));
+				node.getElementsByClassName("price")[0].innerText = price;
+				node.getElementsByClassName("hiddenOrderId")[0].value = orderId;
+				node.getElementsByClassName("tip")[0].innerText = element.tip
+				var tips = node.getElementsByClassName("tips")[0];
+				if(status == 'CALLING' || status == 'WAIT_FOR_RESPONSE') {
+					tips.style.display = "";
+				} else {
+					tips.style.display = "none";
+				}
+				//订单超时
+				if(status === "TIMEOUT") {
+					//显示取消和重新派单的按钮
+					node.getElementsByClassName("cancel-order")[0].style.display = "";
+					node.getElementsByClassName("again-send-order")[0].style.display = "";
+				} else {
+					node.getElementsByClassName("cancel-order")[0].style.display = "none";
+					node.getElementsByClassName("again-send-order")[0].style.display = "none";
+				}
+
+				if(status == 'NODEAL' || status == 'FINISH' || status == 'REFUND' || status == 'CANCELLED') {
+					node.getElementsByClassName('delete-order')[0].style.display = '';
+				} else {
+					node.getElementsByClassName('delete-order')[0].style.display = 'none';
+				}
+
+				if(senderName) {
+					node.getElementsByClassName("senderArea")[0].style.display = "";
+					node.getElementsByClassName("senderName")[0].innerHTML = senderName;
+
+				} else {
+					node.getElementsByClassName("senderArea")[0].style.display = "none";
+				}
+				return node;
+			}
+		</script>
+	</body>
+
+</html>

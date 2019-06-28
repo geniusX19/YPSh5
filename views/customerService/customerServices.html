@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<style>
+			#servicePhone {
+				position: absolute;
+				bottom: 20px;
+				width: 100%;
+				font-size: 25px;
+				color: orange;
+			}
+			
+			#content {
+				margin-top: -5px;
+			}
+			
+			.mui-table-view-cell a {
+				color: #555555;
+			}
+			
+			#img,
+			img {
+				border: 0px;
+				padding: 0;
+				margin-top: -2px;
+				background: -webkit-linear-gradient(left, #4dbeca, #3da0c5) !important;
+				/* Safari 5.1 - 6.0 */
+				background: -o-linear-gradient(right, #4dbeca, #3da0c5) !important;
+				/* Opera 11.1 - 12.0 */
+				background: -moz-linear-gradient(right, #4dbeca, #3da0c5) !important;
+				/* Firefox 3.6 - 15 */
+				background: linear-gradient(to right, #4dbeca, #3da0c5) !important;
+				/* 标准的语法 */
+			}
+			
+			ul {
+				border: none;
+			}
+			
+			a {
+				font-size: 14px;
+			}
+			
+			#dcontent {
+				border-top: none !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header" style="box-shadow: none;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">帮助中心</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div id="img">
+				<img src="../../images/benner.png" style="height: 130px; width: calc(100%);" />
+			</div>
+			<div id="content" style="background: #FFFFFF;border: none;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse" style="font-size: 14px;color: #555555;">
+						您可能遇到的问题
+					</li>
+					<li class="mui-table-view-cell mui-collapse">
+						<a class="mui-navigate-right" href="#">取消订单的钱怎么退回？</a>
+						<div class="mui-collapse-content">
+							<p>按照原先支付路径及时返回到三方账户中。</p>
+						</div>
+					</li>
+
+					<li class="mui-table-view-cell mui-collapse">
+						<a class="mui-navigate-right" href="#">发货遇到问题以及收货物品有毁损如何处理？</a>
+						<div class="mui-collapse-content">
+							<p>您可以及时联系在线客服反馈相关情况，工作人员会及时核实，如因快递壹哥责任造成物品毁损，我们将积极协调快递壹哥进行赔付，但需要您提供机打发票/销售凭证/盖章收据/小票给快递壹哥。</p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" id="price_explain">计价方式</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" id="send_explain">配送方式</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" id="question">更多......</a>
+					</li>
+				</ul>
+			</div>
+			<div id="servicePhone" align="center">
+				<p>如有疑问可拨打客服电话</p>
+				<span class="mui-icon iconfont icon-dianhua" style="font-size: 25px;"></span>
+				<span>4000-828-929 </span>
+			</div>
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script><br />
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+
+				if(plus.device.model === IPHONEX) {
+					document.getElementById("servicePhone").style.bottom = '54px';
+				}
+				document.getElementById('img').addEventListener('tap', function() {
+					app.callPhone("4000828929", "是否拨打客服热线？");
+				})
+				document.getElementById('servicePhone').addEventListener('tap', function() {
+					app.callPhone("4000828929", "是否拨打客服热线？");
+				});
+				document.getElementById('question').addEventListener('tap', function() {
+					app.openWebView("question.html", "question");
+				});
+				document.getElementById("price_explain").addEventListener('tap', function() {
+					app.openWindowNoAutoShow('../price_explain.html', 'price_explain');
+				});
+				//打开 send_explain.html
+				document.getElementById('send_explain').addEventListener('tap', function() {
+					app.openWebView("../send_explain.html", "send_explain");
+				})
+				app.refreshOrderListPage();
+			})
+		</script>
+	</body>
+
+</html>

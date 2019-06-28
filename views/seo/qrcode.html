@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/sub-historyList-common.css" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style>
+		body,
+		html,
+		.mui-content {
+			background: #FFFFFF !important;
+		}
+		html{
+			height: calc(100% - 25px) !important;
+		}
+			
+		#header {
+			box-shadow: none !important;
+		}
+		
+		#body_content {
+			margin-top: -7px;
+			height: calc(70%);
+			background-image: url(../../images/share/pci_background.png);
+			background-repeat: no-repeat;
+			background-size:cover;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title">我的推广码</h1>
+		</header>
+
+		<div id="pullrefresh" class="mui-content">
+			<img src="../../images/share/pci.png" width="100%" height="30%" />
+			<div align="center" style="padding-top: 35px; height=670px;" id="body_content">
+				<div id="qrcode" style="width: 180px;height: 180px;border: 5px solid #FFF6F1;"></div>
+				
+				<img src="../../images/share/pci_font.png" width="50%"style="margin-top: 20px;"/>
+			</div>
+		</div>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/qrcode.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				//本地是否已保存推广链接
+				if(!myStorage.getItem(STORAGE_NAME_SEO)) {
+					//获取链接
+					app.getSeoQrcode(function() {
+						//生成二维码并展示
+						showQRcode();
+						showPage();
+
+					});
+				} else {
+					showQRcode();
+					showPage();
+				}
+
+			});
+
+			function showPage() {
+				plus.nativeUI.closeWaiting();
+
+				mui.currentWebview.show('slide-in-right', 300);
+			}
+			/**
+			 * 展示二维码
+			 */
+			function showQRcode() {
+				//生成二维码
+				new QRCode(document.getElementById("qrcode"), {
+					text: myStorage.getItem(STORAGE_NAME_SEO),
+					width: 170,
+					height: 170,
+					colorDark: "#000000",
+					colorLight: "#ffffff",
+					correctLevel: QRCode.CorrectLevel.H
+				});
+			}
+		</script>
+	</body>
+
+</html>

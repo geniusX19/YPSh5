@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/sub-historyList-common.css" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style>
+		.mui-table-view-cell {
+			height: 60px;
+		}
+		
+		.mui-table-view:before,
+		.mui-table-view:after {
+			background-color: #FFFFFF;
+		}
+		
+		.moneny_2 {
+			display: inline-block;
+			height: 45px;
+			width: 20%;
+			font-size: 15px;
+			position: relative;
+			top: -10px;
+			text-align: right;
+		}
+		
+		.moneny_1 {
+			display: inline-block;
+			height: 45px;
+			width: 75%;
+			font-size: 14px;
+		}
+		
+		.money_time {
+			color: gray;
+			font-size: 12px;
+		}
+	</style>
+
+	<body>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll" style="margin-top: 10px;padding-bottom: 20px;">
+				<ul class="mui-table-view" id="content_area">
+				</ul>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			//计数
+			var count = 0,
+				pageSize = 11,
+				idx = 0,
+				totalArr = new Array();
+
+			mui.init({
+				pullRefresh: {
+					container: '.mui-content',
+					up: {
+						height: 50, //可选.默认50.触发上拉加载拖动距离
+						auto: true, //可选,默认false.自动上拉加载一次
+						contentrefresh: "加载中...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+						contentnomore: '没有了~', //可选，请求完毕若没有更多数据时显示的提醒内容；
+						callback: pullupRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据
+					}
+				}
+			});
+			mui.plusReady(function() {
+				mui('.mui-table-view').on('tap', '.mui-table-view-cell', function() {
+					var index = this.getAttribute('data');
+					var d = totalArr[index];
+					var data = {
+						name: d.customerName,
+						phone: app.encodePhonenumber(d.customerPhonenumber),
+						createTime: app.getTimeString(d.createTime),
+						type: d.spreadType,
+						firstOrder: d.customerFirstOrderRewardTotal,
+						rewardTotal: d.customerOrderRewardTotal
+					}
+					app.openWindow("spreadDetail.html", 'spreadDetail', {
+						data: data,
+						title: '用户提成收入明细'
+					});
+				})
+			});
+
+			/**
+			 * 
+			 * @param {Object} time 创建时间
+			 * @param {Object} info 用户信息
+			 * @param {Object} type 推广信息
+			 */
+			function getInnerHTML(time, info, type, index) {
+				var liEle = document.createElement('li');
+				liEle.setAttribute("class", "mui-table-view-cell");
+				liEle.setAttribute("data", index);
+				var innerHtml = '<span class="moneny_1">\
+				        <span>' + info + '</span>\
+						<br />\
+						<span class="money_time"> ' + time + ' </span>\
+						</span>\
+						<span class="moneny_2"><span>' + type + '</span></span>\
+						';
+				liEle.innerHTML = innerHtml;
+				return liEle;
+			}
+
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				//查询未完成的订单
+				getData();
+			}
+
+			/**
+			 * 获取最近一年的订单
+			 */
+			function getData() {
+				var url = getSpreadCustomers(app.getCustomerId(), count, pageSize);
+				app.tokenAjax_Get({
+					url: url,
+					success: function(data) {
+						if(data.status == 1) {
+							data = data.data.dataList;
+							totalArr = totalArr.concat(data);
+							app.openOrClosePullUpRefresh('.mui-content', data.length, count, pageSize, function(index) {
+								count = index;
+								var parentNode = document.getElementById("content_area");
+								mui.each(data, function(index, e) {
+									var info = e.customerName + app.encodePhonenumber(e.customerPhonenumber);
+									var child = getInnerHTML(app.getTimeString(e.createTime), info, e.spreadType, idx++);
+									parentNode.appendChild(child);
+								});
+								mui.fire(plus.webview.getWebviewById('SEORecords'), 'closeWaiting', {})
+							});
+						}
+					},
+					error: function(xhr) {
+						mui.fire(plus.webview.getWebviewById('SEORecords'), 'closeWaiting', {})
+						app.httpError(xhr.status);
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,633 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<style>
+			html,
+			body,
+			.mui-content {
+				height: 100% !important;
+			}
+			
+			input[type=checkbox][disabled]:before {
+				opacity: 77!important;
+			}
+			
+			input[type=checkbox]:checked:before {
+				color: orangered !important;
+			}
+			
+			.list {
+				height: 123px;
+				width: 96%;
+				margin-left: 2%;
+				margin-top: 10px;
+				margin-bottom: 10px;
+				border-radius: 10px;
+				padding-top: 5px;
+				padding-left: 5px;
+				background-color: #FFFFFF;
+			}
+			
+			.body {
+				margin-top: -6px !important;
+				height: 55px;
+				border-bottom: 1px solid #DDDDDD;
+			}
+			
+			.listBody {
+				float: left;
+				padding: 5px;
+				height: 50px;
+				color: #929292;
+				overflow: auto;
+				width: 80%;
+				font-size: 14px;
+			}
+			
+			.shanchu {
+				float: right;
+				width: 20%;
+				height: 50px;
+			}
+			
+			.listHeaher {
+				padding: 3px;
+				padding-left: 5px;
+				height: 30px;
+			}
+			
+			.button {
+				float: right;
+				margin-right: 10px;
+				padding: 4px;
+				color: #929292;
+				font-size: 14px !important;
+				margin-top: -4px !important;
+			}
+			
+			.mui-popup {
+				position: fixed!important;
+				top: 42% !important;
+			}
+			
+			.img {
+				margin-top: 2px;
+				width: 22px;
+				height: 22px;
+				vertical-align: calc(-5px);
+			}
+			
+			#A1 {
+				margin-left: 25%;
+				width: 50%;
+				border: none;
+			}
+			
+			#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+				width: 8px;
+			}
+			
+			#topPopover {
+				width: 110px;
+				height: 60px;
+				font-size: 13px;
+			}
+			
+			.mui-popover .mui-table-view {
+				border-radius: 3px !important;
+			}
+			
+			.mui-table-view-cell:after {
+				background-color: white !important;
+			}
+			
+			.icon-common-css {
+				display: inline-block;
+				width: 16px;
+				height: 18px;
+				/*border: 1px solid bisque;*/
+				padding-right: 1px;
+			}
+			
+			.title-pull {
+				display: inline-block;
+				font-size: 13px;
+				padding-top: 13px;
+			}
+			
+			h1 {
+				font-size: 15px !important;
+			}
+			
+			.mui-pull-right {
+				width: 60px;
+			}
+			
+			.footer-delete {
+				position: fixed;
+				top: calc(100% - 50px) !important;
+				display: none;
+				background: white;
+				width: 100%;
+				height: 50px;
+				left: 0;
+				overflow: auto;
+				z-index: 1000;
+				padding: 0 15px;
+				-webkit-transition: all 0.3s;
+				-moz-transition: all 0.3s;
+				-o-transition: all 0.3s;
+				transition: all 0.3s;
+			}
+			
+			.sublist {
+				font-size: 14px;
+				padding-top: 3px;
+				padding-bottom: 3px;
+			}
+			
+			.mui-pull-bottom-pocket {
+				position: absolute !important;
+				bottom: -30px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header" align="center">
+			<span class="mui-pull-left title-back" id="left-title" style="">
+				<a class="mui-action-back mui-icon mui-icon-arrowleft "></a>
+			</span>
+			<h1 class="mui-title" style="width: 58% !important; margin-left:10% !important;">常用物品列表</h1>
+			<span class="mui-pull-right" id="right-title" style="text-align: right;">
+				<!--<a id="menu" class="mui-action-menu mui-icon mui-icon-bars " href="#topPopover"></a>-->
+			</span>
+		</header>
+		<div class="mui-content" style="background-color: #EFEFF4;">
+			<div class="mui-scroll-wrapper" style="margin-top: 40px;padding-top: 2px;height: calc(100% - 50px );padding-bottom: 40px;">
+				<div class="mui-scroll" id="dcontent">
+				</div>
+			</div>
+		</div>
+		<div align="center" class="footer-delete">
+			<button class="mui-btn mui-btn-primary" type="button" style="width:100%;color: #888888;border: none !important; background-color: white !important;" disabled="disabled" id="footer-delete-button">
+				<span class="mui-icon iconfont icon-piliangshanchu" style="font-size: 22px;"></span>
+				<br />
+				<span style="font-size: 12px;">删除</span>
+			</button>
+		</div>
+		<!--右上角弹出菜单-->
+		<div id="topPopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" style="border-bottom: 1px solid #EBEBEB" id="batch_delete">
+					<a href="#"><span class="icon-common-css"><span class="mui-icon iconfont icon-piliangshanchu1"></span></span>批量删除 </a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="list" id="A2" style="display:none;">
+			<!--
+                			作者：wanping89@yeah.net
+                			时间：2017-12-12
+                		-->
+			<div class="sublist">
+				<input name="id" class="id" type="hidden" value="" />
+				<input class="vehicle" type="hidden" value="" />
+				<input class="size" type="hidden" value="" />
+				<input class="remark" type="hidden" />
+				<div class="listHeaher">
+					<span style="">物品名称：</span>
+					<span class="name"></span>
+				</div>
+				<div class="body">
+					<div class="listBody poiName">
+						<div style="float: left; width: 50%;height: 100%;">
+							<div>
+								<span>类型：<span class="type"></span></span>
+							</div>
+							<div>
+								<span>重量：<span class="weight"></span>kg</span>
+							</div>
+						</div>
+						<div style="float: left;width: 50%;height: 100%;">
+							<div>
+								<span>尺寸：<span class="show_size"> </span></span>
+							</div>
+							<div>
+								<span>交通工具：<span class="show_vehicle"></span></span>
+							</div>
+						</div>
+					</div>
+					<div class="shanchu" style="display: none;">
+						<div class="mui-input-row mui-checkbox ">
+							<label style="height: 30px"></label>
+							<input class="checkbox" name="Checkbox" type="checkbox" disabled="disabled">
+						</div>
+					</div>
+				</div>
+			</div>
+			<img src="../../images/address/tick_.svg" class="img" style="display:none;float: none;" />
+			<span style="color: grey;font-size: 13px;" class="default_item "></span>
+			<div class="button delete">
+				<span class="mui-icon mui-icon-trash"></span>
+				<span>删除</span>
+			</div>
+			<div class="button edit"><span class="mui-icon mui-icon-compose"></span>编辑</div>
+		</div>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/showLoading.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+
+		<script type="text/javascript">
+			var pageIndex = 0;
+			var originalTitle //原标题;
+			var choose_count = 0;
+			var leftTitle = '<a class="mui-action-back mui-icon mui-icon-arrowleft "></a>';
+			var rightTitle = '<a id="menu" class="mui-action-menu mui-icon mui-icon-bars " href="#topPopover"></a>';
+			window.onload = function() {
+				mui.init({
+					pullRefresh: {
+						container: ".mui-scroll-wrapper", //待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+						up: {
+							height: 50, //可选.默认50.触发上拉加载拖动距离
+							auto: true, //可选,默认false.自动上拉加载一次
+							contentrefresh: "加载中...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+							contentnomore: '没有了~', //可选，请求完毕若没有更多数据时显示的提醒内容；
+							callback: getData //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+						}
+					},
+					gestureConfig: {
+						tap: true, //默认为true
+						doubletap: false, //默认为false
+						longtap: true, //默认为false
+						swipe: false, //默认为true
+						drag: true, //默认为true
+						hold: false, //默认为false，不监听
+						release: false //默认为false，不监听
+					}
+				});
+				mui.plusReady(function() {
+					window.addEventListener("editGoods", function(e) {
+						var data = e.detail.data;
+						mui.each(document.getElementsByClassName("id"), function(index, element) {
+							if(this.value == data.itemId) {
+								var node = this.parentNode;
+								node.getElementsByClassName("vehicle")[0].value = data.vehicle;
+								node.getElementsByClassName("show_vehicle")[0].innerHTML = app.carType(data.vehicle);
+								node.getElementsByClassName("size")[0].value = data.size;
+								node.getElementsByClassName("name")[0].innerHTML = data.name;
+								node.getElementsByClassName("type")[0].innerHTML = data.type;
+								node.getElementsByClassName("weight")[0].innerHTML = data.weight;
+								node.getElementsByClassName("show_size")[0].innerHTML = app.show_itemSize(data.size);
+								node.getElementsByClassName("remark")[0].value = data.remark;
+							}
+						})
+					});
+
+					mui('.mui-scroll-wrapper').on('tap', '.sublist', function() {
+
+						chooseItem(this);
+					});
+					mui('.mui-scroll-wrapper').on('tap', '.edit', function() {
+						var node = this.parentNode;
+						var data = {
+							id: node.getElementsByClassName("id")[0].value,
+							name: node.getElementsByClassName("name")[0].innerText,
+							type: node.getElementsByClassName("type")[0].innerText,
+							size: node.getElementsByClassName("size")[0].value,
+							vehicle: node.getElementsByClassName("vehicle")[0].value,
+							weight: node.getElementsByClassName("weight")[0].innerText,
+							remark: node.getElementsByClassName("remark")[0].value
+						}
+						app.openWindow("editOrderGoods.html", "editOrderGoods", {
+							"goodsInformation": data
+						});
+					});
+
+					mui('.mui-scroll-wrapper').on('tap', '.delete', function() {
+						var node = this.parentNode;
+						var id = node.getElementsByClassName("id")[0].value;
+						mui.confirm('确认删除该地址吗？', '提示', ['取消', '确认'],
+							function(e) {
+								if(e.index == 1) {
+									app.tokenAjax({
+										url: API_URL_POST_ITEM_DELELE + app.getCustomerId() + "/" + id,
+										data: {},
+										success: function(result) {
+											if(result.status == 1) {
+												mui.toast('删除成功')
+												node.parentNode.removeChild(node);
+											}
+										},
+										error: function(err) {}
+									});
+								}
+							}, 'div')
+					});
+					//长按事件
+					mui('.mui-scroll-wrapper').on('longtap', '.sublist', function() {
+						original_hidden();
+					});
+					//********************批量删除 *****************//
+					//右侧菜单栏弹出
+					document.getElementById('batch_delete').addEventListener('tap', function() {
+						mui('#topPopover').popover('toggle');
+						original_hidden();
+					});
+
+					//批量删除
+					document.getElementById('footer-delete-button').addEventListener('tap', function() {
+						//  
+						//获取所有的选中状态的联系人
+						var data = new Array();
+						var eleArr = new Array();
+						var parentNode = document.getElementById("dcontent");
+						mui.each(parentNode.getElementsByClassName("shanchu"), function(index, element) {
+							if(element.getElementsByClassName("checkbox")[0].checked) {
+								var idEle = element.parentNode.parentNode.parentNode;
+								var id = idEle.getElementsByClassName("id")[0].value;
+								if(id) {
+									data.push({
+										"id": id
+									});
+									eleArr.push(idEle);
+								}
+							}
+						});
+						if(data.length == 0) {
+							mui.toast('请选择要删除的物品');
+							return;
+						}
+						var title = "确认要删除这" + data.length + "个物品吗？"
+
+						mui.confirm(title, '提示', ['取消', '确认'], function(e) {
+							if(e.index == 1) {
+								var url = API_URL_POST_ITEM_BATCH_DELELE + app.getCustomerId();
+								app.tokenAjax({
+									url: url,
+									data: JSON.stringify(data),
+									success: function(result) {
+										if(result.status == 1) {} else {
+											mui.toast(result.msg);
+										}
+									},
+									error: function(xhr) {
+										console.log(xhr.status);
+										app.httpError();
+									}
+								});
+								mui.each(eleArr, function(index, element) {
+									element.parentNode.removeChild(element);
+								})
+								original_show();
+							}
+						}, 'div');
+					});
+					plus.nativeUI.closeWaiting();
+					//设置为默认物品
+					mui('.mui-content').on('tap', '.not-default-item', function() {
+						var node = this.parentNode;
+						var id = node.getElementsByClassName('id')[0].value;
+						var url = addOrEditDefaultItem(app.getCustomerId(), id);
+						plus.nativeUI.showWaiting();
+						app.tokenAjax({
+							url: url,
+							success: function(result) {
+								if(result.status == 1) {
+									//先将激活状态的给去掉
+									var nodeList = document.getElementsByClassName('mui-content')[0].getElementsByClassName('default_item');
+									mui.each(nodeList, function(index, element) {
+										var className = element.className;
+										var f = className.indexOf('not-default-item');
+										if(f === -1) {
+											defaultShow(element.parentNode, false);
+										}
+									});
+									//修改成功
+									defaultShow(node, true);
+									chooseItem(node);
+								} else {
+									mui.toast(result.msg);
+								}
+								plus.nativeUI.closeWaiting();
+							},
+							error: function(xhr) {
+								plus.nativeUI.closeWaiting();
+								app.httpError(xhr.status);
+							}
+						});
+					});
+				});
+
+				function getData() {
+					var url = getItemList(app.getCustomerId(), pageIndex, PAGESIZE);
+					app.tokenAjax_Get({
+						url: url,
+						success: function(result) {
+							if(result.status == 1) {
+								pageIndex++;
+								var data = result.data;
+								var len = data.length;
+								if(len < 5) {
+									//停止滚动
+									mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(true);
+								} else {
+									mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
+								}
+								var parentNode = document.getElementById("dcontent");
+
+								for(var i = 0; i < len; i++) {
+									var node = document.getElementById("A2").cloneNode(true);
+									node.getElementsByClassName("id")[0].value = data[i].id;
+									node.getElementsByClassName("vehicle")[0].value = data[i].vehicle;
+									node.getElementsByClassName("show_vehicle")[0].innerHTML = app.carType(data[i].vehicle);
+									node.getElementsByClassName("size")[0].value = data[i].item.itemSize;
+									node.getElementsByClassName("name")[0].innerHTML = data[i].item.itemName;
+									node.getElementsByClassName("type")[0].innerHTML = data[i].item.itemType;
+									node.getElementsByClassName("weight")[0].innerHTML = data[i].item.itemWeight;
+									node.getElementsByClassName("show_size")[0].innerHTML = app.show_itemSize(data[i].item.itemSize);
+									node.getElementsByClassName("remark")[0].value = data[i].item.itemRemark;
+									defaultShow(node, data[i].defaultItem);
+									node.style.display = "";
+									parentNode.appendChild(node);
+								}
+							} else {
+								//停止滚动
+								mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(true);
+							}
+						},
+						error: function(err) {
+							app.httpError(err.status);
+						}
+					});
+				}
+
+				function chooseItem(node) {
+					//关闭
+					var page = plus.webview.getWebviewById("orderGoods");
+					if(page) {
+						page.close("none", 0);
+					}
+					var data = {
+						name: node.getElementsByClassName("name")[0].innerText,
+						type: node.getElementsByClassName("type")[0].innerText,
+						size: node.getElementsByClassName("size")[0].value,
+						vehicle: node.getElementsByClassName("vehicle")[0].value,
+						weight: node.getElementsByClassName("weight")[0].innerText,
+						remark: node.getElementsByClassName("remark")[0].value
+					}
+					var main = plus.webview.getWebviewById('order');
+					mui.fire(main, 'goods', {
+						"data": data
+					});
+					mui.back();
+				}
+				//原来的数据隐藏
+				function original_hidden() {
+					choose_count = 0;
+					document.getElementsByClassName("footer-delete")[0].style.display = "block";
+					document.getElementsByClassName("mui-scroll-wrapper")[0].style.paddingBottom = "90px";
+					document.getElementById("left-title").innerHTML = '<a class="title-pull" id="title-pull-cancel">取消</a>'
+					document.getElementById("right-title").innerHTML = '<span class="title-pull" id="all-choose">全选</span>';
+					document.getElementsByTagName("h1")[0].innerHTML = "请选择";
+					//全选按钮绑定点击事件
+					document.getElementById('all-choose').addEventListener('tap', function() {
+						var inner = this.innerHTML
+						var allElement = document.getElementsByClassName("list");
+						choose_count = 0;
+						if(inner == "全选") {
+							this.innerHTML = "取消全选";
+							mui.each(allElement, function(index, element) {
+								if(!element.style.display) {
+									element.getElementsByClassName("checkbox")[0].checked = true;
+									choose_count++;
+								} else {
+									element.getElementsByClassName("checkbox")[0].checked = false;
+								}
+							});
+						} else {
+							this.innerHTML = "全选";
+							mui.each(allElement, function(index, element) {
+								if(!element.style.display) {
+									element.getElementsByClassName("checkbox")[0].checked = false;
+								}
+							});
+						}
+						//更改标题
+						choose_count_much();
+					})
+					//所有的删除按钮出现
+					mui.each(document.getElementsByClassName("shanchu"), function(index, element) {
+						element.style.display = "";
+						element.getElementsByClassName("checkbox")[0].checked = false;
+					})
+					//移除原来的点击事件
+					mui('.mui-scroll-wrapper').off('tap', '.sublist');
+					mui('.mui-scroll-wrapper').off('longtap', '.sublist');
+					document.getElementById('title-pull-cancel').addEventListener('tap', function() {
+						original_show();
+					});
+					//联系人增加新的点击事件
+					mui('.mui-scroll-wrapper').on('tap', '.sublist,.shanchu', function() {
+						xuanzhong(this);
+					});
+				}
+
+				/***
+				 * 可能存在的bug 点击input多次触发点击事件
+				 * @param {Object} ele
+				 */
+				function xuanzhong(ele) {
+					var element;
+					var checkstatus;
+					var classname = ele.className;
+					checkstatus = ele.getElementsByClassName("checkbox")[0].checked;
+					element = ele.getElementsByClassName("checkbox")[0];
+					if(checkstatus) {
+						element.checked = false;
+						choose_count--;
+					} else {
+						element.checked = true;
+						choose_count++;
+					}
+					choose_count_much();
+				}
+				//显示选中了多少个项目
+				function choose_count_much() {
+					if(choose_count > 0) {
+						document.getElementsByTagName("h1")[0].innerHTML = "已选择" + choose_count + "个";
+						//按钮可点击
+						document.getElementById("footer-delete-button").disabled = false;
+					} else {
+						//按钮不可点击
+						document.getElementsByTagName("h1")[0].innerHTML = "请选择";
+						document.getElementById("footer-delete-button").disabled = true;
+					}
+				}
+
+				//显示
+				function original_show() {
+					mui('.mui-content').off('tap', '.sublist,.shanchu');
+
+					//增加新的点击事件
+					mui('.mui-content').on('tap', '.sublist', function() {
+						chooseItem(this);
+					});
+					mui('.mui-content').on('longtap', '.sublist', function() {
+						original_hidden();
+					});
+					//所有的删除按钮隐藏
+					mui.each(document.getElementsByClassName("shanchu"), function(index, element) {
+						element.style.display = "none";
+					})
+					document.getElementsByClassName("footer-delete")[0].style.display = "none";
+					document.getElementsByClassName("mui-scroll-wrapper")[0].style.paddingBottom = "40px";
+					document.getElementById("header").style.display = "";
+					document.getElementsByTagName("h1")[0].innerHTML = "常用物品列表";
+					document.getElementById("left-title").innerHTML = leftTitle;
+					//重写返回事件
+					mui('body').on('tap', '.mui-action-back', function() {
+						plus.webview.currentWebview().close();
+					})
+					document.getElementById("right-title").innerHTML = '';
+				}
+				/**
+				 * 是否显示为默认地址
+				 * @param {Node} parentNode 父节点
+				 * @param {Boolean} isActive 默认物品传true，否则传false
+				 */
+				function defaultShow(parentNode, isActive) {
+					var not_default_item = '<span class="mui-icon mui-icon-flag"></span><span style="font-size: 12px;">设为默认物品</span>';
+					var default_item = '<span style="font-size: 12px;">默认物品</span>';
+					var node = parentNode.getElementsByClassName("default_item")[0];
+					if(isActive) { //默认地址
+						parentNode.getElementsByClassName("img")[0].style.display = '';
+						node.innerHTML = default_item;
+						node.className = node.className.replace('not-default-item', "")
+					} else {
+						node.innerHTML = not_default_item;
+						if(node.className.indexOf("not-default-item") === -1) {
+							node.className = node.className + " not-default-item";
+						}
+						parentNode.getElementsByClassName("img")[0].style.display = 'none';
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>

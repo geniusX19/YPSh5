@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left "></a>
+			<h1 class="mui-title">联系人</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div class="mui-input-row mui-search" style="background: white !important;" style="margin-top:16px;">
+				<input type="search" class="" id="searchPhone" placeholder="快速查找联系人">
+			</div>
+			<li class="mui-table-view-cell liclass" id="mode" style="display: none;">
+				#
+			</li>
+			<ul class="mui-table-view" id="listArea">
+
+			</ul>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			var phoneBook;
+			var html, elementId;
+			mui.init();
+			window.addEventListener("TransValue", function(e) {
+				elementId = e.detail.elementId;
+			});
+			mui.plusReady(function() {
+
+				// 扩展API加载完毕，现在可以正常调用扩展API
+				plus.contacts.getAddressBook(plus.contacts.ADDRESSBOOK_PHONE, function(addressbook) {
+					//获取父页面传过来的值
+					var self = plus.webview.currentWebview();
+					html = self.html;
+					elementId = self.elementId;
+					//查找联系人
+					addressbook.find(["displayName", "phoneNumbers"], function(contacts) {
+						phoneBook = contacts;
+						for(var i = 0, len = contacts.length; i < len; i++) {
+							var li = document.getElementById("mode").cloneNode(true);
+							if(contacts[i].phoneNumbers.length == 0) {
+								continue;
+							}
+							var name = contacts[i].displayName == null ? '' : contacts[i].displayName;
+							var phoneNumber = contacts[i].phoneNumbers[0].value;
+							var data = {
+								name: name,
+								phoneNumber: phoneNumber
+							};
+							li.innerHTML = "姓名：" + name + "<br/>手机：" + phoneNumber;
+							li.style.display = "";
+							//绑定点击事件
+							addEvent(li, data);
+							document.getElementById("listArea").appendChild(li);
+						}
+					}, function() {
+						mui.toast("获取电话簿失败 ");
+					}, {
+						multiple: true
+					});
+				}, function(e) {
+					mui.toast("获取电话簿失败 " + e.message);
+				});
+				//搜索
+				document.getElementById('searchPhone').addEventListener('input', function() {
+					var phone = this.value;
+					var arr = [];
+
+					document.getElementById("listArea").innerHTML = '';
+
+					for(var i = 0, len = phoneBook.length; i < len; i++) {
+						var element = phoneBook[i];
+						var name = element.displayName || '';
+						if(element.phoneNumbers.length == 0) {
+							continue;
+						}
+						var phoneNum = element.phoneNumbers[0].value;
+						if(name.indexOf(phone) >= 0 || phoneNum.indexOf(phone) >= 0) {
+							arr.push(element);
+						}
+
+					}
+					if(arr.length == 0) {
+						var li = document.getElementById("mode").cloneNode(true);
+						li.innerHTML = '未查到相关联系人';
+						li.style.display = "";
+						document.getElementById("listArea").appendChild(li);
+					} else {
+						mui.each(arr, function(index, element) {
+							var li = document.getElementById("mode").cloneNode(true);
+							var name = element.displayName == null ? '' : element.displayName;
+							var phoneNumber = element.phoneNumbers[0].value;
+							var data = {
+								name: name,
+								phoneNumber: phoneNumber
+							};
+							li.innerHTML = "姓名：" + name + "<br/>手机：" + phoneNumber;
+							li.style.display = "";
+							//绑定点击事件
+							addEvent(li, data);
+							document.getElementById("listArea").appendChild(li);
+						})
+					}
+				})
+			});
+			/**
+			 * 增加点击事件，点击后向父页面发送选择的对象的信息，并关闭当前页面
+			 * @param {Object} element 对象
+			 * @param {Object} data  数据 json
+			 */
+			function addEvent(element, data) {
+				element.addEventListener('tap', function() {
+					var main = plus.webview.getWebviewById(html);
+					if(elementId) {
+						data.elementId = elementId;
+					}
+					mui.fire(main, 'chooseContact', data);
+					mui.back();
+				}, false);
+			}
+		</script>
+	</body>
+
+</html>

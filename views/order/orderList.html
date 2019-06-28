@@ -1,0 +1,597 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/showLoading.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style>
+		.title-back {
+			margin-top: -7px !important;
+			color: orangered !important;
+			font-size: 40px !important;
+		}
+		
+		.list {
+			height: 140px;
+			width: 96%;
+			margin-left: 2%;
+			border-radius: 10px;
+			margin-bottom: 5px;
+			background-color: #FFFFFF;
+			margin-top: 10px;
+		}
+		
+		.listBody {
+			padding: 5px;
+			height: 50px;
+			color: #929292;
+			border-bottom: 1px solid #DDDDDD;
+		}
+		
+		.listHeaher {
+			padding: 6px;
+			height: 40px;
+		}
+		
+		.button {
+			float: right;
+			margin-right: 5px;
+			padding: 10px;
+			color: #929292;
+		}
+		
+		button {
+			font-size: 12px !important;
+		}
+		
+		.name {
+			float: left;
+			padding: 5px;
+			width: 160px;
+		}
+		
+		.status {
+			float: right;
+			padding: 6px;
+			width: 80px;
+			font-size: 14px;
+			font-family: "微软雅黑";
+			/*font-weight: bold;*/
+		}
+		
+		.address {
+			float: left;
+			padding-left: 33px;
+			font-size: 12px !important;
+		}
+		
+		.price-div {
+			float: right;
+			padding: 6px;
+			width: 80px;
+			font-size: 14px;
+			font-family: "微软雅黑";
+			color: #000000;
+			/*font-weight: bold;*/
+		}
+		
+		.mui-popup {
+			position: fixed !important;
+			top: 45% !important;
+			width: 88% !important;
+		}
+		
+		.content-remark {
+			position: relative;
+			color: crimson;
+			width: 100%;
+			font-size: 13px;
+			padding: 4px 0 4px 33px;
+		}
+		.samedaysty{
+			width: 100%;
+			text-align: center;
+			color: #000000;
+			margin-top: 10px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-arrowleft "></a>
+			<h1 class="mui-title">订单列表</h1>
+			<span class="mui-icon iconfont icon-kefu mui-pull-right" id="service"></span>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" id="pullrefresh">
+			<div class="mui-scroll">
+				<div class="samedaysty">
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-danger sameDayP" style="color: #000000;  border-color: orangered;">直发/拼单</button>
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-danger sameDay" style="color: #000000;  border-color: orangered;">当日达</button>
+				</div>
+				<div id="orderList">
+				</div>
+			</div>
+			<p style="width: 100%;text-align: center;margin-top: 50px;" id="msg"> 暂无订单</p>
+			<div class="list" id="template" style="display:none ;">
+				<div class="listarea">
+					<div style="width: 80px;height: 100px;position: absolute;right: 65px;padding-top: 12px;display: none;" class="senderArea">
+						<div align="center">
+							<img src="../../images/senderIcon.png" style="width: 40px; height: 45px;" />
+						</div>
+						<div class="senderName" align="center" style="font-size: 12px; color:grey">
+						</div>
+					</div>
+					<div class="listHeaher">
+						<div class="name"><span style="color: orange;font-size: 15px;">NO:</span><span class="order" style="font-size: 13px;"></span></div>
+						<input type="hidden" class="hiddenOrderId" />
+
+						<div class="status" align="right"></div>
+					</div>
+					<div class="listBody">
+						<div class="address">
+							<p class="order-type" style="margin: 0px;margin-top: -5px;font-size: 12px;"></p>
+							<p class="order-time" style="margin: 0px;font-size: 12px;"></p>
+						</div>
+						<div class="price-div" align="right">
+							<span>¥</span>
+							<span class="price"></span>
+						</div>
+						<span class="content-remark">如需取消请联系配送员</span>
+					</div>
+				</div>
+				<div>
+					<span style="position:relative;left:6px;top:12px;color:royalblue;font-size: 12px;display:none ;" class="tips"></span>
+					<div class="button">
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-danger cancel-order" style="color: white; border-color: #4dbeca;display: none;">取消</button>
+						<!-- <button type="button" data-loading-text="重新派单中" data-loading-icon="" class="mui-btn mui-btn-blue mui-btn-danger again-send-order" style="color: white; border-color: #4dbeca;display: none;">重新派单</button> -->
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-danger estimate-order" style="color: white; border-color: #4dbeca;display: none;">评价</button>
+						<!-- <button type="button" class="mui-btn mui-btn-blue mui-btn-danger no-validate-sender" style="color: white; border-color: #4dbeca;display: none;">免验证</button>
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-danger validate-sender" style="color: white; border-color: #4dbeca;display:none ;">验证配送员</button> -->
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined again-order" style="color: white; ">再来一单</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/showLoading.js"></script>
+		<script type="text/javascript">
+			window.onload = function() {
+				var count = 0;
+				//记录每次取得条数是否等于10，用来判断下拉刷新是否向数据库发送请求
+				var displayOrder = 0  //看订单是否是当日达订单 0:平常订单  1:当日达订单
+				var flag = 0,
+					timerArr = new Array();
+				mui.init({
+					pullRefresh: {
+						container: '#pullrefresh',
+						down: {
+							style: 'circle', //必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+							color: '#3da0c5',
+							height: '100px', //可选,默认50px.下拉刷新控件的高度,
+							range: '150px', //可选 默认100px,控件可下拉拖拽的范围
+							offset: '0px', //可选 默认0px,下拉刷新控件的起始位置
+							callback: pulldownRefresh
+						}
+					}
+				});
+				/**
+				 * 自定义事件，刷新当前页面
+				 */
+				window.addEventListener("refresh", function(e) {
+					getData();
+					setTimeout(function() {
+						var confirmPay = plus.webview.getWebviewById("confirmPay");
+						if(confirmPay) {
+							confirmPay.close('none', 0);
+						}
+					}, 400);
+					var pay = plus.webview.getWebviewById("pay");
+					if(pay) {
+						pay.close('none', 0);
+					}
+					var order = plus.webview.getWebviewById("order");
+					if(order) {
+						order.close('none', 0);
+					}
+				});
+
+				function pulldownRefresh() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().endPulldown(); //参数为true代表没有更多数据了。
+					}, 2000);
+					document.getElementById("orderList").innerHTML = "";
+					getData();
+				}
+
+				mui.plusReady(function() {
+					if(plus.device.model === IPHONEX) {
+						document.getElementsByClassName('mui-scroll')[0].style.marginBottom = '34px';
+					}
+					plus.webview.currentWebview().addEventListener("show", function() {
+						displayOrder = 0
+						//查询未完成的订单
+						setTimeout(function() {
+							var confirmPay = plus.webview.getWebviewById("confirmPay");
+							if(confirmPay) {
+								confirmPay.close('none', 0);
+							}
+							var pay = plus.webview.getWebviewById("pay");
+							if(pay) {
+								pay.close('none', 0);
+							}
+							var order = plus.webview.getWebviewById("order");
+							if(order) {
+								order.close('none', 0);
+							}
+						}, 400);
+						getData();
+					})
+					if(!myStorage.getItem(MERGE_PUSH_TIME)) {
+						//获取推送时间
+						app.tokenAjax_Get({
+							url: getMergeStartTime(app.getCustomerId(), myStorage.getItem('user_longitude'), myStorage.getItem('user_latitude')),
+							success: function(e) {
+								if(e.status === 1) {
+									myStorage.setItem(MERGE_PUSH_TIME, e.data.pushSeconds);
+								}
+							},
+							error: function() {}
+						});
+					}
+					//订单详情
+					mui('.mui-content').on('tap', '.listarea', function() {
+						var orderId = this.getElementsByClassName("hiddenOrderId")[0].value;
+						app.openWindow('../order/orderDetail.html', "orderDetail", {
+							'orderId': orderId,
+							'displayOrder': displayOrder
+						});
+					});
+					mui('.mui-content').on('tap', '.again-order', function() {
+						app.openOrderWindow();
+					});
+					//评价页面
+					mui('.mui-content').on('tap', '.estimate-order', function() {
+						var orderId = this.parentNode.parentNode.parentNode.getElementsByClassName("hiddenOrderId")[0].value;
+						app.openWindow("estimate.html", "estimate", {
+							"orderId": orderId,
+							"displayOrder": displayOrder,
+							'senderName': this.parentNode.parentNode.parentNode.getElementsByClassName("senderName")[0].innerHTML
+						});
+					});
+					//验证配送员身份
+					// mui('.mui-content').on('tap', '.validate-sender', function() {
+					// 	var orderId = this.parentNode.parentNode.parentNode.getElementsByClassName("hiddenOrderId")[0].value;
+					// 	mui.prompt('', '验证码', '验证配送员', ['取消', '确认'], function(e) {
+					// 		if(e.index == 1) {
+					// 			var code = e.value;
+					// 			if(!code) {
+					// 				mui.toast('请输入验证码！');
+					// 				return;
+					// 			}
+					// 			if(isNaN(code)) {
+					// 				mui.toast("请输入正确格式的验证码");
+					// 				return;
+					// 			}
+					// 			/**
+					// 			 * ajax 验证
+					// 			 */
+					// 			plus.nativeUI.showWaiting();
+					// 			var url = validateSender(orderId, code);
+					// 			app.tokenAjax({
+					// 				url: url,
+					// 				data: {},
+					// 				success: function(result) {
+					// 					if(result.status == 1) {
+					// 						mui.toast('验证通过');
+					// 						plus.webview.currentWebview().reload();
+					// 					} else {
+					// 						mui.alert('配送员身份验证失败，请勿将物品交还给该人员', '警告', '确认', function(e) {}, 'div')
+					// 					}
+					// 					plus.nativeUI.closeWaiting();
+					// 				},
+					// 				error: function(xhr) {
+					// 					plus.nativeUI.closeWaiting();
+					// 					app.httpError(xhr.status);
+					// 				}
+					// 			});
+					// 		}
+					// 	}, "div")
+					// });
+					//免验证
+					// mui('.mui-content').on('tap', '.no-validate-sender', function() {
+					// 	var orderId = this.parentNode.parentNode.parentNode.getElementsByClassName("hiddenOrderId")[0].value;
+					// 	mui.confirm('如不是您熟悉的配送员，请选择验证配送员，防止被人冒领。确认不验证配送员身份吗？', '温馨提示', ['取消', '确认'], function(e) {
+					// 		if(e.index == 1) {
+					// 			/**
+					// 			 * ajax 验证
+					// 			 */
+					// 			var url = validateSender(orderId, "858346");
+					// 			app.tokenAjax({
+					// 				url: url,
+					// 				data: {},
+					// 				success: function(result) {
+					// 					if(result.status == 1) {
+					// 						plus.webview.currentWebview().reload();
+					// 					} else {
+					// 						mui.toast('验证失败');
+					// 					}
+					// 				},
+					// 				error: function(xhr) {
+					// 					app.httpError(xhr.status);
+					// 				}
+					// 			});
+					// 		}
+					// 	}, 'div');
+					// });
+					//客服
+					document.getElementById('service').addEventListener('tap', function() {
+						app.openWebView("../customerService/customerServices.html", "customerServices");
+					});
+
+					//取消
+					mui('.mui-content').on('tap', '.cancel-order', function() {
+						var orderId = this.parentNode.parentNode.parentNode.getElementsByClassName("hiddenOrderId")[0].value;
+						var status = this.parentNode.parentNode.parentNode.getElementsByClassName("status")[0].innerHTML;
+						app.cancelOrder(orderId, status,displayOrder, function(e) {
+							mui.toast(e);
+							//刷新页面
+							mui.showLoading("加载中..");
+							document.getElementById("orderList").innerHTML = "";
+							getData();
+						});
+					});
+					//重新派单
+					// mui('.mui-content').on('tap', '.again-send-order', function() {
+					// 	mui(this).button("loading");
+					// 	var orderId = this.parentNode.parentNode.parentNode.getElementsByClassName("hiddenOrderId")[0].value;
+					// 	var btn = this;
+					// 	app.tokenAjax({
+					// 		url: API_URL_POST_AGAIN_SEND_ORDER + orderId,
+					// 		data: {},
+					// 		success: function(data) {
+					// 			mui(btn).button("reset");
+					// 			if(data.status == 1) {
+					// 				mui.toast('重新派单成功');
+					// 				//刷新页面
+					// 				mui.showLoading("加载中..");
+					// 				document.getElementById("orderList").innerHTML = "";
+					// 				getData();
+					// 			} else {
+					// 				mui.toast(data.msg);
+					// 			}
+					// 		},
+					// 		error: function(xhr) {
+					// 			mui(this).button("reset");
+					// 			app.httpError(xhr.status);
+					// 		}
+					// 	});
+					// });
+					
+					var _oldback = mui.back;
+					mui.back = function() {
+						//清除定时器
+						mui.each(timerArr, function(index, timer) {
+							window.clearInterval(timer);
+						})
+						_oldback();
+					}
+				});
+				/**
+				 * 上拉加载具体业务实现
+				 */
+				function pullupRefresh() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(); //参数为true代表没有更多数据了。
+						document.getElementById("orderList").innerHTML = "";
+						getData();
+					}, 1500);
+				}
+				/**
+				 * 当日达数据
+				 */
+				mui(".samedaysty").on("tap",".sameDay",function(){
+					var node = document.getElementById('orderList')
+					node.innerHTML = ""
+					// count = 1
+					displayOrder = 1
+					getData();
+				});
+				/**
+				 * 平常的数据
+				 */
+				mui(".samedaysty").on("tap",".sameDayP",function(){
+					var node = document.getElementById('orderList')
+					node.innerHTML = ""
+					// count = 1
+					displayOrder = 0
+					getData();
+				});
+				function getData() {
+					if(displayOrder == 0){
+						var url = API_URL_GET_NOW_ORDERS + app.getCustomerId();
+					}else{
+						var url = API_SERVER + "/api/drd/app/order/getNoFinished/" + app.getCustomerId(); 
+					}
+					console.log(url)
+					app.tokenAjax_Get({
+						url: url,
+						success: function(data) {
+							if(data.status == 1) {
+								var orderList = data.data;
+								var orderlistNode = document.getElementById("orderList");
+								orderlistNode.innerHTML = "";
+								if(orderList.length == 0) {
+									mui.hideLoading(function() {});
+									return;
+								}
+								/**  保存未完成订单列表   **/
+								var notFinishedOrder = myStorage.getItem("notFinishedOrder");
+								if(!notFinishedOrder) {
+									myStorage.setItem(orderList);
+								} else {
+									myStorage.setItem(orderList.concat(orderList));
+								}
+								document.getElementById("msg").style.display = "none";
+								var validateSender = myStorage.getItem("validateSender");
+								mui.each(orderList, function(index, element) {
+									var orderId = element.id;
+									var status = element.orderStatus;
+									var price = element.price;
+									var senderName = element.senderName;
+									var node = document.getElementById('template').cloneNode(true);
+									node.style.display = ""; //显示
+									//进行赋值
+									node.getElementsByClassName("order")[0].innerText = orderId.replace(/\-/g, "");
+									node.getElementsByClassName("status")[0].innerText = app.getOrderStatus(status);
+									node.getElementsByClassName("order-type")[0].innerHTML = app.getOrderType(element.orderType);
+									node.getElementsByClassName("order-time")[0].innerHTML = app.getTimeString(parseInt(element.createTime));
+									node.getElementsByClassName("price")[0].innerText = price;
+									node.getElementsByClassName("hiddenOrderId")[0].value = orderId;
+									if(status == "JUST_CREATED") {
+										//判断是否超时未支付
+										app.cancelTimeoutOrder(element.payTime, orderId);
+									}
+									var tips = node.getElementsByClassName("tips")[0];
+									tips.innerText = "";
+									if(status == 'PAYED') {
+										tips.style.display = "";
+										if(element.orderType === 'MergeOrder') {
+											var time = myStorage.getItem(MERGE_PUSH_TIME);
+											//订单创建时间与现在的时间比较
+											var d = parseInt((new Date().getTime() - parseInt(element.createTime)) / 1000);
+											if(d < time) { //
+												time = time - d; //剩余的时间
+												var arr = getMinAndSec(time);
+												tips.innerText = arr[0] + ":" + arr[1] + '后开始推送';
+												var timer = setInterval(function() {
+													time--;
+													var arr = getMinAndSec(time);
+													tips.innerText = arr[0] + ":" + arr[1] + '后开始推送';
+													if(time === 0) {
+														clearInterval(timer);
+														tips.innerText = '推送中';
+													}
+												}, 1000);
+												timerArr.push(timer);
+											} else {
+												tips.innerText = '推送中';
+											}
+										} else {
+											tips.innerText = '推送中';
+										}
+										hiddenTips(node);
+									} else if(status === "FETCHED" || status === "FETCHING" || status === 'SENDER_VERIFIED' || status === 'FETCH_ABNORMAL') {
+										if(displayOrder == 0){
+											app.tokenAjax_Get({
+												url: estimateFetchTime(app.getCustomerId(), orderId),
+												success: function(result) {
+													tips.style.display = "";
+													if(result.status === 1) {
+														tips.innerText = "预计" + app.getDateTime(result.data) + "取件";
+													}
+												},
+												error: function() {}
+											});
+											showTips(node);
+										}else{
+											
+										}	
+									} else if(status === 'RECEIVER_VERIFIED' || status === 'SENDING' || status === 'SEND_ABNORMAL') {
+										if(displayOrder == 0){
+											app.tokenAjax_Get({
+												url: estimateSendTime(app.getCustomerId(), orderId),
+												success: function(result) {
+													tips.style.display = "";
+													if(result.status === 1) {
+														tips.innerText = "预计" + app.getDateTime(result.data) + "送达";
+													}
+												},
+												error: function() {}
+											});
+											showTips(node);
+										}else{
+											
+										}
+										
+									} else {
+										tips.style.display = "none";
+										hiddenTips(node);
+									}
+									if(status == "JUST_CREATED" || status == 'PAYED' || status == "TIMEOUT") {
+										node.getElementsByClassName("cancel-order")[0].style.display = "";
+									} else {
+										node.getElementsByClassName("cancel-order")[0].style.display = "none";
+									}
+									//订单超时
+									// if(status === "TIMEOUT" && app.canAgainSent(element.orderType)) {
+									// 	//是否需要重新派单
+									// 	node.getElementsByClassName("again-send-order")[0].style.display = "";
+									// } else {
+									// 	node.getElementsByClassName("again-send-order")[0].style.display = "none";
+									// }
+									if(status == "SENT") {
+										node.getElementsByClassName("estimate-order")[0].style.display = "";
+									} else {
+										node.getElementsByClassName("estimate-order")[0].style.display = "none";
+									}
+									// if(validateSender && status == "FETCHING") {
+									// 	node.getElementsByClassName("validate-sender")[0].style.display = "";
+									// 	//										node.getElementsByClassName("no-validate-sender")[0].style.display = "";
+									// } else {
+									// 	node.getElementsByClassName("validate-sender")[0].style.display = "none";
+									// 	node.getElementsByClassName("no-validate-sender")[0].style.display = "none";
+									// }
+									if(senderName) {
+										node.getElementsByClassName("senderArea")[0].style.display = "";
+										node.getElementsByClassName("senderName")[0].innerHTML = senderName;
+
+									} else {
+										node.getElementsByClassName("senderArea")[0].style.display = "none";
+									}
+									orderlistNode.appendChild(node);
+									mui.hideLoading(function() {});
+								});
+							} else {
+								mui.hideLoading(function() {});
+							}
+						},
+						error: function(xhr) {
+							mui.hideLoading(function() {});
+							app.httpError(xhr.status);
+						}
+					});
+				}
+			}
+
+			function getMinAndSec(time) {
+				var minute = parseInt(time / 60);
+				var m = minute > 9 ? minute : '0' + minute;
+				var seconds = parseInt(time % 60); //秒
+				var s = seconds > 9 ? seconds : '0' + seconds;
+				return [m, s];
+			}
+
+			function showTips(node) {
+				node.style.height = 165 + "px";
+				node.getElementsByClassName("listBody")[0].style.height = 75 + "px";
+				node.getElementsByClassName("content-remark")[0].style.display = "inline-block";
+			}
+
+			function hiddenTips(node) {
+				node.getElementsByClassName("content-remark")[0].style.display = "none";
+			}
+		</script>
+	</body>
+
+</html>

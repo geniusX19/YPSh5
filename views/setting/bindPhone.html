@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<link rel="stylesheet" href="../../css/mui.picker.min.css" />
+		<style>
+			.mui-input-row {
+				height: 50px;
+				font-size: 16px;
+			}
+			
+			.mui-input-row input {
+				font-size: 16px;
+			}
+			label{
+				text-align: left !important;
+				padding-right: 2px !important;
+				width: 29% !important; 
+			}
+			input{
+				float: left !important;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">绑定手机号</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div style="margin-top: 10%;background-color: white;padding-top: 10px;">
+				<div class="mui-input-row">
+					<label>手机号：</label>
+					<input type="number" class="" placeholder="请输入需要绑定的手机号" id="phonenumber">
+				</div>
+				<div class="mui-input-row" id="sms_div">
+					<label>验证码：</label>
+					<input id='sms' type="number" class="mui-input" placeholder="请输入验证码" style="width:35% ;float: left;">
+					<div style="margin-top: 9px;float: right;margin-right: 8px;">
+						<a href="#" style="font-size: 15px;color: orangered;" id="btn_sms">获取验证码</a>
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<label>密码：</label>
+					<input type="password" class="" placeholder="请输入6~24位密码" id="password">
+				</div>
+
+				<div class="mui-input-row" id="city_div">
+					<label>城市：</label>
+					<input id='city' type="text" class="mui-input" placeholder="请选择城市" readonly="readonly">
+				</div>
+
+			</div>
+
+			<p style="margin: 5%;width: 90%;">备注：如之前手机号已注册，两个账号信息将会合并；绑定手机号和密码后，也可以使用该手机号和密码登录</p>
+			<button id="submit" type="button" data-loading-text="绑定中" data-loading-icon="mui-spinner mui-spinner-white" class="mui-btn mui-btn-blue mui-btn-block"
+			 style="margin-top: 40px;width: 50%;margin-left: 25%;">确认</button>
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/timer.js"></script>
+		<script type="text/javascript" src="../../js/mui.picker.min.js"></script>
+		<script type="text/javascript">
+			var cityCode = "";
+
+			mui.init();
+
+
+			mui.ajax(API_URL_GET_CITY_LIST, {
+				crossDomain: true,
+				type: 'GET',
+				dataType: 'json',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(result) {
+					if (result.status == 1) {
+						var picker = new mui.PopPicker();
+						var cityArr = new Array;
+						mui.each(result.data, function(index, data) {
+							cityArr.push({
+								"text": data.name,
+								"value": data.code
+							});
+						});
+						picker.setData(cityArr);
+						document.getElementById("city_div").addEventListener('tap', function() {
+							app.inputBlur();
+							picker.show(function(item) {
+								document.getElementById("city").value = item[0].text;
+								cityCode = item[0].value;
+							});
+						});
+					}
+				},
+				error: function(xhr) {
+				}
+			});
+
+			mui.plusReady(function() {
+				var submitBtn = document.getElementById('submit');
+				submitBtn.addEventListener('tap', function() {
+					var phonenumber = document.getElementById("phonenumber").value;
+					var password = document.getElementById("password").value;
+					var smsCode = document.getElementById("sms").value;
+					var url = API_BIND_PHONE + app.getCustomerId();
+					if (!app.checkPhone(phonenumber)) {
+						mui.toast('手机号不正确，请检查');
+						return;
+					};
+					if (password.length < 6 || password.length > 24) {
+						mui.toast("必须是6~24位密码");
+						return;
+					}
+					if (!smsCode) {
+						mui.toast('验证码不能为空');
+						return;
+					}
+					mui.each(document.getElementsByTagName("input"), function(index, element) {
+						element.blur();
+					})
+					mui(submitBtn).button('loading'); //切换为loading状态
+					app.tokenAjax({
+						url: url,
+						data: {
+							"phonenumber": phonenumber,
+							"password": password,
+							"smsCode": smsCode,
+							"cityCode":cityCode
+						},
+						success: function(result) {
+							mui(submitBtn).button('reset'); //切换为reset状态(即重置为原始的button)
+							if (result.status == 1) {
+								mui.toast('绑定成功')
+								mui.back();
+							} else if (result.status == 2) {
+								//账号合并成功
+								app.saveToken(result.data);
+								mui.toast('绑定成功');
+								mui.back();
+							} else {
+								mui.toast(result.msg);
+							}
+
+						},
+						error: function(xhr) {
+							mui(submitBtn).button('reset'); //切换为reset状态(即重置为原始的button)
+							app.httpError(xhr.status);
+						}
+					});
+				});
+				/**
+				 * 发送短信
+				 */
+				document.getElementById('btn_sms').addEventListener('tap', function() {
+					var phone = document.getElementById("phonenumber").value;
+					var res = app.checkPhone(phone);
+					if (res == false) {
+						plus.nativeUI.toast("请输入正确的手机号");
+						return;
+					}
+					//发送短信按键增加一个点击事件
+					app.getSms(phone);
+					setSeconds(this, 150);
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,485 @@
+<!doctype html>
+<html>
+	<!--
+    	作者：wanping89@yeah.net
+    	时间：2017-12-07
+    	描述：首页
+    -->
+
+	<head>
+		<meta charset="UTF-8">
+		<title>壹客送</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/hongbao/style.css" />
+	</head>
+	<style>
+		.mui-content {
+			position: absolute;
+			width: 100%;
+			height: calc(100% - 20px);
+		}
+		
+		html,
+		body,
+		.mui-content {
+			background: white !important;
+		}
+		
+		#slider {
+			position: relative;
+			height: 30%;
+			width: 100%;
+		}
+		
+		.chickenSoup {
+			padding-top: 4%;
+			height: 10%;
+			font-size: 14px;
+		}
+		
+		p {
+			opacity: 0.6;
+			background-color: white;
+		}
+		
+		.l1 {
+			height: 60% !important;
+		}
+		
+		.mui-slider-group,
+		.mui-slider-item,
+		.mui-slider-item a,
+		.sliderImg {
+			width: 100%;
+			height: 100% !important;
+		}
+		
+		.sliderImg {
+			width: 100%;
+			height: calc(100%) !important;
+		}
+		
+		#messsage {
+			position: absolute;
+			right: 15px;
+			z-index: -1;
+		}
+		
+		#badge {
+			position: absolute;
+			top: 32px;
+			right: 12px;
+			width: 10px;
+			height: 10px;
+			border-radius: 5px;
+			background: red !important;
+			z-index: 1;
+		}
+		
+		div.mui-slider-indicator {
+			top: calc(85%);
+		}
+		
+		.button1 {
+			height: calc((100% - 44px) / 2);
+		}
+		
+		.mui-indicator {
+			width: 12px !important;
+			height: 3px !important;
+			border-radius: 0px !important;
+			border: none !important;
+			-webkit-box-shadow: none !important;
+			box-shadow: none !important;
+			margin: 2px !important;
+			opacity: 0.5;
+		}
+		
+		.mui-active {
+			opacity: 0.9;
+		}
+		
+		a.mui-navigate-right::after {
+			color: #4dbeca !important;
+		}
+		
+		.mui-table-view-cell {
+			padding: 9px 15px 9px !important;
+		}
+		
+		.special-font {
+			color: #ba3a3a;
+			font-size: 12px;
+		}
+		
+		.area-left {
+			float: left !important;
+			height: 100%;
+			width: 40%;
+			letter-spacing: 1px;
+		}
+		
+		.middle-font {
+			display: inline-block;
+			margin-top: 35%;
+			font-family: '宋体';
+			color: #6D6D72;
+			font-size: 15px;
+			letter-spacing: 1.5px;
+		}
+		
+		.area-middle {
+			float: left !important;
+			height: 100%;
+			width: 20%;
+		}
+		
+		.area-right {
+			float: left !important;
+			height: 100%;
+			width: 40%;
+		}
+		
+		.btn-img {
+			width: 64px;
+			margin-top: 30%;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<h1 class="mui-title" style="color: white;" id="city"><span id="city_1"></span></h1>
+			<span class="mui-icon mui-icon-chat" id="messsage"></span>
+			<div id="badge" style="display: none;"></div>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<!--
+            	作者：wanping89@yeah.net
+            	时间：2017-12-07
+            	描述：轮播图
+            -->
+			<div id="slider" class="mui-slider">
+				<div class="mui-slider-group mui-slider-loop">
+					<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="#">
+							<img class='sliderImg third' src="../../images/slider/2.png">
+						</a>
+					</div>
+					<!-- 第一张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img class='sliderImg first' src="../../images/slider/1.png">
+						</a>
+					</div>
+					<!-- 第二张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img class='sliderImg second' src="../../images/slider/2.png">
+						</a>
+					</div>
+					<!-- 第三张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img class='sliderImg third' src="../../images/slider/3.png">
+						</a>
+					</div>
+					<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="#">
+							<img class='sliderImg first' src="../../images/slider/1.png">
+						</a>
+					</div>
+				</div>
+				<div class="mui-slider-indicator">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator "></div>
+					<div class="mui-indicator"></div>
+				</div>
+			</div>
+			<!--
+            	作者：wanping89@yeah.net
+            	时间：2017-12-07
+            	描述：按钮区
+            -->
+			<div class="l1">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="order">
+						<a class="mui-navigate-right">
+							<img src="../../images/btn/order.png" style="height: 30px;width: 30px;margin-right: 5px;display: inline-block;vertical-align: calc(-6px);" />
+							<span style="font-weight: 400;padding-right: 8px;">我的订单</span>
+							<span class="special-font" style="vertical-align: calc(1px);">最快30分钟送达</span>
+						</a>
+					</li>
+				</ul>
+				<div class="button1">
+					<div class="area-left" align="right">
+						<span class="middle-font">
+								拼单<span class="special-font">价更低</span>
+						</span>
+					</div>
+					<div class="area-middle" align="center" id="ordering">
+						<img src="../../images/btn/ordering.png" class="btn-img" />
+						<div style="font-size: 13px;font-weight: 500;">
+							我要下单
+						</div>
+					</div>
+					<!--<div class="area-right">
+						<img src="../../images/btn/cartoon_right.png" style="width: 60%;margin-top: 35%;margin-left: 20%;" />
+					</div>-->
+				</div>
+				<div class="button1">
+					<div class="area-left">
+						<img src="../../images/btn/cartoon_left.png" style=" height: 60%;margin-left: 30%;margin-top: 10%;" />
+					</div>
+					<div class="area-middle" align="center" id="phone_call">
+						<img src="../../images/btn/phonecall.png" class="btn-img" />
+						<div style="font-size: 13px;font-weight: 500;">
+							便民服务
+						</div>
+					</div>
+					<div class="area-right" align="left">
+						<span class="middle-font">
+								一键呼叫<span class="special-font">无所不能</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="chickenSoup" align="center" id="chickenSoup_div">
+				用未来的眼光看现在，<span style="font-size: 16px;font-weight: 400;">什么困难都不是困难</span>
+			</div>
+		</div>
+		<!--红包-->
+		<div id="hongbao" style="display: none;">
+			<div class="container" id="container" style="">
+				<div class="RedBox">
+					<div class="topcontent">
+						<h4 class="bounceInDown">恭喜你获得红包</h4>
+						<span class="text flash"><b id="red_packet_price">0</b> 元</span>
+						<div class="avatar">
+							<div id="open"><img src="../../images/hongbao/user.png" alt="" width="60" height="60" class="zoomIn"></div>
+						</div>
+						<div class="description1 flipInX" id="checkCoupon">查看红包记录</div>
+						<div class="description2" id="closeRedBox"><img src="../../images/hongbao/close.svg"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript">
+			var main;
+			var mask;
+			var flag = false; //控制遮罩蒙板的点击显示和关闭
+			mui.init({
+				preloadPages: [{
+					url: '../order/orderList.html',
+					id: 'orderList',
+					styles: {},
+					extras: {}
+				}]
+			});
+			var chickenIndex = 0;
+			var map;
+			window.onload = function() {
+				//第一张轮播图
+				mui.ajax(API_SLIDER_IMG + "1", {
+					crossDomain: true,
+					success: function(data) {
+						document.getElementsByClassName("first")[0].src = "data:image/png;base64," + data;
+						document.getElementsByClassName("first")[1].src = "data:image/png;base64," + data;
+					}
+				});
+				//第二张
+				mui.ajax(API_SLIDER_IMG + "2", {
+					crossDomain: true,
+					success: function(data) {
+						document.getElementsByClassName("second")[0].src = "data:image/png;base64," + data;
+					}
+				});
+				//第三张
+				mui.ajax(API_SLIDER_IMG + "3", {
+					crossDomain: true,
+					success: function(data) {
+						document.getElementsByClassName("third")[0].src = "data:image/png;base64," + data;
+						document.getElementsByClassName("third")[1].src = "data:image/png;base64," + data;
+					}
+				});
+				//获得slider插件对象
+				var gallery = mui('.mui-slider');
+				gallery.slider({
+					interval: 5000 //自动轮播周期，若为0则不自动播放，默认为0；
+				});
+			}
+			//监听自定义事件，用于和city页面进行通信
+			window.addEventListener("changeCity", function(e) {
+				document.getElementById("city_1").innerHTML = e.detail.cityName;
+				myStorage.setItem("area_city", e.detail.cityName);
+			});
+			window.addEventListener("showTips", function(e) {
+				var main = plus.webview.getWebviewById("main");
+				//打开父页面的蒙遮面板
+				mui.fire(main, 'openMask', {});
+				mui.alert(MESSAGE, '订单超时', '去处理', function(e) {
+					mui.fire(main, 'closeMask', {});
+					app.openWebView("../order/orderList.html", "orderList");
+				}, 'div');
+			});
+			mui.plusReady(function() {
+				if(plus.device.model === IPHONEX) {
+					document.getElementById("badge").style.top = '52px';
+					document.getElementById("dcontent").style.height = 'calc(100% - 44px)'
+				}
+				plus.nativeUI.closeWaiting();
+				//定位城市
+				var locationTimer = setInterval(function() {
+					plus.geolocation.getCurrentPosition(function(p) {
+						try {
+							myStorage.setItem('user_longitude', p.coords.longitude);
+							myStorage.setItem('user_latitude', p.coords.latitude);
+							app.getPhoneCallPriceMap(p.coords.longitude, p.coords.latitude);
+							var addComp = p.address;
+							var city = addComp.city;
+							myStorage.setItem("city_name", city);
+							myStorage.setItem("district_name", addComp.district);
+							if(addComp.district.indexOf("县") != -1) {
+								city = addComp.district;
+							}
+							//地址描述
+							var cityEle = document.getElementById("city_1");
+							cityEle.innerHTML = city;
+							myStorage.setItem("area_city", city);
+							if(cityEle.innerHTML) {
+								window.clearInterval(locationTimer);
+							}
+							//获取推送时间
+							app.tokenAjax_Get({
+								url: getMergeStartTime(app.getCustomerId(), myStorage.getItem('user_longitude'), myStorage.getItem('user_latitude')),
+								success: function(e) {
+									if(e.status === 1) {
+										myStorage.setItem(MERGE_PUSH_TIME, e.data.pushSeconds);
+									}
+								},
+								error: function() {}
+							});
+						} catch(e) {}
+					}, function(e) {
+						window.clearInterval(locationTimer);
+					}, {
+						provider: 'baidu',
+						coordsType: "bd09ll"
+					});
+				}, 1000);
+
+				//红包
+				app.tokenAjax_Get({
+					url: API_URL_GET_FIND_NOT_CHECK_COUPON + app.getCustomerId(),
+					success: function(result) {
+						if(result.status == 1) {
+							//打开蒙遮板
+							openMask();
+							var couponEle = document.getElementById("hongbao");
+							couponEle.style.display = "";
+							document.getElementById("red_packet_price").innerHTML = result.data.couponPrice;
+							//绑定打开红包列表事件
+							document.getElementById('checkCoupon').addEventListener('tap', function() {
+								closeMask();
+								couponEle.style.display = "none";
+								app.openWebView("../hongbao/redPacketList.html", "redPacketList");
+							});
+							document.getElementById('closeRedBox').addEventListener('tap', function() {
+								closeMask();
+								couponEle.style.display = "none";
+							});
+						}
+					},
+					error: function(xhr) {
+						app.httpError(xhr.status);
+					}
+				});
+				//获取消息中心的消息数
+				app.tokenAjax_Get({
+					url: API_URL_GET_NOTIFICATION_COUNT + app.getCustomerId(),
+					success: function(result) {
+						if(result.status == 1) {
+							var server_counts = result.data;
+							//保存服务器上的条数
+							myStorage.setItem("server_notification_count", server_counts);
+							if(!server_counts) {
+								//无消息数据
+								myStorage.setItem("notification_count", 0);
+								return;
+							}
+							var counts = myStorage.getItem("notification_count");
+							if(server_counts != counts) {
+								//显示红点
+								document.getElementById("badge").style.display = "";
+							}
+						}
+					},
+					error: function(xhr) {}
+				});
+
+				document.getElementById("ordering").addEventListener('tap', function(e) {
+					app.openOrderWindow();
+				});
+				document.getElementById('phone_call').addEventListener('tap', function() {
+					app.openWindowNoAutoShow('phoneCall.html', 'main-subpage/phoneCall.html');
+				});
+				/**
+				 *打开未完成的订单列表 
+				 */
+				document.getElementById('order').addEventListener('tap', function() {
+					app.openRefreshOrderListPage();
+				})
+				//选择城市，绑定点击事件
+				document.getElementById("city_1").addEventListener("tap", function() {
+					app.openWindow("../city/city.html", "city", {
+						"pageId": "main-subpage/index.html"
+					});
+				})
+				/**
+				 * 消息中心
+				 */
+				document.getElementById('messsage').addEventListener('tap', function() {
+					//隐藏红点
+					document.getElementById("badge").style.display = "none";
+					//将本地保存的消息数量设置成服务器上的数量
+					myStorage.setItem("notification_count", myStorage.getItem("server_notification_count"));
+					app.openWebView("../message.html", "message");
+				});
+			});
+
+			function closeMask() {
+				flag = true;
+				mask.close();
+				//同时通知父页面关闭遮罩蒙板
+				mui.fire(main, 'closeMask', {});
+			}
+
+			function openMask() {
+				//打开遮罩蒙板
+				mask = mui.createMask(function() {
+					return flag;
+				}); //callback为用户点击蒙版时自动执行的回调；
+				mask.show(); //显示遮罩
+				main = plus.webview.getWebviewById("main");
+				mui.fire(main, 'openMask', {});
+			}
+
+			function closeMask() {
+				flag = true;
+				mask.close();
+				//同时通知父页面关闭遮罩蒙板
+				mui.fire(main, 'closeMask', {});
+			}
+		</script>
+	</body>
+
+</html>

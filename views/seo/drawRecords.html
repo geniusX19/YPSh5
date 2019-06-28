@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		.list {
+			width: 96%;
+			margin-left: 2%;
+			border-radius: 10px;
+			margin-bottom: 5px;
+			background-color: #FFFFFF;
+			margin-top: 10px;
+			padding: 5px 5px 5px 0px;
+		}
+		
+		.listBody {
+			padding: 5px;
+			font-size: 15px;
+		}
+		
+		.listHeaher {
+			text-align: center;
+			padding: 6px;
+			height: 35px;
+		}
+		
+		img {
+			height: 24px;
+			widows: 24px;
+			vertical-align: calc(-5px);
+			margin-right: 4px;
+		}
+		
+		.submit {
+			color: #1296db;
+			font-weight: 700;
+		}
+		
+		.success {
+			color: #40af08;
+			font-weight: 700;
+		}
+		
+		.reject {
+			color: #d81e06;
+			font-weight: 700;
+		}
+		
+		.unknown {
+			color: #e98f36;
+			font-weight: 700;
+		}
+		
+		.sublist {
+			padding: 3px;
+			padding-left: 5px !important;
+		}
+		
+		.title {
+			display: inline-block;
+			width: 80px;
+		}
+		
+		.title-content {
+			display: inline-block;
+			width: calc(100% - 85px);
+			text-align: right;
+			vertical-align: top;
+		}
+		
+		.money {
+			font-size: 18px;
+			color: #fc122b;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-arrowleft"></a>
+			<h1 class="mui-title">提现记录</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" id="pullrefresh">
+			<div class="mui-scroll">
+				<div id="content_area">
+
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/showLoading.js"></script>
+		<script type="text/javascript">
+			//计数
+			var count = 0,
+				pageSize = 3,
+				isAutoShow = true;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						height: 50, //可选.默认50.触发上拉加载拖动距离
+						auto: true, //可选,默认false.自动上拉加载一次
+						contentrefresh: "加载中...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+						contentnomore: '没有了~', //可选，请求完毕若没有更多数据时显示的提醒内容；
+						callback: pullupRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据
+					}
+				}
+			});
+			mui.plusReady(function() {});
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				//查询未完成的订单
+				getData();
+			}
+
+			/**
+			 * 获取提现记录
+			 */
+			function getData() {
+				var url = getDrawRecords(app.getCustomerId(), count, pageSize);
+				app.tokenAjax_Get({
+					url: url,
+					success: function(data) {
+						if (isAutoShow) {
+							plus.nativeUI.closeWaiting();
+							mui.currentWebview.show("slide-in-right");
+						}
+						isAutoShow = false;
+						if (data.status == 1) {
+							data = data.data.dataList;
+							app.openOrClosePullUpRefresh('#pullrefresh', data.length, count, pageSize, function(index) {
+								count = index;
+								var parentNode = document.getElementById("content_area");
+								mui.each(data, function(index, e) {
+									var child = getELement(e)
+									parentNode.appendChild(child);
+								})
+							})
+
+						} else {
+							mui.toast(data.msg);
+						}
+					},
+					error: function(xhr) {
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show();
+						app.httpError(xhr.status);
+					}
+				});
+			}
+
+			function getStatus(status) {
+				if (status === "JUST_CREATED") {
+					return ["../../images/share/submit.png", 'submit', '已提交'];
+				} else if (status === 'APPROVED') {
+					return ["../../images/share/success.png", 'success', '已放款'];
+				} else if (status === 'REJECTED') {
+					return ["../../images/share/reject.png", 'reject', '被拒绝'];
+				} else {
+					return ["../../images/share/unknow.png", 'unknow', '未知状态'];
+				}
+			}
+
+			function getELement(data) {
+				var ele = document.createElement('div')
+				var innerHTML = '';
+				ele.setAttribute('class', 'list');
+				var statusArrr = getStatus(data.drawStatus);
+				//头部
+				innerHTML += '	<div class="listHeaher">\
+									<img src="' + statusArrr[0] + '"/>\
+									<span class="' +
+					statusArrr[1] + '">' + statusArrr[2] + '</span>\
+								</div>';
+
+				//身体
+				innerHTML += '<div class="listBody">';
+
+				var amout = data.amount;
+				if (amout) { //金额
+					innerHTML +=
+						'<div class="sublist">\
+									<span class="title">提现金额</span>\
+									<span class="title-content money">' +
+						amout + '元</span>\
+								 </div>';
+				}
+				//开户行和银行卡号
+				var drawInfo = data.drawInfo;
+				if (drawInfo) {
+					var arr = drawInfo.split("，");
+					var bankName = '',
+						bankNumber = '';
+					try {
+						bankName = arr[0].replace("开户行：", '');
+						bankNumber = arr[1].replace('银行卡号：', '');
+					} catch (e) {}
+
+					innerHTML +=
+						'<div class="sublist">\
+										<span class="title">开户行</span>\
+										<span class="title-content">' +
+						bankName +
+						'</span>\
+								</div>\
+								<div class="sublist">\
+									<span class="title">银行卡号</span>\
+									<span class="title-content">' +
+						bankNumber + '</span>\
+								</div>';
+				}
+				var createTime = data.createTime;
+				if (createTime) {
+					innerHTML +=
+						'<div class="sublist">\
+									<span class="title">申请时间</span>\
+									<span class="title-content">' + app.getTimeString(
+							createTime) + '</span>\
+								  </div>';
+				}
+				var acceptTime = data.acceptTime;
+				if (acceptTime) {
+
+					innerHTML +=
+						'<div class="sublist">\
+									<span class="title">放款时间</span>\
+									<span class="title-content">' + app.getTimeString(
+							acceptTime) + '</span>\
+								  </div>';
+				}
+				var rejectTime = data.rejectTime;
+				if (rejectTime) {
+					innerHTML +=
+						'<div class="sublist">\
+									<span class="title">拒绝时间</span>\
+									<span class="title-content">' + app.getTimeString(
+							rejectTime) + '</span>\
+								  </div>';
+				}
+				var rejectReason = data.rejectReason;
+				if (rejectReason) {
+					innerHTML +=
+						'<div class="sublist">\
+										<span class="title">拒绝原因</span>\
+										<span class="title-content">' +
+						rejectReason + '</span>\
+								  </div>';
+				}
+				//结束
+				innerHTML += '</div>';
+				ele.innerHTML = innerHTML;
+				return ele;
+			}
+		</script>
+	</body>
+
+</html>

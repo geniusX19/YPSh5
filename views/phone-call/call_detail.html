@@ -1,0 +1,398 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/showLoading.css" />
+	</head>
+	<style>
+		.list {
+			width: 100%;
+			margin-bottom: 10px;
+			background-color: #FFFFFF;
+			padding-bottom: 10px;
+		}
+		
+		.title {
+			height: 35px;
+			width: 100%;
+			padding: 8px;
+			color: #4dbeca;
+			font-weight: 900;
+			border-bottom: 1px solid #efeff4;
+		}
+		
+		.title_1 {
+			height: 35px;
+			width: 100%;
+			padding: 8px;
+			font-size: 15px !important;
+		}
+		
+		.title_2 {
+			float: left;
+		}
+		
+		.title_3 {
+			float: right;
+			color: #888888;
+			padding-right: 6px;
+			overflow: auto;
+		}
+		
+		.title_4 {
+			float: left;
+			font-size: 15px !important;
+			padding-left: 5px;
+		}
+		
+		.icon {
+			float: left;
+			margin-top: 5px;
+			margin-left: 25px;
+			width: 70px;
+			height: 70px;
+			border-radius: 35px;
+		}
+		
+		.mui-popup {
+			position: fixed!important;
+			top: 42% !important;
+		}
+		
+		#order-status-list {
+			position: absolute;
+			top: 15%;
+			left: 3%;
+			height: 68%;
+			width: 94%;
+			z-index: 10000000;
+			display: none;
+		}
+		
+		#order-status-list .mui-scroll-wrapper {
+			height: 85%;
+			background-color: white;
+			border-radius: 5px;
+		}
+		
+		.mui-backdrop {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 998;
+			background-color: rgba(0, 0, 0, .5);
+		}
+		
+		#closeRedBox {
+			position: relative;
+			top: 90%;
+		}
+		
+		.point {
+			margin-top: 5px;
+			width: 10px;
+			height: 10px;
+			border-radius: 5px;
+			border: 1px solid #FF7F24;
+			background-color: #FF7F24;
+			float: left;
+		}
+		
+		.status-box {
+			opacity: 0.2;
+			margin-top: 20px;
+			margin-left: 20px;
+			height: 20px;
+		}
+		
+		.box-content {
+			float: left;
+			margin-left: 15px;
+			font-size: 14px;
+		}
+		
+		.box-time {
+			float: right;
+			margin-right: 20px;
+			font-size: 12px;
+			color: #888888;
+		}
+		
+		.line {
+			margin-left: 24.5px;
+			height: 52px;
+			margin-top: -4px;
+			margin-bottom: -24px;
+			border-left: 0.5px solid #FF7F24;
+		}
+		
+		.mui-content {
+			height: calc(100% - 20px);
+		}
+		
+		.box-active {
+			opacity: 1 !important;
+		}
+		
+		.content {
+			margin-top: 8px;
+		}
+		
+		.title_4 {
+			display: inline-block;
+			width: 35%;
+			font-size: 15px !important;
+			padding-left: 5px;
+		}
+		
+		.input-msg {
+			display: inline-block;
+			width: 63%;
+			padding-right: 5px;
+			font-size: 14px;
+			text-align: right;
+			color: #888888;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-arrowleft mui-pull-left "></a>
+			<h1 class="mui-title" id="order-status-title">一键呼叫订单详情</h1>
+			<span class="mui-icon iconfont icon-kefu mui-pull-right" id="service"></span>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" id="dcontent">
+			<div class="mui-scroll">
+				<div class="header">
+					<div class="list">
+						<div class="title"> 订单信息</div>
+						<div class="title_1">
+							<div class="title_2"> 订单号</div>
+							<div class="title_3" id="orderId" style="font-size: 15px;"></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 订单状态</div>
+							<div class="title_3" id="orderStatus"></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 创建时间</div>
+							<div class="title_3" id="creatTime"></div>
+						</div>
+						<div class="title_1" style="display: none;">
+							<div class="title_2"> 接单时间</div>
+							<div class="title_3" id="sentTime"></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 订单价格</div>
+							<div class="title_3"><span>¥</span> <span id="price"></span></div>
+						</div>
+					</div>
+					<!--按钮-->
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-block" style="margin-top: 5px;margin-bottom: 15px;display: none;" id="validateSender">验证配送员</button>
+					<!--
+					配送员信息区
+					-->
+					<div class="list" style="height: 80px !important; display:none;" id="senderInfo">
+						<div id="driverArea">
+							<img src="../../images/senderIcon.png" class="icon" style="width: 55px;height: 60px;margin-left: 10px;" />
+							<div style="float: left;padding-top: 30px;margin-left: 5px; font-family: '微软雅黑';">
+								<div style="display: inline-block;font-size: 15px;" id="driver"></div>
+								<span class="mui-icon mui-icon-location-filled" style="color: orange;"></span>
+							</div>
+						</div>
+						<div class="title_3" style="padding-top: 30px;" id="phoneArea">
+							<span class="mui-icon mui-icon-phone-filled" style="color: orange;"></span>
+							<span style="color: #007AFF"> 拨打电话</span>
+							<span id="phone" style="display: none;"></span>
+						</div>
+					</div>
+					<div class="list" style="height: auto;height: 320px;">
+						<div class="title">信息</div>
+						<div class="content" style="">
+							<div class="title_4"><span class="mui-icon mui-icon-person" style="color: #4577fc;"> </span>联系人</div>
+							<div class="input-msg" id="receiveName"></div>
+						</div>
+						<div class="content">
+							<div class="title_4"><span class="mui-icon mui-icon-phone" style="color: #f9602a;"> </span>联系电话</div>
+							<div class="input-msg" id="receivePhone"></div>
+						</div>
+						<div class="content">
+							<div class="title_4"><img src="../../images/phone_call/demand.png" style="height: 22px;width: 20px;vertical-align: calc(-3px);" /> 呼叫需求</div>
+							<div class="input-msg" id="demand_name"></div>
+						</div>
+						<div class="content">
+							<div class="title_4"><img src="../../images/phone_call/carIcon.png" style="height: 20px;width: 19px;vertical-align: calc(-2px);" /> 呼叫车型</div>
+							<div class="input-msg" id="vehicle"></div>
+						</div>
+						<div class="content">
+							<div class="title_4"><img src="../../images/phone_call/tip.png" style="height: 22px;width: 20px;vertical-align: calc(-3px);" /> 服务费</div>
+							<div class="input-msg">¥<span style="font-size: 15px; " id="tip"></span></div>
+						</div>
+						<div class="content">
+							<div class="title_4"><span class="mui-icon mui-icon-location" style="color: #fe7059;"> </span>地址</div>
+							<div class="input-msg" id="receiveAddress"></div>
+						</div>
+						<div class="content">
+							<div class="title_4" style="padding-left: 29px;"> 备注</div>
+							<div class="input-msg"><span style="font-size: 15px; " id="remark"></span></div>
+						</div>
+					</div>
+					<div align="right" style="margin-bottom:10px;margin-right:30px">
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-danger cancel-order" style="color: white; border-color: orangered;display:none ;">取消</button>
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-danger again-send-order" style="color: white; border-color: orangered;display: none;">重新派单</button>
+					</div>
+				</div>
+			</div>
+			<script src="../../js/mui.min.js"></script>
+			<script type="text/javascript" src="../../js/app.js"></script>
+			<script type="text/javascript" src="../../js/myStorage.js"></script>
+			<script type="text/javascript" src="../../js/config.js"></script>
+			<script src="../../js/immersed.js"></script>
+			<script type="text/javascript" src="../../js/showLoading.js"></script>
+			<script type="text/javascript">
+				var orderId;
+				var timer;
+				mui.init();
+				mui('.mui-scroll-wrapper').scroll({
+					deceleration: 0.0010 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				});
+				mui.plusReady(function() {
+					var self = plus.webview.currentWebview();
+					orderId = self.orderId;
+					getDataSource();
+					//10秒钟取一次数据
+					timer = setInterval("getDataSource()", 8000);
+					document.getElementById('senderInfo').addEventListener('tap', function() {
+						var phone = document.getElementById("phone").innerHTML.trim();
+						var btnArray = ['取消', '拨打'];
+						mui.confirm('是否拨打' + phone + '?', '提示', btnArray, function(e) {
+							if(e.index == 1) {
+								plus.device.dial(phone, false);
+							}
+						}, 'div');
+					});
+					//客服
+					document.getElementById('service').addEventListener('tap', function() {
+						app.openWebView("../customerService/customerServices.html", "customerServices");
+					});
+					var old_back = mui.back;
+					mui.back = function() {
+						if(timer) {
+							clearInterval(timer);
+						}
+						/**
+						 * 自定义事件，更新列表
+						 */
+						var objWebview = plus.webview.getWebviewById('call_list');
+						mui.fire(objWebview, 'refresh', {});
+						old_back();
+					}
+
+				});
+
+				function getTime(longDate) {
+					var date = new Date(longDate);
+					var month = date.getMonth() + 1;
+					var day = date.getDate();
+					var hour = date.getHours();
+					var min = date.getMinutes();
+					return date.getFullYear() + "-" + app.plusZero(month) + "-" + app.plusZero(day) + " " + app.plusZero(hour) + ":" + app.plusZero(min) + ":" + app.plusZero(date.getMilliseconds());
+				}
+
+				function getDataSource() {
+					var url = getPhoneCallDetail(app.getCustomerId(), orderId);
+					app.tokenAjax_Get({
+						url: url,
+						success: function(data) {
+							if(data.status == 1) {
+								var data = data.data;
+								document.getElementById("orderId").innerText = data.quickcallId;
+								document.getElementById("orderStatus").innerText = getOrderStatus(data.quickcallStatus);
+								document.getElementById("creatTime").innerHTML = getTime(data.createTime);
+								var sentTimeELe = document.getElementById("sentTime");
+								if(data.acceptTime) {
+									sentTimeELe.innerText = getTime(data.acceptTime);
+									sentTimeELe.parentNode.style.display = '';
+								} else {
+									sentTimeELe.parentNode.style.display = 'none';
+								}
+								document.getElementById("price").innerText = data.payPrice;
+								if(data.senderPhoneNumber) {
+									document.getElementById("senderInfo").style.display = '';
+									document.getElementById("driver").innerText = data.senderName;
+									document.getElementById("phone").innerText = data.senderPhoneNumber;
+								}
+								var starter = data.starter;
+								document.getElementById("receiveName").innerText = starter.name;
+								document.getElementById("receivePhone").innerText = starter.phonenumber;
+								document.getElementById("demand_name").innerText = getDemand(data.quickcallType);
+								document.getElementById("vehicle").innerText = app.carType(data.vehicle);
+								document.getElementById("tip").innerText = data.tip;
+								document.getElementById("receiveAddress").innerHTML = starter.poiName + "<br/>" + starter.addressName + "<br/>" + starter.addressDetail;
+								document.getElementById("remark").innerHTML = data.remark;
+
+							} else {
+								mui.toast(data.msg);
+							}
+						},
+						error: function(xhr) {
+							app.httpError(xhr.status);
+						}
+					});
+
+				}
+
+				function getOrderStatus(s) {
+					switch(s) {
+						case 'CREATED':
+							return '未支付';
+						case 'CALLING':
+							return '待接单';
+						case 'WAIT_FOR_RESPONSE':
+							return '待接单';
+						case 'CANCELLED':
+							return '已取消';
+						case 'TIMEOUT':
+							return '已超时';
+						case 'ACCEPTED':
+							return '已接单';
+						case 'REFUND':
+							return '已取消';
+						case 'NODEAL':
+							return '已完成';
+						case 'FINISH':
+							return '已完成';
+						default:
+							return '';
+					}
+				}
+
+				function getDemand(v) {
+					switch(v) {
+						case 'BUY':
+							return '代买';
+						case 'FELLIN':
+							return '排队';
+						case 'DELIVER':
+							return '配送';
+						case 'TRANSPORT':
+							return '搬运';
+						case 'OTHER':
+							return '其他';
+						default:
+							return '';
+					}
+				}
+			</script>
+	</body>
+
+</html>

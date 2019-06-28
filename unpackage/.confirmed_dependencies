@@ -1,0 +1,338 @@
+{
+  "main.html": {
+    "refer": [
+      "setting.html"
+    ],
+    "resources": []
+  },
+  "login.html": {
+    "refer": [
+      "main.html",
+      "reg.html",
+      "views/forget_password.html",
+      "views/register_explain.html",
+      "views/main.html",
+      "views/order.html",
+      "views/order/orderDetail.html",
+      "html.html"
+    ],
+    "resources": [
+      "images/weixin.png",
+      "images/qq.png",
+      "views/main.html",
+      "css/iconfont.css",
+      "css/mui.min.css",
+      "css/style.css"
+    ]
+  },
+  "views/forget_password.html": {
+    "refer": [
+      "login.html"
+    ],
+    "resources": []
+  },
+  "views/register_explain.html": {
+    "refer": [
+      "login.html",
+      "reg.html"
+    ],
+    "resources": []
+  },
+  "reg.html": {
+    "refer": [
+      "views/register_explain.html",
+      "login.html",
+      "views/order.html"
+    ],
+    "resources": []
+  },
+  "views/order.html": {
+    "refer": [
+      "login.html",
+      "reg.html",
+      "views/send_explain.html",
+      "views/price_explain.html",
+      "views/pay/pay.html",
+      "views/goods/orderGoods.html",
+      "views/addressOrder/senderAddress.html",
+      "views/addressOrder/senderList.html",
+      "views/help_explain.html",
+      "views/openCity.html",
+      "views/phoneBook/phoneBook.html",
+      "views/map/map_receive.html",
+      "views/addressOrder/senderAddress_receive.html",
+      "views/addressOrder/subpage_senderList.html",
+      "views/pay/pays.html",
+      "views/goods/goodsList.html"
+    ],
+    "resources": [
+      "images/order/ýý.png",
+      "images/order/ýU.png",
+      "images/order/Uý.png",
+      "images/order/ýý.png",
+      "images/order/ýU.png",
+      "images/order/Uý.png"
+    ]
+  },
+  "views/send_explain.html": {
+    "refer": [
+      "views/order.html"
+    ],
+    "resources": []
+  },
+  "views/price_explain.html": {
+    "refer": [
+      "views/order.html",
+      "views/goods_explain.html"
+    ],
+    "resources": []
+  },
+  "views/main.html": {
+    "resources": [
+      "views/main-subpage/index.html",
+      "views/main-subpage/message.html",
+      "views/main-subpage/historyList.html"
+    ],
+    "refer": [
+      "views/main-subpage/message.html",
+      "views/main-subpage/index.html",
+      "views/main-subpage/setting.html",
+      "views/main-subpage/other.html",
+      "views/city/city.html",
+      "views/order/orderList.html",
+      "views/main-subpage/user.html",
+      "views/main-subpage/historyList.html",
+      "views/main-subpage/phoneCall.html"
+    ]
+  },
+  "views/main-subpage/index.html": {
+    "refer": [
+      "views/order.html",
+      "views/city/city.html",
+      "views/main-subpage/message.html",
+      "views/order/orderList.html",
+      "views/message.html",
+      "views/updateApp.html",
+      "login.html"
+    ],
+    "resources": [
+      "views/order/orderList.html"
+    ]
+  },
+  "views/main-subpage/setting.html": {
+    "refer": [
+      "login.html",
+      "views/addressOrder/senderList.html"
+    ],
+    "resources": []
+  },
+  "views/goods/orderGoods.html": {
+    "refer": [
+      "views/order.html",
+      "views/goods_explain.html"
+    ],
+    "resources": []
+  },
+  "views/goods_explain.html": {
+    "refer": [
+      "views/goods/orderGoods.html"
+    ],
+    "resources": []
+  },
+  "views/addressOrder/senderAddress.html": {
+    "refer": [
+      "views/order.html",
+      "views/phoneBook/phoneBook.html",
+      "views/map/map.html",
+      "views/addressOrder/subpage_senderList.html"
+    ],
+    "resources": []
+  },
+  "views/addressOrder/senderList.html": {
+    "refer": [
+      "views/addressOrder/senderAddress.html",
+      "views/addressOrder/subpage_senderList.html",
+      "views/addressOrder/senderAddressEdit.html"
+    ],
+    "resources": [
+      "views/addressOrder/subpage_senderList.html"
+    ]
+  },
+  "views/addressOrder/subpage_senderList.html": {
+    "refer": [
+      "views/addressOrder/senderAddress.html"
+    ],
+    "resources": []
+  },
+  "views/main-subpage/message.html": {
+    "refer": [
+      "views/order/orderDetail.html"
+    ],
+    "resources": []
+  },
+  "views/order/orderList.html": {
+    "refer": [
+      "views/order/orderDetail.html",
+      "views/order.html",
+      "views/order/estimate.html",
+      "views/customerService/customerServices.html",
+      "views/order/validateSender.html",
+      "views/main.html"
+    ],
+    "resources": []
+  },
+  "views/main-subpage/user.html": {
+    "refer": [
+      "login.html",
+      "views/addressOrder/senderList.html",
+      "views/setting/setting.html",
+      "views/customerServices.html",
+      "views/customerService/customerServices.html",
+      "views/setting/feedback.html",
+      "views/setting/bindPhone.html",
+      "views/hongbao/redPacketList.html",
+      "views/seo/SEO.html",
+      "views/recharge/customerAccount.html"
+    ],
+    "resources": []
+  },
+  "views/setting/setting.html": {
+    "refer": [
+      "views/setting/company.html",
+      "views/forget_password.html",
+      "views/setting/changePassword.html",
+      "login.html"
+    ],
+    "resources": []
+  },
+  "views/customerService/customerServices.html": {
+    "refer": [
+      "views/customerService/question.html"
+    ],
+    "resources": []
+  },
+  "views/setting/changePassword.html": {
+    "refer": [
+      "login.html"
+    ],
+    "resources": []
+  },
+  "views/main-subpage/historyList.html": {
+    "refer": [
+      "views/order/orderDetail.html",
+      "views/order/estimate.html",
+      "views/order/validateSender.html",
+      "views/customerService/customerServices.html",
+      "views/historyList-subpage/sub-senvenDays.html",
+      "views/historyList-subpage/sub-oneMonth.html",
+      "views/historyList-subpage/sub-oneYear.html",
+      "views/historyList-subpage/sub_define.html"
+    ],
+    "resources": [
+      "views/historyList-subpage/sub-senvenDays.html"
+    ]
+  },
+  "views/order/orderDetail.html": {
+    "refer": [
+      "views/map/senderLocation.html",
+      "views/customerService/customerServices.html",
+      "views/order/validateSender.html"
+    ],
+    "resources": []
+  },
+  "views/pay/pay.html": {
+    "refer": [
+      "views/pay/confirmPay.html",
+      "views/order/orderList.html"
+    ],
+    "resources": []
+  },
+  "views/pay/confirmPay.html": {
+    "refer": [
+      "views/order/orderList.html",
+      "views/main.html"
+    ],
+    "resources": []
+  },
+  "views/historyList-subpage/sub-senvenDays.html": {
+    "refer": [
+      "views/order.html",
+      "views/order/orderDetail.html",
+      "views/order/orderList.html",
+      "views/order/estimate.html"
+    ],
+    "resources": []
+  },
+  "views/historyList-subpage/sub-oneMonth.html": {
+    "refer": [
+      "views/order/orderDetail.html"
+    ],
+    "resources": []
+  },
+  "views/map/map.html": {
+    "refer": [
+      "login.html",
+      "views/map/quickSearch.html"
+    ],
+    "resources": []
+  },
+  "views/historyList-subpage/sub-oneYear.html": {
+    "refer": [
+      "views/order/orderDetail.html",
+      "views/order.html"
+    ],
+    "resources": []
+  },
+  "views/openCity.html": {
+    "refer": [
+      "views/price_explain.html"
+    ],
+    "resources": []
+  },
+  "views/seo/SEO.html": {
+    "refer": [
+      "views/seo/qrcode.html"
+    ],
+    "resources": []
+  },
+  "views/recharge/customerAccount.html": {
+    "refer": [
+      "views/recharge/rechargeRecord.html",
+      "views/recharge/payRecords.html"
+    ],
+    "resources": []
+  },
+  "views/map/map_receive.html": {
+    "refer": [
+      "views/map/quickSearch_receive.html",
+      "views/addressOrder/subpage_senderList.html"
+    ],
+    "resources": []
+  },
+  "views/addressOrder/senderAddress_receive.html": {
+    "refer": [
+      "views/map/map_receive.html",
+      "views/addressOrder/subpage_senderList.html"
+    ],
+    "resources": []
+  },
+  "views/pay/confirmPays.html": {
+    "refer": [
+      "views/order/orderList.html"
+    ],
+    "resources": []
+  },
+  "views/pay/pays.html": {
+    "refer": [
+      "views/pay/confirmPays.html",
+      "views/order/orderList.html"
+    ],
+    "resources": []
+  },
+  "views/addressOrder/senderAddressEdit.html": {
+    "refer": [
+      "views/map/map.html",
+      "views/phoneBook/phoneBook.html"
+    ]
+  }
+}

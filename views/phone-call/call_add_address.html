@@ -1,0 +1,347 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<!--<script src="https://api.map.baidu.com/api?v=3.0&ak=iOYBmDKHicYmzZigGIGnurrPf1YMKlEj"></script>-->
+		<script src="https://api.map.baidu.com/api?v=2.0&ak=iOYBmDKHicYmzZigGIGnurrPf1YMKlEj"></script>
+		<style type="text/css">
+			#person {
+				position: relative;
+				top: -80px;
+				left: 70%;
+				right: 0px;
+				width: 30%;
+				height: 80px;
+				border-left: 1px solid #D8D8D8;
+				border-bottom: 1px solid #D8D8D8;
+			}
+			
+			#A1 {
+				margin-left: 25%;
+				width: 50%;
+				margin-top: 10px;
+			}
+			
+			textarea {
+				border: none;
+				border-bottom: 1px solid rgba(0, 0, 0, .2) !important;
+				;
+			}
+			
+			.mui-checkbox input[type=checkbox]:checked:before,
+			.mui-radio input[type=radio]:checked:before {
+				color: #4dbeca;
+			}
+			
+			.mui-table-view {
+				padding-top: 5px;
+			}
+			
+			.mui-table-view-cell:after {
+				background-color: white !important;
+			}
+			
+			.mui-table-view-cell {
+				padding-top: 5px;
+				height: 32px !important;
+			}
+			
+			#quick {
+				font-size: 16px;
+			}
+			
+			.detail-textarea {
+				border-bottom: 1px solid #c8c7cc !important;
+			}
+			
+			.detail-textarea:after {
+				background-color: white !important;
+			}
+			.mui-table-view:before{
+				background-color: #FFFFFF !important;
+			}
+			.mui-navigate-right:after, .mui-push-left:after, .mui-push-right:after{
+				color: #000000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">呼叫地址</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div style="background: white;height: 35px;padding-top: 10px;padding-left: 10px;font-weight: 450;"id="sub_title">
+				发件地址
+			</div>
+			<form class="mui-input-group">
+				<ul class="mui-table-view" style="height: auto !important;"id="quick">
+					<li class="mui-table-view-cell  search-class" >
+						<span class="mui-navigate-right" id="normal">快速检索位置 :<span style="float: right;margin-right: 20px;font-size: 16px; " id="poiName"></span></span>
+						<span id="tooLong" class="mui-navigate-right" style="display: ;float: right;margin-right: 20px;"></span>
+					</li>
+					<li class="mui-table-view-cell" style="height:auto !important;color: #444444;font-size: 14px;" id="address">
+					</li>
+				</ul>
+				<div class="mui-input-row detail-textarea">
+					<textarea rows="1" class="" placeholder="请输入如门牌号等" id="detailAddress" style="font-size: 12px;"></textarea>
+				</div>
+				<div style="height: 80px; margin-bottom: 20px;">
+					<div class="mui-input-row" style="width: 70%; ">
+						<label>姓名</label>
+						<input type="text" class="" placeholder="" id="name">
+					</div>
+					<div class="mui-input-row" style="width: 70%;">
+						<label>号码</label>
+						<input type="number" class="" placeholder="" id="phone">
+					</div>
+					<div id="person" style="" align="center">
+						<label><span class="mui-icon mui-icon-personadd" style="font-size: 58px;color: #4dbeca;"></span></label>
+						<br/>
+						<span>选择联系人</span>
+					</div>
+				</div>
+			</form>
+
+			<div class="mui-input-row mui-checkbox mui-left" style="font-size: 15px;margin-top: -15px;">
+				<label>保存到常用地址</label>
+				<input id="checkbox" name="checkbox1" value="Item 1" type="checkbox" checked="checked">
+			</div>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="A1">确认</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			var em = null,
+				map = null;
+			//从地图页面传过来的经纬度
+			var mapLat;
+			var mapLon;
+			var userLat, userLon, userPoi;
+			var id;
+			var flag; //标志用于判断该页面打开的收件人还是发件人地址  send ，receive
+			var addressDescription; //地址
+			var poiName = ""; //poiname
+			var contact;
+			mui.init({
+				preloadPages: [{
+					url: '../phoneBook/phoneBook.html',
+					id: 'phoneBook',
+					styles: {},
+					extras: {
+						"html": "call_add_address"
+					}
+				}]
+			});
+
+			mui.plusReady(function() {
+
+				mui('.mui-input-row textarea').input();
+				var self = plus.webview.currentWebview();
+				flag = self.flag;
+				contact = self.contact;
+				var str = JSON.stringify(contact);
+				/***
+				 * 赋值
+				 */
+				if(contact != undefined && str.indexOf("poiName") > 0) {
+					poiName = contact.poiName;
+					if(poiName) {
+						showPoi(poiName);
+					}
+					mapLat = contact.latitude || '';
+					mapLon = contact.longitude || "";
+					document.getElementById("name").value = contact.name;
+					document.getElementById("phone").value = contact.phonenumber;
+					document.getElementById("address").innerHTML = contact.addressName;
+					document.getElementById("detailAddress").value = contact.addressDetail;
+				} else {
+					plus.geolocation.getCurrentPosition(function(p) {
+						try {
+
+							var myGeo = new BMap.Geocoder();
+							userLon = p.coords.longitude;
+							userLat = p.coords.latitude;
+
+							myGeo.getLocation(new BMap.Point(p.coords.longitude, p.coords.latitude), function(result) {
+								//地址描述
+								var pi = "",
+									poa = "";
+								var data = result.surroundingPois
+								if(data.length > 0) {
+									pi = result.surroundingPois[0].title;
+									poa = result.surroundingPois[0].address;
+								} else {
+									var addComp = result.addressComponents;
+									poa = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+								}
+								document.getElementById("address").innerHTML = poa
+								showPoi(pi);
+								userPoi = pi;
+							});
+						} catch(e) {}
+					}, function(e) {
+						mui.toast('获取位置信息失败');
+					}, {
+						provider: 'baidu',
+						coordsType: "bd09ll",
+						geocode: false
+					});
+				}
+
+				document.getElementById('person').addEventListener('tap', function() {
+					app.openWindow('../phoneBook/phoneBook.html', "phoneBook", {
+						"html": "call_add_address"
+					});
+				});
+				app.initNativeObjects();
+				//快速选择
+				document.getElementById('quick').addEventListener('tap', function() {
+					app.inputBlur();
+					
+					app.openMapWindow("../map/map.html","map",{
+							"html": "call_add_address",
+							"lon": mapLon,
+							"lat": mapLat,
+							"address": poiName,
+							"poiAddress": document.getElementById("address").innerHTML
+					});
+					
+				});
+				//保存
+				document.getElementById('A1').addEventListener('tap', function() {
+					var isSave = document.getElementById("checkbox").checked;
+					var main = plus.webview.getWebviewById("subpage_senderList");
+					var name = document.getElementById("name").value;
+					var resultLat = mapLat || userLat;
+					var resiltLon = mapLon || userLon;
+					var poi_name = poiName || userPoi;
+					if(name == '' || name.length == 0) {
+						mui.toast('姓名不能为空');
+						return;
+					}
+					var phone = document.getElementById("phone").value;
+					phone = app.outputCurrentPhoneNumber(phone);
+					if(!app.checkPhone(phone)) {
+						mui.toast('请填写正确的手机号码')
+						return;
+					}
+					var address = document.getElementById("address").innerHTML;
+					if(address == '' || address.length == 0) {
+						mui.toast('快速检索位置信息不能为空');
+						return;
+					}
+					var detailAddress = document.getElementById("detailAddress").value || "";
+					if(!(resultLat || resiltLon)) {
+						mui.toast("未能正确的识别地址的经纬度，请重试");
+						return;
+					}
+					var ajaxData = {
+						"name": name,
+						"phonenumber": phone,
+						"addressName": address,
+						"addressDetail": detailAddress,
+						"longitude": resiltLon,
+						"latitude": resultLat,
+						"poiName": poi_name
+					}
+					plus.nativeUI.showWaiting();
+					/**
+					 * ajax
+					 */
+					if(!isSave) {
+						plus.nativeUI.closeWaiting()
+						customevent("addEvent", convertData(ajaxData));
+					} else {
+						app.tokenAjax({
+							url: API_URL_POST_SAVE_STARTER_ADDRESS + app.getCustomerId(),
+							data: ajaxData,
+							success: function(data) {
+								plus.nativeUI.closeWaiting();
+								if(data.status == 1) {
+									customevent("addEvent", convertData(ajaxData));
+									mui.toast('保存成功');
+								} else {
+									mui.toast('保存失败，请重试');
+								}
+							},
+							error: function(xhr, err, errorThrown) {
+								plus.nativeUI.closeWaiting()
+								app.httpError(xhr.status);
+							}
+						});
+					}
+				});
+
+				/**
+				 * 从地图页面接受参数
+				 */
+				window.addEventListener("reLonLatAddress", function(e) {
+					poiName = e.detail.address;
+					addressDescription = e.detail.addressDescription;
+					mapLon = e.detail.lon;
+					mapLat = e.detail.lat;
+					showPoi(poiName);
+					document.getElementById("address").innerHTML = addressDescription;
+					setTimeout(function(){
+						app.showInput(document.getElementById("detailAddress"));
+					},20);
+				});
+				/***
+				 * 自定义事件
+				 */
+				window.addEventListener("chooseContact", function(e) {
+					var name = e.detail.name;
+					var phone = e.detail.phoneNumber;
+					document.getElementById("name").value = name;
+					document.getElementById("phone").value = app.outputCurrentPhoneNumber(phone);
+				});
+
+				function convertData(ajaxData) {
+					return {
+						name: ajaxData.name,
+						phonenumber: ajaxData.phonenumber,
+						addressName: ajaxData.addressName,
+						addressDetail: ajaxData.addressDetail,
+						longitude: ajaxData.longitude,
+						latitude: ajaxData.latitude,
+						addressId: "",
+						poiName: ajaxData.poiName
+					};
+				}
+
+				function customevent(eventName, data) {
+					var main = plus.webview.getWebviewById('main-subpage/phoneCall.html');
+					mui.fire(main, eventName, {
+						'data': data
+					});
+					mui.back();
+				}
+
+				function showPoi(poiName) {
+					if(poiName.length > 10) {
+						var tooLong = document.getElementById("tooLong");
+						tooLong.innerHTML = poiName;
+						tooLong.style.display = "";
+						document.getElementById("normal").style.display = 'none';
+					} else {
+						document.getElementById("poiName").innerHTML = poiName || "";
+						document.getElementById("tooLong").style.display = "none";
+						document.getElementById("normal").style.display = '';
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

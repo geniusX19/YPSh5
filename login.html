@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<title>壹客送</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/iconfont.css" />
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			
+			.mui-input-group {
+				margin-top: 10px;
+			}
+			
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			
+			.mui-input-group label {
+				width: 22%;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			
+			.link-area {
+				display: block;
+				margin-top: 25px;
+				text-align: center;
+			}
+			
+			.spliter {
+				color: #bbb;
+				padding: 0px 8px;
+			}
+			
+			.oauth-area {
+				/*position: absolute;*/
+				bottom: 20px;
+				left: 0px;
+				text-align: center;
+				width: 100%;
+				padding: 0px;
+				margin: 50px;
+			}
+			
+			.oauth-area .oauth-btn {
+				display: inline-block;
+				width: 50px;
+				height: 50px;
+				background-size: 30px 30px;
+				background-position: center center;
+				background-repeat: no-repeat;
+				margin: 0px 20px;
+				/*-webkit-filter: grayscale(100%); */
+				border: solid 1px #ddd;
+				border-radius: 25px;
+			}
+			
+			.oauth-area .oauth-btn:active {
+				border: solid 1px #aaa;
+			}
+			
+			.oauth-area .oauth-btn.disabled {
+				background-color: #ddd;
+			}
+			
+			.mui-input {
+				height: 50px !important;
+			}
+			
+			.div_login {
+				height: 55px !important;
+				padding: 5px;
+			}
+			
+			.login_icon {
+				width: 10% !important;
+				margin-left: 5px;
+				font-size: 15px;
+			}
+			
+			.mui-input {
+				width: 70% !important;
+			}
+			
+			.mui-control-content {
+				height: 120px;
+				margin-left: 5%;
+				width: 90%;
+			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				color: #4dbeca !important;
+				/* 这里放你想要的颜色 */
+				border-bottom: 2px solid #4dbeca;
+				background: 0 0;
+			}
+			
+			.mui-bar .mui-icon:active {
+				opacity: 1;
+			}
+			
+			.mui-checkbox input[type=checkbox]:checked:before,
+			.mui-radio input[type=radio]:checked:before {
+				color: #4dbeca;
+			}
+			
+			.mui-btn-blue,
+			.mui-btn-primary,
+			input[type=submit] {
+				color: #fff;
+				border: 1px solid orangered;
+				background-color: orangered;
+			}
+			
+			.mui-icon-clear {
+				right: 110px !important;
+			}
+			
+			.mui-checkbox input[type=checkbox]:before,
+			.mui-radio input[type=radio]:before {
+				position: relative;
+				top: 3px;
+				margin-left: 12px;
+				font-size: 21px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div class="mui-content" id="noHeader">
+			<div style="" align="center">
+				<img src="images/logo.png" style="margin-top:45px;" />
+			</div>
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control  mui-segmented-control-inverted ">
+					<a class="mui-control-item mui-active" href="#item2" id="no_2">密码登录</a>
+					<a class="mui-control-item " href="#item1" id="no_1"><span>短信登录</span></a>
+
+				</div>
+			</div>
+			<div id="item2" class="mui-control-content mui-active">
+				<form id='' class="mui-input-group">
+					<div class="mui-input-row div_login">
+						<span class=" login_icon">手机号:</span>
+						<input id='account' type="number" class="mui-input" placeholder="请输入账号">
+					</div>
+					<div class="mui-input-row div_login">
+						<span class="login_icon">密&nbsp;&nbsp; &nbsp;码:</span>
+						<input id='password' type="password" class="mui-input " placeholder="请输入密码">
+					</div>
+				</form>
+				<div class="mui-input-row mui-checkbox mui-left" style=" margin-left: -18px !important;width:150px;height: 32px !important;">
+				</div>
+				<div class="link-area" style="float: right;margin-top: -22px; font-size: 13px;">
+					<a href="views/forget_password.html" id='forgetPassword' style="color: #4dbeca;">忘记密码</a>
+				</div>
+
+				<div class="mui-content-padded" align="center" style="margin-top: 10px;">
+					<button id='login' type="button" data-loading-text="登录中..." data-loading-icon="" class="mui-btn mui-btn-primary" style="width: 40%; display: inline-block !important;">登录</button>
+					<button id='reg' type="button" class="mui-btn mui-btn-primary" style="width: 40%; display: inline-block !important;">注册账号</button>
+				</div>
+
+			</div>
+			<div id="item1" class="mui-control-content ">
+				<form id='login-form' class="mui-input-group">
+					<div class="mui-input-row div_login  ">
+						<span class=" login_icon">手机号:</span>
+						<input id='phone' type="number" class=" mui-input" placeholder="请输入手机号" style="width: 50% !important;">
+						<a href="#" style="font-size: 14px;color: orangered;" id="btn_sms">获取验证码</a>
+					</div>
+					<div class="mui-input-row div_login">
+						<span class="login_icon">验证码:</span>
+						<input id='sms' type="number" class="mui-input " placeholder="请输入验证码">
+					</div>
+				</form>
+				<div class="mui-input-row mui-checkbox mui-left" style="font-size: 13px; margin-left: -18px !important;height: 32px !important;">
+					<label style="height: 13px !important; margin-top: 3px;"><span style="color:#777777;">我已阅读并同意</span><a id="registerRead" style="color: orangered;font-size: 13px;">《注册服务条款》</a> </label>
+					<input id="checkbox1" value="" checked="checked" type="checkbox" checked>
+				</div>
+
+				<div class="mui-content-padded" align="center" style="margin-top: 10px;">
+					<button id='login_sms' data-loading-text="登录中..." data-loading-icon="" type="button" class="mui-btn mui-btn-block mui-btn-primary">登录</button>
+				</div>
+
+			</div>
+
+			<!--底部通用-->
+			<div style="margin-top: 90px; float:clear;display: none;" id="footer">
+				<div align="center">
+					<hr style=" display: inline-block;width: 80px;" />
+					<span> 其他登录方式</span>
+					<hr style=" display: inline-block;width: 80px; " />
+				</div>
+				<div class="mui-content-padded oauth-area" style="margin-top: 4px;margin-left: 0px !important;" align="center">
+				</div>
+			</div>
+		</div>
+		<!--
+        	作者：wanping89@yeah.net
+        	时间：2017-12-21
+        	描述：遮罩层
+        -->
+		<div class="mui-popup-backdrop mui-active" style="display:none ;" id="mask"></div>
+
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.enterfocus.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/myStorage.js"></script>
+		<script src="js/config.js"></script>
+		<script src="js/timer.js"></script>
+		<script type="text/javascript" src="js/immersed.js"></script>
+		<script type="text/javascript" src="js/progress/modernizr.js"></script>
+		<script type="text/javascript" src="js/progress/prefixfree.min.js"></script>
+		<script>
+			var smsButton;
+			window.addEventListener("closeAll", function() {
+				var arrayWebviews = plus.webview.all();
+				for(var i = 0, len = arrayWebviews.length; i < len; i++) {
+					if(arrayWebviews[i].id != "login") {
+						plus.webview.close(arrayWebviews[i].id, "none");
+					}
+				}
+			});
+
+			(function($, doc) {
+				$.init({
+					statusBarBackground: '#FFFFFF'
+				})
+				$.plusReady(function() {
+					setTimeout(function() {
+						//关闭 splash
+						plus.navigator.closeSplashscreen();
+						plus.nativeUI.closeWaiting();
+					}, 600);
+					setTimeout(function() {
+						plus.nativeUI.closeWaiting();
+					}, 1500);
+					showmap();
+					var settings = app.getSettings();
+					var state = app.getState();
+					var loginButton = doc.getElementById('login');
+					var accountBox = doc.getElementById('account');
+					var passwordBox = doc.getElementById('password');
+					var autoLoginButton = doc.getElementById("autoLogin");
+					smsButton = doc.getElementById("login_sms");
+					//**********如果token已存在则直接登录***************//
+					//构建父子页面
+					var _self = plus.webview.getLaunchWebview();
+					var _second = plus.webview.getSecondWebview();
+					if(!app.getToken()) {
+						if(_second) {
+							_second.close();
+						}
+					} else {
+						_self.append(_second);
+					}
+
+					//**********************************************************************************//
+
+					plus.screen.lockOrientation("portrait-primary");
+
+					document.getElementById("account").value = settings.phonenumber || '';
+					document.getElementById("password").value = settings.password || '';
+
+					var regButton = doc.getElementById('reg');
+					//					mui.ajax(API_IOS_CHECK, {
+					//						dataType: 'json', //服务器返回json格式数据
+					//						type: 'get', //HTTP请求类型
+					//						timeout: 10000, //超时时间设置为10秒；
+					//						crossDomain: true,
+					//						success: function(data) {
+					//							if(data.status == 1) {
+					//								if(data.data.result == 1) {
+					document.getElementById("footer").style.display = "";
+					//第三方登录
+					var authBtns = ['qq', 'weixin']; //配置业务支持的第三方登录
+					var auths = {};
+					var oauthArea = doc.querySelector('.oauth-area');
+					plus.oauth.getServices(function(services) {
+						var flag = false;
+						for(var i in services) {
+							var service = services[i];
+							auths[service.id] = service;
+							if(~authBtns.indexOf(service.id)) {
+								var isInstalled = app.isInstalled(service.id);
+								if(isInstalled) {
+									flag = true;
+									var btn = document.createElement('div');
+									//如果微信未安装，则为不启用状态
+									btn.setAttribute('class', 'oauth-btn');
+									btn.authId = service.id;
+									btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
+									oauthArea.appendChild(btn);
+								}
+							}
+						}
+						if(!flag) {
+							document.getElementById("footer").style.display = "none";
+						}
+						$(oauthArea).on('tap', '.oauth-btn', function() {
+							pickerBlur();
+							var auth = auths[this.authId];
+							var waiting = plus.nativeUI.showWaiting();
+							auth.login(function() {
+								auth.getUserInfo(function() {
+									var unionid = '';
+									plus.nativeUI.toast("获取用户信息成功");
+									//获取三方的openId
+									var name = auth.userInfo.nickname || auth.userInfo.name;
+									myStorage.setItem("authname", name);
+									var openId = auth.userInfo.openid;
+									var oAuthName = auth.id;
+									var url;
+									if(oAuthName == 'qq') {
+										openId = auth.authResult.openid;
+										myStorage.setItem("authicon", auth.userInfo.figureurl_qq_2);
+										url = API_LOGIN_QQ;
+									} else {
+										url = API_LOGIN_WX;
+										myStorage.setItem("authicon", auth.userInfo.headimgurl);
+										unionid = auth.userInfo.unionid;
+									}
+									var datasource = {
+										"openId": openId,
+										'unionid':unionid
+									};
+									//									alert(openId);
+									//ajax后台注册登录
+									mui.ajax(url, {
+										data: datasource,
+										dataType: 'json', //服务器返回json格式数据
+										type: 'post', //HTTP请求类型
+										headers: {
+											'Content-Type': 'application/json'
+										},
+										crossDomain: true,
+										timeout: 10000, //超时时间设置为10秒；
+										success: function(data) {
+											waiting.close();
+											if(data.status == 1) {
+												mui.toast(data.message);
+												app.saveToken(data.data);
+												app.uploadClientId(data.data.customerId);
+												app.openWebView("views/main.html", "main");
+											} else {
+												mui.toast(data.msg);
+											}
+										},
+										error: function(xhr, type, errorThrown) {
+											waiting.close();
+											app.httpError(xhr.status);
+										}
+									});
+
+								}, function(e) {
+									waiting.close();
+									plus.nativeUI.toast("获取用户信息失败：" + e.message);
+								});
+							}, function(e) {
+								waiting.close();
+								plus.nativeUI.toast("登录认证失败：" + e.message);
+							});
+
+							waiting.close();
+						});
+					}, function(e) {
+						oauthArea.style.display = 'none';
+						waiting.close();
+						plus.nativeUI.toast("获取登录认证失败：" + e.message);
+					});
+					//								}
+					//							}
+					//						}
+					//						,
+					//						error: function(xhr, type, errorThrown) {
+					//						},
+					//						headers: { //设置消息头部
+					//							'Content-Type': 'application/json'
+					//						}
+					//					});
+
+					//					}
+					/**
+					 * 登录
+					 */
+					loginButton.addEventListener('tap', function(event) {
+						pickerBlur();
+						var loginInfo = {
+							account: accountBox.value,
+							password: passwordBox.value
+						};
+						//						settings.autoLogin = document.getElementById("autoLogin").checked;
+						app.setSettings(settings);
+						//参数核查
+						app.login(loginInfo, loginButton, function(err) {
+							if(err) {
+								plus.nativeUI.toast(err);
+							}
+
+						});
+
+					});
+
+					regButton.addEventListener('tap', function(event) {
+						$.openWindow({
+							url: 'reg.html',
+							id: 'reg',
+							preload: true,
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+					}, false);
+
+					window.addEventListener('resize', function() {
+						oauthArea.style.display = document.body.clientHeight > 400 ? 'block' : 'none';
+					}, false);
+					//
+
+					var backButtonPress = 0;
+					$.back = function(event) {
+						backButtonPress++;
+						if(backButtonPress > 1) {
+							plus.runtime.quit();
+						} else {
+							plus.nativeUI.toast('再按一次退出应用');
+						}
+						setTimeout(function() {
+							backButtonPress = 0;
+						}, 1000);
+						return false;
+					};
+
+					/**
+					 * 发送短信
+					 */
+					document.getElementById('btn_sms').addEventListener('tap', function() {
+						var phone = document.getElementById("phone").value;
+						var res = app.checkPhone(phone);
+						if(res == false) {
+							plus.nativeUI.toast("请输入正确的手机号");
+							return;
+						}
+						//发送短信按键增加一个点击事件
+						app.getLoginSms(phone);
+						setSeconds(this, 150);
+					});
+					document.getElementById('registerRead').addEventListener('tap', function() {
+						app.openWebView("views/register_explain.html", "register_explain")
+					});
+					//短信登录
+					smsButton.addEventListener("tap", function() {
+						pickerBlur();
+						loginBySms();
+					});
+
+				});
+			}(mui, document));
+
+			function check_status(e) {
+				if(e.checked) {
+					var sms = document.getElementById("sms").value;
+					if(sms != '' || sms.length != 0) {
+						var login_sms = document.getElementById("login_sms");
+						login_sms.removeAttribute("disabled");
+					} else {
+						plus.nativeUI.toast("验证码不能为空");
+					}
+				}
+			}
+			/**
+			 * 短信登录
+			 */
+			function loginBySms() {
+				//获取手机号
+				var phone = document.getElementById("phone").value;
+				if(!phone) {
+					mui.toast('手机号不能为空');
+					return
+				}
+
+				//再次验证手机号
+				var res = app.checkPhone(phone);
+				if(res == false) {
+					plus.nativeUI.toast("手机号码格式不正确");
+					return;
+				}
+				//获取验证码
+				var sms = document.getElementById("sms").value;
+				//验证验证码是否正确
+				if(sms == '' || sms.length == 0) {
+					plus.nativeUI.toast("验证码不能为空");
+					return;
+				}
+				//条款
+				var checkbox1 = document.getElementById("checkbox1");
+				if(!checkbox1.checked) {
+					plus.nativeUI.toast("请同意注册条款！");
+					return;
+				}
+
+				mui(smsButton).button("loading");
+				//发送请求
+				//登录
+				mui.ajax(API_SMS_LOGIN, {
+					data: {
+						"phonenumber": phone,
+						"smsCode": sms
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					crossDomain: true,
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						mui(smsButton).button("reset");
+						if(data.status == 1) {
+							//保存token
+							app.saveToken(data.data);
+							//判断是否需要发放
+							app.tokenAjax({
+								url: API_URL_POST_GIVE_AREA_COUPON,
+								data: {
+									'customerId': app.getCustomerId(),
+									'lng': myStorage.getItem("user_longitude"),
+									'lat': myStorage.getItem("user_latitude")
+								},
+								success: function(r) {},
+								error: function(e) {}
+							});
+							//成功跳转到主页面
+							app.openWebView('views/setting/setPassword.html', 'setPassword');
+						} else {
+							mui.toast(data.msg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui(smsButton).button("reset");
+						app.httpError(xhr.status);
+					}
+				});
+			}
+
+			function tokenLogin() {
+				var mask = document.getElementById("mask").style.display;
+				if(!mask) {
+					return;
+				}
+				var token = app.getToken();
+				if(token) {
+					//有token
+					if(app.checkToken()) {
+						//成功跳转到主页面
+						app.openWebView('views/main.html', 'main');
+					}
+				}
+			}
+			//让当前页面所有input失去焦点, 关闭软键盘 /
+			function pickerBlur() {
+				var inputs = document.getElementsByTagName("input");
+				for(var i = 0; i < inputs.length; i++) {
+					inputs[i].blur();
+				}
+			}
+
+			function showmap() {
+				try {
+					app.getCurrentLocation(false, function(p) {
+						try {
+							myStorage.setItem('user_longitude', p.coords.longitude);
+							myStorage.setItem('user_latitude', p.coords.latitude);
+						} catch(e) {}
+					}, function(e) {});
+				} catch(e) {}
+			}
+		</script>
+	</body>
+
+</html>

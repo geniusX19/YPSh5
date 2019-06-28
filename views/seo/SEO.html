@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+	</head>
+	<style>
+		#header {
+			box-shadow: none;
+		}
+		
+		#money_area {
+			width: 100%;
+			height: 110px;
+			color: white !important;
+			background: -webkit-gradient(linear, 0 0, 100% 0, from(#4dbeca), to(#3da0c5));
+			background: -webkit-linear-gradient(left, #4dbeca, #3da0c5);
+			background: -moz-linear-gradient(left, #4dbeca, #3da0c5);
+			background: -o-linear-gradient(left, #4dbeca, #3da0c5);
+			background: linear-gradient(left, #4dbeca, #3da0c5);
+			/* Safari 5.1 - 6.0 */
+			/* Opera 11.1 - 12.0 */
+			/* Firefox 3.6 - 15 */
+			text-align: center;
+			padding-top: 30px;
+		}
+		
+		#money {
+			font-size: 30px;
+		}
+		
+		.mui-table-view:before,
+		.mui-table-view:after {
+			background-color: #FFFFFF;
+		}
+		
+		.mui-navigate-right:after,
+		.mui-push-left:after,
+		.mui-push-right:after {
+			font-size: 20px !important;
+			color: #666666 !important;
+		}
+		
+		.title_1 {
+			display: inline-block;
+			width: 32% !important;
+			text-align: left;
+			font-size: 15px;
+			padding-left: 10px;
+			padding-top: 2px;
+		}
+		
+		.title_2 {
+			width: 25px;
+			height: 25px;
+			float: left;
+			margin-top: -2px;
+			margin-right: 5px;
+			margin-left: 10px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			border-radius: 5px;
+		}
+		
+		.title_3 {
+			float: right;
+			margin-top: 3px;
+			margin-right: 10px;
+			color: lightsteelblue;
+		}
+		
+		.content {
+			height: 30px;
+		}
+		
+		.color-active {
+			color: #4dbeca;
+		}
+		
+		input::-webkit-input-placeholder {
+			/* WebKit browsers */
+			font-size: 16px;
+		}
+		
+		input:-moz-placeholder {
+			/* Mozilla Firefox 4 to 18 */
+			font-size: 16px;
+		}
+		
+		input::-moz-placeholder {
+			/* Mozilla Firefox 19+ */
+			font-size: 16px;
+		}
+		
+		input :-ms-input-placeholder {
+			/* Internet Explorer 10+ */
+			font-size: 16px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的推广</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div id="money_area">
+				<span>¥<span id="money">--</span></span>&nbsp; <img height="14px" width="14px" src="../../images/share/tips.png" />
+				<br />
+				<span style="font-size: 13px;">奖励金</span>
+			</div>
+			<div style="margin-top:15px;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="showQrcode">
+						<a class="mui-navigate-right">
+							<span class="icon-content">面对面邀请</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="shareQrcode">
+						<a class="mui-navigate-right">
+							<span class="icon-content">分享邀请</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="applyWithdrawal">
+						<a class="mui-navigate-right">
+							<span class="icon-content">提现</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="SEORecords">
+						<a class="mui-navigate-right">
+							<span class="icon-content">推广记录</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="accountRecords">
+						<a class="mui-navigate-right">
+							<span class="icon-content">账户流水</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div style="margin-top: 20px;">
+				<span style="padding-left: 15px;font-weight: 500;font-size: 15px;">奖励说明</span>
+				<ul type="decimal" style="font-size: 15px;padding-right: 5px;">
+					<li><span style="font-weight: 700;">用户首单<span id="customerFirstOrderReward">8</span>元奖励：</span><span>邀请好友注册用户，注册成功后并完成首单可获得奖励</span></li>
+					<li style=""><span style="font-weight: 700;">用户每单<span id="customerOrderReward">0.03</span>元奖励：</span>用户在完成首单以后每完成一单都可获得奖励</li>
+					<li><span style="font-weight: 700;">配送员首单<span id="senderFirstTaskReward">8</span>元奖励：</span>邀请好友注册配送员，注册成功后并完成首单可获得奖励</li>
+					<li style=""><span style="font-weight: 700;">配送员每单<span id="senderTaskReward">0.03</span>元奖励：</span>配送员在完成首单以后每完成一单都可获得奖励</li>
+				</ul>
+			</div>
+			<p style="padding-left: 15px;font-size: 13px;padding-right:5px;">备注：获取的奖励可提现，不同区域奖励金额可能会有所不同，请以实际到账的金额为准。</p>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/countUp.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var flag = true;
+			var payType = '',
+				numAnim,
+				shareServices = null;
+
+			window.onload = function() {
+				//本地是否已保存推广链接
+				if (!myStorage.getItem(STORAGE_NAME_SEO)) {
+					app.getSeoQrcode();
+				}
+				//获取推广奖励
+				app.tokenAjax_Get({
+					url: getCustomerRewards(app.getCustomerId()),
+					success: function(e) {
+						if (e.status === 1) {
+							document.getElementById("customerFirstOrderReward").innerText = e.data.customerFirstOrderReward;
+							document.getElementById("senderFirstTaskReward").innerText = e.data.senderFirstTaskReward;
+							var customerOrderReward = e.data.customerOrderReward;
+							var senderTaskReward = e.data.senderTaskReward;
+							if (customerOrderReward && customerOrderReward > 0) {
+								var co = document.getElementById("customerOrderReward");
+								co.innerText = customerOrderReward;
+								co.parentNode.style.display = '';
+							}
+
+							if (senderTaskReward && senderTaskReward > 0) {
+								var st = document.getElementById("senderTaskReward");
+								st.innerText = senderTaskReward;
+								st.parentNode.style.display = '';
+							}
+						}
+					},
+					error: function(xhr) {
+						app.httpError(xhr.status);
+					}
+				});
+
+			}
+			mui.plusReady(function() {
+				setTimeout(function() {
+					var page = plus.webview.getWebviewById('SEOAccount');
+					if (page) {
+						page.close('none', 0);
+					}
+				}, 500);
+				app.tokenAjax_Get({
+					url: getBusinessManAccount(app.getCustomerId()),
+					success: function(e) {
+						if (e.status === 1) {
+							//账户余额
+							var total = e.data.moneyRemain;
+							numAnim = new CountUp('money', 0, total, 2, 1);
+							numAnim.start();
+						}
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show('slide-in-right', 300);
+					},
+					error: function(xhr) {
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show('slide-in-right', 300);
+						app.httpError(xhr.status);
+					}
+				});
+
+				//获取分享通道
+				app.getShareServices(shareServices, function(e) {
+					shareServices = e;
+				});
+
+				//展示二维码
+				document.getElementById('showQrcode').addEventListener('tap', function() {
+					app.openWindowNoAutoShow('qrcode.html', 'qrcode');
+				});
+				//分享
+				document.getElementById('shareQrcode').addEventListener('tap', function() {
+					app.shareHref(shareServices, '注册壹配送：推荐用户、配送员，获高额奖金！', "注册壹配送：推荐用户、配送员，获高额奖金！", myStorage.getItem(
+						STORAGE_NAME_SEO), ['_www/images/share/thumbs_logo.png'])
+				});
+				//奖励金流水
+				document.getElementById('accountRecords').addEventListener('tap', function() {
+					app.openWindowNoAutoShow('SEOAccountRecords.html', 'SEOAccountRecords');
+				})
+
+				document.getElementById('money_area').addEventListener('tap', function() {
+					app.openWindowNoAutoShow('SEOTotal.html', 'SEOTotal');
+				})
+
+				document.getElementById('SEORecords').addEventListener('tap', function() {
+					app.openWindowNoAutoShow("SEORecords.html", 'SEORecords');
+				})
+				//提现申请
+				document.getElementById('applyWithdrawal').addEventListener('tap', function() {
+					app.openWindowNoAutoShow('applyWithDrawal.html', 'applyWithDrawal');
+				})
+
+				/**
+				 * 展示二维码
+				 */
+				function showQRcode() {
+					//生成二维码
+					new QRCode(document.getElementById("qrcode"), {
+						text: myStorage.getItem(STORAGE_NAME_SEO),
+						colorDark: "#000000",
+						colorLight: "#ffffff",
+						correctLevel: QRCode.CorrectLevel.H
+					});
+					setTimeout(function() {
+						//获取二维码
+						var qrcode = document.getElementById("qrcode").getElementsByTagName('img')[0].src;
+						var qrcode_bitmap = new plus.nativeObj.Bitmap();
+						//导入图片
+						qrcode_bitmap.loadBase64Data(qrcode, function() {
+							var picName = escape(QRCODE_PATH + myStorage.getItem(STORAGE_NAME_SEO).replace(/\//g, '') + ".png");
+							//保存
+							qrcode_bitmap.save(picName, {
+								overwrite: true,
+								format: 'png',
+								quality: 100
+							}, function(e) {
+								//释放图片内存资源
+								qrcode_bitmap.clear();
+								//预览图片
+								plus.nativeUI.previewImage([picName]);
+								plus.nativeUI.closeWaiting();
+							}, function() {})
+						}, function() {})
+					}, 300)
+				}
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,460 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<style>
+			#dynamic {
+				position: relative;
+				top: 10px;
+			}
+			
+			#time {
+				position: relative;
+				font-size: 25px;
+				top: -120px;
+				color: orange;
+				width: 220px;
+			}
+			
+			.priceArea {
+				width: calc(100%);
+				margin-top: 20px;
+				margin-bottom: 20px;
+				padding-left: 10px;
+				font-size: 15px;
+				padding-bottom: 5px;
+				border-bottom: 1px #CCCCCC solid;
+			}
+			
+			#myCanvas {
+				width: 220px;
+				height: 220px;
+			}
+			
+			.mui-btn-block {
+				margin-top: 30px;
+				width: 33%;
+				float: left;
+				margin-left: 11%;
+				height: 44px;
+				font-size: 16px;
+				padding-top: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">确认支付</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div id="dynamic" align="center">
+				<canvas id="myCanvas" width="220" height="220"></canvas>
+				<div id="time" align="center">
+					<span id="minute"></span><span> : </span><span id="seconds"></span>
+				</div>
+
+			</div>
+			<div class="priceArea">
+				<span>订单号：</span><span id="orderId" style="font-size: 13px;">4544fsfdfds545dsf45d45sf5fs45fsfs54</span>
+			</div>
+
+			<div class="priceArea">
+				<span>订单价格：</span><span id="price" style="color: orange;font-size: 17px;">28</span><span> 元</span>
+			</div>
+			<div class="priceArea" style="color: grey;border: none;">
+				备注： 10分钟后自动取消订单
+			</div>
+
+			<div>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="cancel">取消</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="payMoney">确认支付</button>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				preloadPages: [{
+					url: '../order/orderList.html',
+					id: 'orderList',
+					styles: {},
+					extras: {}
+				}]
+			});
+			var time = 10 * 60;
+			var staticTime = 10 * 60;
+			var minute = 9;
+			var seconds = 59;
+			var ctx;
+			var dataSource;
+			var timer;
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				dataSource = self.dataSource;
+				//订单号
+				document.getElementById("orderId").innerHTML = dataSource.quickcallId;
+				//价格
+				document.getElementById("price").innerHTML = dataSource.price;
+				var payType = dataSource.payType;
+				var payString = dataSource.paymentString;
+				//确认付款付款
+				document.getElementById('payMoney').addEventListener('tap', function() {
+					if(payType === 'CUSTOMER_RECHARGE') {
+						var billId = dataSource.id;
+						var customerId = dataSource.customerId;
+						plus.nativeUI.showWaiting('支付中...');
+						app.tokenAjax({
+							url: useRechargeToPayBill(customerId, billId),
+							success: function(e) {
+								plus.nativeUI.closeWaiting();
+								if(e.status === 1) {
+									setTimeout(function() {
+										//清除定时器
+										clearInterval(timer);
+										//打开
+										app.openWebView('call_list.html', 'call_list');
+									},0);
+									mui.toast('支付成功');
+								} else {
+									mui.toast(e.msg);
+								}
+
+							},
+							error: function(xhr) {
+								plus.nativeUI.closeWaiting();
+								app.httpError(xhr.status);
+							}
+						});
+
+					} else {
+						pay(payType, payString);
+					}
+				});
+				//取消订单
+				document.getElementById('cancel').addEventListener('tap', function() {
+					mui.confirm('是否要取消订单？', '提示', ['否', '是'], function(e) {
+						if(e.index == 1) {
+							//取消订单
+							cancelOrder1(dataSource.quickcallId, function() {});
+						}
+					}, 'div');
+				});
+				/**
+				 * 重写返回逻辑
+				 */
+				mui.back = function() {
+					mui.confirm('是否要关闭当前窗口，并取消订单？', '提示', ['否', '是'], function(e) {
+						if(e.index == 1) {
+							//取消订单
+							cancelOrder1(dataSource.quickcallId, function() {});
+						}
+					}, 'div');
+				}
+			});
+
+			/**
+			 *画圆盘
+			 * 
+			 */
+			(function() {
+				document.getElementById("minute").innerHTML = "0" + minute;
+				document.getElementById("seconds").innerHTML = seconds;
+
+				var canvas = document.getElementById("myCanvas");
+				ctx = canvas.getContext("2d");
+				ctx.beginPath();
+				//移动到中心点
+				ctx.moveTo(110, 100);
+				//画圆弧
+				ctx.arc(110, 110, 100, 0, 2 * Math.PI);
+				//回到原点
+				ctx.closePath();
+				//填充颜色
+				ctx.fillStyle = "#DDDDDD";
+				ctx.fill();
+				//中心空白圆
+				ctx.beginPath();
+				ctx.moveTo(110, 110);
+				ctx.arc(110, 110, 85, 0, 2 * Math.PI);
+				ctx.closePath();
+				ctx.fillStyle = "#F7F7F7";
+				ctx.fill();
+				timer = setInterval(function() {
+					time--;
+					//圆弧
+					var x = (((staticTime - time) / staticTime) * 2) + 1.5;
+					var y = x * Math.PI;
+
+					drawProgress(y);
+					if(time == 0) {
+						//取消订单
+						cancelOrder1(dataSource.quickcallId, function() {
+							plus.push.createMessage("对不起，您的订单由于长时间未支付已被系统自动取消", "", {
+								"title": "一键呼叫订单被系统取消",
+								"cover": false
+							});
+						});
+						drawProgress(3.5 * Math.PI);
+						clearInterval(timer);
+					}
+					//数字
+					seconds--;
+					if(minute == 0 && seconds == 0) {
+						drawProgress(3.5 * Math.PI);
+						//取消订单
+						cancelOrder1(dataSource.quickcallId, function() {
+							plus.push.createMessage("对不起，您的订单由于长时间未支付已被系统自动取消", "", {
+								"title": "一键呼叫订单被系统取消",
+								"cover": false
+							});
+						});
+						clearInterval(timer);
+					}
+					if(seconds == 0) {
+						if(minute > 0) {
+							minute--;
+						}
+					} else if(seconds < 0) {
+						seconds = 59;
+					}
+					if(seconds < 10) {
+						document.getElementById("seconds").innerHTML = "0" + seconds;
+					} else {
+						document.getElementById("seconds").innerHTML = seconds;
+
+					}
+					if(minute < 10) {
+						document.getElementById("minute").innerHTML = "0" + minute;
+					} else {
+						document.getElementById("minute").innerHTML = minute;
+					}
+
+				}, 1000);
+			})();
+
+			/**
+			 * 画进度条
+			 * @param {Object} y  1.5~ 0 ~ 0.5 ~1 ~1.5~2*Math.PI
+			 */
+			function drawProgress(y) {
+				//清除画布
+				ctx.clearRect(0, 0, 220, 220);
+
+				ctx.beginPath();
+				//移动到中心点
+				ctx.moveTo(110, 100);
+				//画圆弧
+				ctx.arc(110, 110, 100, 0, 2 * Math.PI);
+				//回到原点
+				ctx.closePath();
+				//填充颜色
+				ctx.fillStyle = "#DDDDDD";
+				ctx.fill();
+				//画圆形，填充颜色为橙色
+				ctx.beginPath();
+				ctx.moveTo(110, 110);
+				ctx.arc(110, 110, 100, 1.5 * Math.PI, y);
+				ctx.closePath();
+				ctx.fillStyle = "orange";
+				ctx.fill();
+				//中心空白圆
+				ctx.beginPath();
+				ctx.moveTo(110, 110);
+				ctx.arc(110, 110, 85, 0, 2 * Math.PI);
+				ctx.closePath();
+				ctx.fillStyle = "#F7F7F7";
+				ctx.fill();
+			}
+			/**
+			 * 支付
+			 * @param {Object} payType  支付类型
+			 * @param {Object} payStatement  调起支付宝或微信的statment支付订单信息
+			 */
+			function pay(payType, payStatement) {
+				/***判断支付通道****/
+				//最终的支付通道
+				var channel;
+				/***
+				 * 用于标识支付通道： 
+				 * "alipay" - 表示支付宝；
+				 * "wxpay" - 表示微信支付； 
+				 */
+				var payId; //支付标识
+				if(payType == "ALIPAY_ANDROID") {
+					payId = "alipay";
+				} else {
+					payId = "wxpay";
+				}
+
+				// 取出支付宝和微信的支付通道
+				plus.payment.getChannels(function(channels) {
+					mui.each(channels, function(index, element) {
+						if(element.id == payId) {
+							channel = element;
+						}
+					});
+					if(!channel) {
+						mui.toast('获取支付通道失败，请重试！');
+					}
+					setTimeout(function() {
+						mui.confirm('支付已完成', '提示', ['支付遇到问题', '支付完成'], function(e) {
+							if(e.index == 1) {
+								var url = getPhoneCallDetail(app.getCustomerId(),dataSource.quickcallId);
+								console.log(url);
+								app.tokenAjax_Get({
+									url: url,
+									success: function(result) {
+										console.log(JSON.stringify(result))										
+										if(result.status == 1) {
+											
+											var status = result.data.quickcallStatus;
+											if(status == "CREATED") {
+												mui.toast('订单未支付');
+											} else if(status == 'CANCELLED') {
+												mui.toast('订单已被取消');
+												//清除定时器
+												clearInterval(timer);
+												//打开
+												plus.webview.currentWebview().close();
+												plus.webview.getWebviewById("call_pay").close();
+											} else {
+												//清除定时器
+												clearInterval(timer);
+												//打开
+												plus.webview.currentWebview().close();
+												app.openWebView('call_list.html','call_list');
+											}
+										}
+									},
+									error: function(xhr) {
+										app.httpError(xhr.status);
+									}
+								});
+							}
+						}, 'div')
+					}, 3000);
+					//发起支付
+					plus.payment.request(channel, payStatement, function(result) {
+						mui.toast('支付完成');
+						/**
+						 *查询订单状态是否已支付
+						 * 轮询查询订单状态
+						 * 
+						 */
+						var timer1 = setInterval(function() {
+							app.tokenAjax_Get({
+								url: getPhoneCallDetail(app.getCustomerId(),dataSource.quickcallId),
+								success: function(result) {
+									if(result.status == 1) {
+										var status = result.data.quickcallStatus;
+										if(status == "CREATED") {
+											mui.toast('订单未支付');
+										} else if(status == 'CANCELLED') {
+											mui.toast('订单已被取消');
+											//清除定时器
+											clearInterval(timer);
+											clearInterval(timer1)
+											//打开
+											plus.webview.currentWebview().close();
+											plus.webview.getWebviewById("call_pay").close();
+										} else {
+											//清除定时器
+											clearInterval(timer);
+											clearInterval(timer1);
+											//打开
+											app.openWebView('call_list.html','call_list');
+										}
+									}
+								},
+								error: function(xhr) {
+									app.httpError(xhr.status);
+								}
+							});
+						}, 1000);
+
+					}, function(error) {
+						mui.toast("支付失败");
+					});
+
+				}, function(e) {
+					mui.toast("获取支付通道列表失败：" + e.message);
+				});
+			}
+			/**
+			 * 取消订单
+			 */
+			function cancelOrder1(id, callback) {
+
+				app.tokenAjax({
+					url: postCancelQuickcall(app.getCustomerId(),id), 
+					data: {},
+					success: function(data) {
+						if(data.status == 1) {
+							plus.webview.currentWebview().close();
+							plus.webview.getWebviewById("call_pay").close();
+							return callback();
+						} else {
+							mui.toast(data.msg);
+						}
+					},
+					error: function(xhr) {
+						app.httpError(xhr.status);
+					}
+				});
+			}
+
+			//支付失败错误码
+			function getPayErrorMessage(e) {
+				var code = e.code;
+				switch(code) {
+					/*支付宝*/
+					case "62000":
+						return "客户端未安装支付通道依赖的服务";
+					case "62001":
+						return "用户取消支付操作";
+					case "62002":
+						return "此设备不支持支付";
+					case "62003":
+						return "数据格式错误";
+					case "62004":
+						return "支付账号状态错误";
+					case "62005":
+						return "订单信息错误";
+					case "62006":
+						return "支付操作内部错误";
+					case "62007":
+						return "支付服务器错误";
+					case "62008":
+						return "网络问题引起的错误";
+					case "62009":
+						return "其它未定义的错误";
+						/***微信的错误码 **/
+					case "-1":
+						return "一般错误";
+					case "-2":
+						return "用户取消";
+					case "-3":
+						return "发送失败";
+					case "-4":
+						return "认证被否决";
+					case "-5":
+						return "不支持错误";
+					default:
+						return "";
+				}
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/iconfont.css" />
+		<link rel="stylesheet" href="css/mui.picker.min.css" />
+		<style>
+			html,
+			body {
+				height: calc(100% - 20px);
+			}
+			
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			
+			.mui-input-group label {
+				width: 22%;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			
+			.mui-icon {
+				color: #4dbeca;
+			}
+			
+			#sms_div .mui-icon-clear {
+				right: 110px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-arrowleft mui-pull-left title-back"></a>
+			<h1 class="mui-title">注册</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div style="" align="center">
+				<img src="images/logo.png" style="margin-top:20px;" />
+			</div>
+			<form class="mui-input-group" style="margin-top: 20px;">
+				<div class="mui-input-row">
+					<label><span class="mui-icon iconfont icon-phone" style="margin-left: 3px;font-size: 18px;"></span></label>
+					<input id='account' type="number" class=" mui-input" placeholder="请输入手机号" onchange="check_Phone(this)">
+				</div>
+				<div class="mui-input-row">
+					<label><span class="mui-icon mui-icon-locked"></span></label>
+					<input id='password' type="password" class=" mui-input" placeholder="请输入6~24位密码" onchange="checkPassword(this)">
+				</div>
+				<div class="mui-input-row">
+					<label><span class="mui-icon mui-icon-locked"></span></label>
+					<input id='password_confirm' type="password" class=" mui-input" placeholder="请再次输入密码" onchange="checkPassword_1(this)">
+				</div>
+				<div class="mui-input-row" id="sms_div">
+					<label><span class="mui-icon iconfont icon-yanzhengma"style="margin-left: 3px;font-size: 18px;"></span></label>
+					<input id='sms' type="number" class=" mui-input" placeholder="请输入验证码" style="width:40% ;float: left;">
+					<div style="margin-top: 9px;float: right;margin-right: 8px;">
+						<a href="#" style="font-size: 15px;color: orangered;" id="btn_sms">获取验证码</a>
+					</div>
+				</div>
+
+				<div class="mui-input-row" id="city_div">
+					<label><img src="images/city.png"style="height: 18px;margin-left: 3px;font-size: 18px;"></label>
+					<input id='city' type="text" class="mui-input" placeholder="请选择城市" readonly="readonly">
+				</div>
+
+			</form>
+			<div class="mui-input-row mui-checkbox mui-left" style="margin-top:5px;margin-left:19px;font-size: 13px; height: 32px !important;">
+				<span class="iconfont icon-xuanzhong" style="color: #4dbeca;" id="checkbox1"></span>
+				<span>我已阅读并同意 <a id="terms" style="color: orangered;">《注册服务条款》</a></span>
+			</div>
+			<div class="" style="margin: 10px;border-bottom-width:2px; border-radius: 30px ;" align="center">
+				<button id='reg' class="mui-btn" data-loading-text="注册中..." data-loading-icon="" style="color: #4dbeca;font-size: 20px;font-family: '微软雅黑';width: 260px;">立即注册</button>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/config.js"></script>
+		<script type="text/javascript" src="js/immersed.js"></script>
+		<script type="text/javascript" src="js/timer.js"></script>
+		<script src="js/mui.picker.min.js" type="application/javascript"></script>
+		<script>
+			var cityCode = "";
+			(function($, doc) {
+				$.init();
+				$.plusReady(function() {
+					var regButton = doc.getElementById('reg');
+					var accountBox = doc.getElementById('account');
+					var passwordBox = doc.getElementById('password');
+					var passwordConfirmBox = doc.getElementById('password_confirm');
+
+					document.getElementById('checkbox1').addEventListener('tap', function() {
+						changeColor(this);
+					});
+					console.log(1);		
+					$.ajax(API_URL_GET_CITY_LIST, {
+						crossDomain: true,
+						type: 'GET',
+						dataType: 'json',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						success: function(result) {
+							if(result.status == 1) {
+								var picker = new mui.PopPicker();
+								var cityArr = new Array;
+								$.each(result.data, function(index, data) {
+									cityArr.push({
+										"text": data.name,
+										"value": data.code
+									});
+								});
+								picker.setData(cityArr);
+								document.getElementById("city_div").addEventListener('tap', function() {
+									app.inputBlur();
+									picker.show(function(item) {
+										document.getElementById("city").value = item[0].text;
+										cityCode = item[0].value;
+									});
+								});
+							}
+						},
+						error: function(xhr) {
+							app.httpError(xhr.status);
+						}
+					});
+
+					/**
+					 * 新用户注册
+					 **/
+					regButton.addEventListener('tap', function(event) {
+						if(app.checkPhone(accountBox.value) == false) {
+							app.alert("手机号有误");
+							return;
+						}
+						if(!(passwordBox.value.length <= 25 && passwordBox.value.length >= 6)) {
+							app.alert("必须是6~25长度的密码");
+						}
+						var passwordConfirm = passwordConfirmBox.value;
+						if(passwordConfirm != passwordBox.value) {
+							plus.nativeUI.toast('密码两次输入不一致');
+							return;
+						}
+						//验证码
+						var sms = doc.getElementById("sms").value;
+						if(sms == '' || sms.length == 0) {
+							app.alert('请输入验证码');
+							return;
+						}
+						//条款
+						var checkbox1 = document.getElementById("checkbox1");
+						if(!checkbox1.style.color) {
+							app.alert("请同意注册条款！");
+							return;
+						}
+						//要发送的参数
+						var params = {
+							"phonenumber": accountBox.value,
+							"password": passwordBox.value,
+							"againPassword": passwordConfirm,
+							"smsCode": sms,
+							"cityCode":cityCode
+						}
+						mui(regButton).button("loading");
+						//验证完毕，数据到后台
+						mui.ajax(API_URL_USER_REGISTER, {
+							data: params,
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							crossDomain: true,
+							headers: { //设置消息头部
+								'Content-Type': 'application/json'
+							},
+							success: function(data) {
+								mui(regButton).button("reset");
+								if(data.status == 1) { //成功
+									//成功后提示
+									mui.alert('注册成功', "提示", '确认', function() {
+										app.openWebView("login.html", "login");
+									}, 'div');
+								} else {
+									mui.toast(data.msg);
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								mui(regButton).button("reset");
+								app.httpError(xhr.status)
+							}
+						});
+
+					});
+
+					//注册条款页面
+					document.getElementById('terms').addEventListener('tap', function() {
+						app.openWebView("views/register_explain.html", "register_explain");
+					});
+					/**
+					 * 发送短信
+					 */
+					document.getElementById('btn_sms').addEventListener('tap', function() {
+						var phone = document.getElementById("account").value;
+						var res = app.checkPhone(phone);
+						if(res == false) {
+							plus.nativeUI.toast("请输入正确的手机号");
+							return;
+						}
+						//发送短信按键增加一个点击事件
+						app.getSms(phone);
+						setSeconds(this, 150);
+					});
+				});
+			}(mui, document));
+
+			function changeColor(e) {
+				var color = e.style.color;
+				if(color == '' || color.length == 0) {
+					e.style.color = 'orangered';
+				} else {
+					e.style.color = '';
+				}
+			}
+
+			function check_Phone(e) {
+				var phone = e.value;
+				if(!phone) {
+					mui.toast('手机号不能为空');
+				}
+				var res = app.checkPhone(phone);
+				if(res == false) {
+					mui.toast("手机号有误");
+				}
+			}
+
+			function checkPassword(e) {
+				var pwd = e.value;
+				if(!(pwd.length >= 6 && pwd.length <= 25)) {
+					app.alert("必须是6~24长度的密码");
+				}
+			}
+
+			function checkPassword_1(e) {
+				var pwd2 = e.value;
+				var pwd = document.getElementById("password").value;
+				if(pwd != pwd2) {
+					app.alert("两次密码不一致");
+				}
+			}
+		</script>
+	</body>
+
+</html>

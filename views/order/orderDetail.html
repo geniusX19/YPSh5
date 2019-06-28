@@ -1,0 +1,630 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/showLoading.css" />
+	</head>
+	<style>
+		.list {
+			width: 100%;
+			margin-bottom: 10px;
+			background-color: #FFFFFF;
+			padding-bottom: 10px;
+		}
+		
+		.title {
+			height: 35px;
+			width: 100%;
+			padding: 8px;
+			color: #4dbeca;
+			font-weight: 900;
+			border-bottom: 1px solid #efeff4;
+		}
+		
+		.title_1 {
+			width: 100%;
+			padding: 8px;
+		}
+		
+		.title_2 {
+			display: inline-block;
+			width: 30%;
+		}
+		
+		.title_3 {
+			display: inline-block !important;
+			text-align: right;
+			width: 65%;
+			color: #888888;
+			padding-right: 3px !important;
+			padding-bottom: 10px !important;
+		}
+		
+		.icon {
+			float: left;
+			margin-top: 5px;
+			margin-left: 25px;
+			width: 70px;
+			height: 70px;
+			border-radius: 35px;
+		}
+		
+		.mui-popup {
+			position: fixed!important;
+			top: 42% !important;
+		}
+		
+		#order-status-list {
+			position: absolute;
+			top: 15%;
+			left: 3%;
+			height: 68%;
+			width: 94%;
+			z-index: 10000000;
+			display: none;
+		}
+		
+		#order-status-list .mui-scroll-wrapper {
+			height: 85%;
+			background-color: white;
+			border-radius: 5px;
+		}
+		
+		.mui-backdrop {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 998;
+			background-color: rgba(0, 0, 0, .5);
+		}
+		
+		#closeRedBox {
+			position: relative;
+			top: 90%;
+		}
+		
+		.point {
+			margin-top: 5px;
+			width: 10px;
+			height: 10px;
+			border-radius: 5px;
+			border: 1px solid #FF7F24;
+			background-color: #FF7F24;
+			float: left;
+		}
+		
+		.status-box {
+			opacity: 0.2;
+			margin-top: 20px;
+			margin-left: 20px;
+			height: 20px;
+		}
+		
+		.box-content {
+			float: left;
+			margin-left: 15px;
+			font-size: 14px;
+		}
+		
+		.box-time {
+			float: right;
+			margin-right: 20px;
+			font-size: 12px;
+			color: #888888;
+		}
+		
+		.line {
+			margin-left: 24.5px;
+			height: 52px;
+			margin-top: -4px;
+			margin-bottom: -24px;
+			border-left: 0.5px solid #FF7F24;
+		}
+		
+		.mui-content {
+			height: calc(100% - 20px);
+		}
+		
+		.box-active {
+			opacity: 1 !important;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-arrowleft mui-pull-left "></a>
+			<h1 class="mui-title" id="order-status-title"></h1>
+			<span class="mui-icon iconfont icon-kefu mui-pull-right" id="service"></span>
+
+		</header>
+		<div class="mui-content mui-scroll-wrapper" id="dcontent">
+			<div class="mui-scroll">
+				<div class="header">
+					<div class="list">
+						<div class="title"> 订单信息</div>
+						<div class="title_1">
+							<span class="title_2"> 订单号</span>
+							<span class="title_3" id="orderId" style="font-size: 15px;"></span>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 订单状态</div>
+							<div class="title_3" id="orderStatus"></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 创建时间</div>
+							<div class="title_3" id="creatTime"></div>
+						</div>
+						<div class="title_1" style="display: none;" id="fetchTime_div">
+							<div class="title_2"> 预约取件时间</div>
+							<div class="title_3" id="fetchTime"></div>
+						</div>
+						<div class="title_1" style="display: none;" id="deliveryTime_div">
+							<div class="title_2"> 预约送达时间</div>
+							<div class="title_3" id="deliveryTime"></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 订单价格</div>
+							<div class="title_3"><span>¥</span> <span id="price"></span>元</div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 订单距离</div>
+							<div class="title_3"> <span id="distance"></span> <span>km</span></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 支付方式</div>
+							<div class="title_3"> <span id="payMode"></span> </div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 支付状态</div>
+							<div class="title_3"> <span id="payStatus"></span> </div>
+						</div>
+					</div>
+					<!--按钮-->
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-block" style="margin-top: 5px;margin-bottom: 15px;display: none;" id="validateSender">验证配送员</button>
+					<!--
+					配送员信息区
+					-->
+					<div class="list" style=" display:;" id="senderInfo">
+						<div id="driverArea" style="width: 50% !important;">
+							<img src="../../images/senderIcon.png" class="icon" style="width: 55px;height: 60px;margin-left: 10px;" />
+							<div style="float: left;padding-top: 30px;margin-left: 5px; font-family: '微软雅黑';">
+								<div style="display: inline-block;font-size: 15px;" id="driver"></div>
+								<span class="mui-icon mui-icon-location-filled" style="color: orange;"></span>
+							</div>
+						</div>
+						<div class="title_3" style="padding-top: 30px;width: 50% !important;" id="phoneArea">
+							<span class="mui-icon mui-icon-phone-filled" style="color: orange;"></span>
+							<span id="phone"></span>
+						</div>
+					</div>
+					<div class="list">
+						<div class="title"> 物品信息</div>
+						<div class="title_1">
+							<div class="title_2"> 物品名</div>
+							<div class="title_3"><span id="goods"></span></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 包裹尺寸</div>
+							<div class="title_3"><span id="goodsNum"></span></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 重量</div>
+							<div class="title_3"><span id="weight"></span> <span>kg</span></div>
+						</div>
+					</div>
+					<div class="list" style="min-height:185px;">
+						<div class="title"> 收件人信息</div>
+						<div class="title_1">
+							<div class="title_2"> 姓名</div>
+							<div class="title_3"><span id="receiver"></span></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 手机</div>
+							<div class="title_3"><span id="receivePhone"></span></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2" style="vertical-align: top;"> 地址</div>
+							<div class="title_3" style="text-align: right"><span id="receiveAddress" style="font-size: 14px !important;"></span></div>
+						</div>
+					</div>
+					<div class="list" style="min-height:185px;">
+						<div class="title"> 发件人信息</div>
+						<div class="title_1">
+							<div class="title_2"> 姓名</div>
+							<div class="title_3"><span id="sender"></span></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2"> 手机</div>
+							<div class="title_3"><span id="senderPhone"></span></div>
+						</div>
+						<div class="title_1">
+							<div class="title_2" style="vertical-align: top;">地址</div>
+							<div class="title_3" style="text-align: right;"><span id="senderAddress" style="font-size: 13px !important;"></span></div>
+						</div>
+					</div>
+				</div>
+				<div align="right" style="margin-bottom:10px;margin-right:30px">
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-danger cancel-order" style="color: white; display:none ;">取消</button>
+					<!-- <button type="button" class="mui-btn mui-btn-blue mui-btn-danger again-send-order" style="color: white; display: none;">重新派单</button> -->
+				</div>
+			</div>
+		</div>
+		<!--订单流程状态-->
+		<div id="order-status-list">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll" id="insertEle">
+					<div class="status-box box-active" id="box-create">
+						<div class="point"></div>
+						<div class="box-content ">订单提交成功</div>
+						<div class="box-time"></div>
+					</div>
+
+					<div class="line" id="accept_order"></div>
+					<div class="status-box" id="box-accept">
+						<div class="point"></div>
+						<div class="box-content">配送员已接单</div>
+						<div class="box-time"></div>
+					</div>
+					<div class="line"></div>
+					<div class="status-box" id="box-fetched">
+						<div class="point"></div>
+						<div class="box-content">配送员已取件</div>
+						<div class="box-time"></div>
+					</div>
+					<div class="line" id="finish_order"></div>
+					<div class="status-box" id="box-sent">
+						<div class="point"></div>
+						<div class="box-content">订单已送达</div>
+						<div class="box-time"></div>
+					</div>
+				</div>
+			</div>
+			<div class="description2" id="closeRedBox" align="center"><img src="../../images/hongbao/close.svg" width="40px"></div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/showLoading.js"></script>
+		<script type="text/javascript">
+			var orderId;
+			var orderStatus;
+			var dataSource;
+			var timer;
+			var nodes = null;
+			var flag = false;
+			var displayOrder = 0
+			mui.init();
+
+			function openMask() {
+				//打开遮罩蒙板
+				mask = mui.createMask(function() {
+					return flag;
+				}); //callback为用户点击蒙版时自动执行的回调；
+				mask.show();
+			} //显示遮罩
+
+			function closeMask() {
+				flag = true;
+				mask.close();
+			}
+
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0010 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			mui.plusReady(function() {
+				mui.showLoading("加载中...", "div");
+				if(plus.device.model === IPHONEX) {
+					document.getElementsByClassName('mui-scroll')[0].style.paddingBottom = '34px';
+				}
+				var self = plus.webview.currentWebview();
+				orderId = self.orderId;
+				displayOrder = self.displayOrder
+				getDataSource();
+				//10秒钟取一次数据
+				timer = setInterval("getDataSource()", 8000);
+				document.getElementById('phoneArea').addEventListener('tap', function() {
+					var phone = document.getElementById("phone").innerHTML.trim();
+					var btnArray = ['取消', '拨打'];
+					mui.confirm('是否拨打' + phone + '?', '提示', btnArray, function(e) {
+						if(e.index == 1) {
+							plus.device.dial(phone, false);
+						}
+					}, 'div');
+				});
+				//司机的实时位置
+				document.getElementById('driverArea').addEventListener('tap', function() {
+					if(orderStatus == "SENT" || orderStatus == "ESTIMATED") {
+						mui.toast('订单已完成！');
+						return;
+					}
+					mui.openWindow({
+						url: "../map/senderLocation.html",
+						id: "senderLoaction",
+						extras: {
+							"orderId": orderId,
+							"phonenumber": document.getElementById("phone").innerHTML.trim()
+						},
+						createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+						show: {
+							autoShow: false //页面loaded事件发生后自动显示，默认为true
+						}
+					})
+
+				});
+				//验证配送员
+				document.getElementById('validateSender').addEventListener('tap', function() {
+					app.openWindow("validateSender.html", "validateSender", {
+						"orderId": orderId
+					});
+				});
+
+				//客服
+				document.getElementById('service').addEventListener('tap', function() {
+					app.openWebView("../customerService/customerServices.html", "customerServices");
+				});
+
+				//取消
+				mui('.mui-content').on('tap', '.cancel-order', function() {
+					var status = app.getOrderStatus(orderStatus);
+					app.cancelOrder(orderId, status, function(e, index) {
+						if(index === 1) {
+							mui.toast(e);
+							clearInterval(timer);
+							//返回
+							back();
+						} else if(index === -2) {
+							mui.alert(e, '提示', '确定', function(e) {}, 'div')
+						}
+					});
+				})
+				//重新派单
+				// mui('.mui-content').on('tap', '.again-send-order', function() {
+				// 	mui.showLoading("派单中..", "div");
+				// 	app.tokenAjax({
+				// 		url: API_URL_POST_AGAIN_SEND_ORDER + orderId,
+				// 		data: {},
+				// 		success: function(data) {
+				// 			mui.hideLoading();
+				// 			if(data.status == 1) {
+				// 				mui.toast('重新派单成功');
+				// 				clearInterval(timer);
+				// 				back();
+				// 			} else {
+				// 				mui.toast(data.msg);
+				// 			}
+				// 		},
+				// 		error: function(xhr) {
+				// 			mui.hideLoading();
+				// 			app.httpError(xhr.status);
+				// 		}
+				// 	});
+				// });
+
+				//打开订单生命周期表
+				document.getElementById("order-status-title").addEventListener('tap', function() {
+					if(nodes === null) {
+						nodes = new Array(2);
+						var ele1 = document.createElement("div");
+						ele1.setAttribute('class', "line");
+						nodes.push(ele1);
+						var ele2 = document.createElement("div");
+						ele2.setAttribute('class', 'status-box');
+						ele2.setAttribute('id', 'box-pay');
+						ele2.innerHTML = '<div class="point"></div><div class="box-content">订单支付</div><div class="box-time"></div>'
+						nodes.push(ele2);
+						var beforeInsertElement = null;
+						if(dataSource.payMode === "ArrivalPay") {
+							beforeInsertElement = document.getElementById("finish_order");
+						} else {
+							beforeInsertElement = document.getElementById("accept_order");
+						}
+						mui.each(nodes, function(index, element) {
+							document.getElementById("insertEle").insertBefore(element, beforeInsertElement);
+						})
+					}
+					document.getElementById("box-create").getElementsByClassName("box-time")[0].innerHTML = getTime(dataSource.createTime);
+					if(dataSource.payTime) {
+						var payElement = document.getElementById("box-pay");
+						payElement.getElementsByClassName("box-time")[0].innerHTML = getTime(dataSource.payTime);
+						payElement.className = payElement.className + " box-active";
+					}
+					if(dataSource.accpetTime) {
+						var acceptElement = document.getElementById("box-accept");
+						if(dataSource.orderType === "MergeOrder" && dataSource.payMode !== "ArrivalPay" && dataSource.accpetTime < dataSource.payTime) {
+							acceptElement.getElementsByClassName("box-time")[0].innerHTML = getTime(dataSource.payTime);
+						} else {
+							acceptElement.getElementsByClassName("box-time")[0].innerHTML = getTime(dataSource.accpetTime);
+						}
+						acceptElement.className = acceptElement.className + " box-active";
+					}
+					if(dataSource.fetchedTime) {
+						var fetchedElement = document.getElementById("box-fetched");
+						fetchedElement.getElementsByClassName("box-time")[0].innerHTML = getTime(dataSource.fetchedTime);
+						fetchedElement.className = fetchedElement.className + " box-active";
+					}
+					if(dataSource.sentTime) {
+						var sentlement = document.getElementById("box-sent");
+						sentlement.getElementsByClassName("box-time")[0].innerHTML = getTime(dataSource.sentTime);
+						sentlement.className = sentlement.className + " box-active";
+					}
+					//打开蒙遮板
+					openMask();
+					document.getElementById("order-status-list").style.display = "block";
+
+				});
+				//关闭弹窗
+				document.getElementById('closeRedBox').addEventListener('tap', function() {
+					closeMask();
+					document.getElementById("order-status-list").style.display = "none";
+
+				})
+
+				//重新返回键事件
+				app.refreshOrderListPage(timer);
+
+			});
+
+			function getTime(longDate) {
+				var date = new Date(longDate);
+				var month = date.getMonth() + 1;
+				var day = date.getDate();
+				var hour = date.getHours();
+				var min = date.getMinutes();
+				return app.plusZero(month) + "-" + app.plusZero(day) + " " + app.plusZero(hour) + ":" + app.plusZero(min);
+			}
+
+			function back() {
+				if(timer) {
+					clearInterval(timer);
+				}
+				//刷新页面
+				var orderList = plus.webview.getWebviewById("orderList");
+				if(orderList) {
+					mui.fire(orderListPage, 'refresh', {});
+				}
+				var sub_seven = plus.webview.getWebviewById("main-subpage/historyList.html")
+				if(sub_seven) {
+					mui.fire(sub_seven, 'refresh', {});
+				}
+				mui.back();
+			}
+
+			function getDataSource() {
+				if(displayOrder == 1){
+					var url = API_SERVER + "/api/drd/app/order/" + orderId
+				}else{
+					var url = API_GET_ORDER_DETAIL + orderId
+				}
+				app.tokenAjax_Get({
+					url: url,
+					success: function(data) {
+						if(data.status == 1) {
+							var validateSender = myStorage.getItem("validateSender");
+							dataSource = data.data;
+							orderId = dataSource.id;
+							orderStatus = dataSource.orderStatus;
+							if(validateSender) {
+								//验证配送员
+								if(orderStatus == "FETCHING") {
+									document.getElementById("validateSender").style.display = "";
+								} else {
+									document.getElementById("validateSender").style.display = "none";
+								}
+							}
+							//订单超时
+							// if(orderStatus == "TIMEOUT") {
+							// 	//显示取消和重新派单的按钮
+							// 	document.getElementsByClassName("cancel-order")[0].style.display = "";
+							// 	document.getElementsByClassName("again-send-order")[0].style.display = "";
+							// } else {
+							// 	document.getElementsByClassName("cancel-order")[0].style.display = "none";
+							// 	document.getElementsByClassName("again-send-order")[0].style.display = "none";
+							// }
+							//展示配送员信息
+							if(orderStatus === "RECEIVER_VERIFIED" || orderStatus == "FETCHING" || orderStatus == "SENDER_VERIFIED" || orderStatus == "FETCHED" || orderStatus == "SENDING" || orderStatus == "SENT" || orderStatus == "ESTIMATED") {
+								var url = API_URL_GET_SENDERINFO + orderId;
+								app.tokenAjax_Get({
+									url: url,
+									success: function(result) {
+										mui.hideLoading();
+										if(result.status == 1) {
+											document.getElementById("driver").innerHTML = "实时位置";
+											document.getElementById("phone").innerHTML = result.data.phonenumber;
+											//显示
+											document.getElementById("senderInfo").style.display = "";
+										} else {
+											mui.toast(result.msg);
+										}
+									},
+									error: function(xhr) {
+										mui.hideLoading();
+										app.httpError(xhr.status);
+									}
+								});
+							} else {
+								document.getElementById("senderInfo").style.display = "none";
+							}
+
+							if(orderStatus == "SENT" || orderStatus == "ESTIMATED" || orderStatus == "CANCEL") {
+								clearInterval(timer);
+							}
+
+							document.getElementById("orderId").innerText = orderId.replace(/\-/g, "");
+							var status = app.getOrderStatus(orderStatus);
+							document.getElementById("orderStatus").innerText = status;
+							document.getElementById("order-status-title").innerHTML = status + '<span class="mui-icon mui-icon-arrowdown"></span>';
+
+							document.getElementById("creatTime").innerText = app.getTimeString(dataSource.createTime);
+							document.getElementById("price").innerHTML = dataSource.price;
+							document.getElementById("distance").innerHTML = (dataSource.distance / 1000).toFixed(2);
+							document.getElementById("payMode").innerHTML = parsePayMode(dataSource.payMode);
+							document.getElementById("payStatus").innerHTML = parsePayStatus(dataSource.payStatus);
+
+							if(dataSource.fetchTime) {
+								document.getElementById("fetchTime_div").style.display = "";
+								document.getElementById("fetchTime").innerHTML = app.getTimeString(dataSource.fetchTime);
+							}
+							if(dataSource.sendTime) {
+								document.getElementById("deliveryTime_div").style.display = "";
+								document.getElementById("deliveryTime").innerHTML = app.getTimeString(dataSource.sendTime);
+							}
+							//物品信息
+							document.getElementById("goods").innerHTML = dataSource.item.name;
+							document.getElementById("goodsNum").innerHTML = app.getGoodsSize(dataSource.item.size);
+							document.getElementById("weight").innerHTML = dataSource.item.weight;
+							//发件人信息
+							document.getElementById("sender").innerHTML = dataSource.starter.name;
+							document.getElementById("senderPhone").innerHTML = dataSource.starter.phonenumber;
+							document.getElementById("senderAddress").innerHTML = dataSource.starter.addressName + " " + dataSource.starter.poiName + " " + dataSource.starter.addressDetail;
+							//收件人信息
+							document.getElementById("receiver").innerHTML = dataSource.receiver.name;
+							document.getElementById("receivePhone").innerHTML = dataSource.receiver.phonenumber;
+							document.getElementById("receiveAddress").innerHTML = dataSource.receiver.addressName + " " + dataSource.receiver.poiName + " " + dataSource.receiver.addressDetail;
+							mui.hideLoading();
+						} else {
+							mui.hideLoading();
+							mui.toast(data.msg);
+						}
+					},
+					error: function(xhr) {
+						mui.hideLoading();
+						app.httpError(xhr.status);
+					}
+				});
+
+			}
+
+			function parsePayMode(mode) {
+				if(mode === "ImmediatePay") {
+					return "在线支付";
+				} else if(mode === "ArrivalPay") {
+					return "到付";
+				} else {
+					return "";
+				}
+			}
+
+			function parsePayStatus(status) {
+				if(status === "None") {
+					return "未支付";
+				} else if(status === "Paid") {
+					return "已支付";
+				} else {
+					return "";
+				}
+			}
+		</script>
+	</body>
+
+</html>

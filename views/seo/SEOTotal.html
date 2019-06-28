@@ -1,0 +1,232 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+	</head>
+	<style>
+		#header {
+			box-shadow: none;
+		}
+		
+		#money_area {
+			width: 100%;
+			height: 150px;
+			color: white !important;
+			background: -webkit-gradient(linear, 0 0, 100% 0, from(#4dbeca), to(#3da0c5));
+			background: -webkit-linear-gradient(left, #4dbeca, #3da0c5);
+			background: -moz-linear-gradient(left, #4dbeca, #3da0c5);
+			background: -o-linear-gradient(left, #4dbeca, #3da0c5);
+			background: linear-gradient(left, #4dbeca, #3da0c5);
+			/* Safari 5.1 - 6.0 */
+			/* Opera 11.1 - 12.0 */
+			/* Firefox 3.6 - 15 */
+			text-align: center;
+			padding-top: 30px;
+		}
+		
+		#money {
+			font-size: 30px;
+		}
+		
+		.mui-table-view:before,
+		.mui-table-view:after {
+			background-color: #FFFFFF;
+		}
+		
+		.mui-navigate-right:after,
+		.mui-push-left:after,
+		.mui-push-right:after {
+			font-size: 20px !important;
+			color: #666666 !important;
+		}
+		
+		.title_1 {
+			display: inline-block;
+			width: 32% !important;
+			text-align: left;
+			font-size: 15px;
+			padding-left: 10px;
+			padding-top: 2px;
+		}
+		
+		.title_2 {
+			width: 25px;
+			height: 25px;
+			float: left;
+			margin-top: -2px;
+			margin-right: 5px;
+			margin-left: 10px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			border-radius: 5px;
+		}
+		
+		.title_3 {
+			float: right;
+			margin-top: 3px;
+			margin-right: 10px;
+			color: lightsteelblue;
+		}
+		
+		.content {
+			height: 30px;
+		}
+		
+		.color-active {
+			color: #4dbeca;
+		}
+		
+		.border {
+			width: 1px;
+			height: 50%;
+			top: 20%;
+			position: relative;
+			float: left;
+			border-left: 1px solid #FFFFFF;
+			border-right: 1px solid #FFFFFF;
+		}
+		
+		.border-content {
+			width: 24%;
+			height: 100%;
+			float: left;
+			line-height: 80% !important;
+			padding-top: 8px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">推广累计收入</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div id="money_area">
+				<span id="money">--</span>
+				<br />
+				<span style="font-size: 13px;">累计总金额</span>
+				<div style="height: 45px;position: relative;top: 28px;">
+					<div class="border-content">
+						<span id="customerFirstOrderRewardTotal"> 0.00</span>
+						<br style="line-height: 50% !important;"/>
+						<span style="font-size: 10px;">用户首单</span>
+					</div>
+					<div class="border"></div>
+					<div class="border-content">
+						<span id='customerOrderRewardTotal'>0.00</span>
+						<br />
+						<span style="font-size: 10px;">用户提成</span>
+					</div>
+					<div class="border"></div>
+					<div class="border-content">
+						<span id="senderFirstTaskRewardTotal">0.00</span>
+						<br />
+						<span style="font-size: 10px;">配送员首单</span>
+					</div>
+					<div class="border"></div>
+					<div class="border-content">
+						<span id="senderTaskRewardTotal">0.00</span>
+						<br />
+						<span style="font-size: 10px;">配送员提成</span>
+					</div>
+				</div>
+			</div>
+			<div style="margin-top:15px;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="SEORecords">
+						<a class="mui-navigate-right">
+							<span class="icon-content">推广记录</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="rewardsRecords">
+						<a class="mui-navigate-right">
+							<span class="icon-content">累计收入明细</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div style="margin-top: 20px;">
+				<span style="padding-left: 15px;font-weight: 500;font-size: 15px;">奖励说明</span>
+				<ul type="decimal" style="font-size: 15px;padding-right: 5px;">
+					<li><span style="font-weight: 700;">用户首单<span id="customerFirstOrderReward">8</span>元奖励：</span><span>邀请好友注册用户，注册成功后并完成首单可获得奖励</span></li>
+					<li style=""><span style="font-weight: 700;">用户每单<span id="customerOrderReward">0.03</span>元奖励：</span>用户在完成首单以后每完成一单都可获得奖励</li>
+					<li><span style="font-weight: 700;">配送员首单<span id="senderFirstTaskReward">8</span>元奖励：</span>邀请好友注册配送员，注册成功后并完成首单可获得奖励</li>
+					<li style=""><span style="font-weight: 700;">配送员每单<span id="senderTaskReward">0.03</span>元奖励：</span>配送员在完成首单以后每完成一单都可获得奖励</li>
+				</ul>
+			</div>
+			<p style="padding-left: 15px;font-size: 13px;padding-right:5px;">备注：获取的奖励可提现，不同区域奖励金额可能会有所不同，请以实际到账的金额为准。</p>
+			<div style="display: none;" id="qrcode"></div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/countUp.js"></script>
+		<script type="text/javascript" src="../../js/qrcode.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var flag = true;
+			var payType = '',
+				numAnim,
+				shareServices = null;
+
+			window.onload = function() {
+				//本地是否已保存推广链接
+				if(!myStorage.getItem(STORAGE_NAME_SEO)) {
+					app.getSeoQrcode();
+				}
+			}
+			mui.plusReady(function() {
+				//获取推广奖励
+				app.tokenAjax_Get({
+					url: getCustomerRewards(app.getCustomerId()),
+					success: function(e) {
+						if(e.status === 1) {
+							//账户余额
+							var total = 0;
+							total += app.accAdd(e.data.customerFirstOrderRewardTotal, e.data.senderFirstTaskRewardTotal);
+							total += app.accAdd(e.data.customerOrderRewardTotal, e.data.senderTaskRewardTotal);
+							numAnim = new CountUp('money', 0, total, 2, 1);
+							numAnim.start();
+							
+							numAnim = new CountUp('customerFirstOrderRewardTotal', 0, e.data.customerFirstOrderRewardTotal, 2, 1).start();
+							numAnim = new CountUp('senderFirstTaskRewardTotal', 0,  e.data.senderFirstTaskRewardTotal, 2, 1).start();
+							numAnim = new CountUp('customerOrderRewardTotal', 0, e.data.customerOrderRewardTotal, 2, 1).start();
+							numAnim = new CountUp('senderTaskRewardTotal', 0, e.data.senderTaskRewardTotal, 2, 1).start();
+						}
+
+						setTimeout(function() {
+							plus.nativeUI.closeWaiting();
+							mui.currentWebview.show('slide-in-right', 300);
+						}, 100)
+
+					},
+					error: function(xhr) {
+						setTimeout(function() {
+							plus.nativeUI.closeWaiting();
+							mui.currentWebview.show('slide-in-right', 300);
+						}, 100);
+						app.httpError(xhr.status);
+					}
+				});
+				
+				document.getElementById('rewardsRecords').addEventListener('tap',function () {
+				        app.openWindowNoAutoShow('SEORewardsRecords.html','SEORewardsRecords');
+				});
+				document.getElementById('SEORecords').addEventListener('tap',function () {
+				        app.openWindowNoAutoShow("SEORecords.html",'SEORecords');
+				});
+			});
+		</script>
+	</body>
+
+</html>

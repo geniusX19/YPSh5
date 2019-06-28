@@ -1,0 +1,789 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<style>
+			input[type=checkbox][disabled]:before {
+				opacity: 77!important;
+			}
+			
+			input[type=checkbox]:checked:before {
+				color: orangered !important;
+			}
+			
+			.list {
+				height: 140px;
+				width: 96%;
+				margin-left: 2%;
+				margin-top: 10px;
+				margin-bottom: 10px;
+				border-radius: 10px;
+				padding-top: 5px;
+				padding-left: 5px;
+				background-color: #FFFFFF;
+			}
+			
+			.body {
+				margin-top: -6px !important;
+				height: 50px;
+				border-bottom: 1px solid #DDDDDD;
+			}
+			
+			.listBody {
+				float: left;
+				padding: 5px;
+				height: 50px;
+				color: #929292;
+				overflow: auto;
+				width: 80%;
+				font-size: 15px;
+			}
+			
+			.shanchu {
+				float: right;
+				width: 20%;
+				height: 50px;
+			}
+			
+			.listHeaher {
+				padding: 6px;
+				height: 40px;
+			}
+			
+			.button {
+				float: right;
+				margin-right: 12px;
+				padding: 10px;
+				padding-right: 0px;
+				color: #929292;
+			}
+			
+			.mui-popup {
+				position: fixed!important;
+				top: 42% !important;
+			}
+			
+			.img {
+				margin-top: 10px;
+				width: 22px;
+				height: 22px;
+				vertical-align: calc(-5px);
+			}
+			
+			#A1 {
+				margin-left: 25%;
+				width: 50%;
+				border: none;
+			}
+			
+			#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+				width: 8px;
+			}
+			
+			#topPopover {
+				width: 110px;
+				height: 60px;
+				font-size: 13px;
+			}
+			
+			.mui-popover .mui-table-view {
+				border-radius: 3px !important;
+			}
+			
+			.mui-table-view-cell:after {
+				background-color: white !important;
+			}
+			
+			.icon-common-css {
+				display: inline-block;
+				width: 16px;
+				height: 18px;
+				/*border: 1px solid bisque;*/
+				padding-right: 1px;
+			}
+			
+			.title-pull {
+				display: inline-block;
+				font-size: 13px;
+				padding-top: 13px;
+			}
+			
+			h1 {
+				font-size: 15px !important;
+			}
+			
+			.mui-pull-right {
+				width: 60px;
+			}
+			
+			.footer-delete {
+				position: absolute;
+				top: 70px;
+				background: white;
+				width: 100%;
+				height: 60px;
+				top: 70px;
+				left: 0;
+				overflow: auto;
+				padding: 0 15px;
+				-webkit-transition: all 0.3s;
+				-moz-transition: all 0.3s;
+				-o-transition: all 0.3s;
+				transition: all 0.3s;
+			}
+			
+			.mui-pull-bottom-pocket {
+				position: absolute !important;
+				bottom: -30px !important;
+			}
+			
+			em {
+				color: #fc3a0d !important;
+				font-style: normal;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header" align="center">
+			<span class="mui-pull-left title-back" id="left-title" style="">
+				<a class="mui-action-back mui-icon mui-icon-arrowleft "></a>
+			</span>
+			<h1 class="mui-title" style="width: 58% !important; margin-left:10% !important;">
+				<div >
+					<span class="mui-icon mui-icon-search" style="position: absolute;color: #101010;top: 10px;"></span>
+					<input type="search" class="mui-input-clear findone"name="" required="" placeholder="姓名 | 手机号"style="color:#222222;background-color: white;padding-left: 25px;font-weight: 400;">
+				</div>
+			</h1>
+			<span class="mui-pull-right" id="right-title" style="text-align: right;">
+				<a id="menu" class="mui-action-menu mui-icon mui-icon-bars " href="#topPopover"></a>
+			</span>
+		</header>
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper" style="height: calc(100% - 90px);margin-top:40px;padding-bottom: 35px;">
+				<div class="mui-scroll" id="dcontent">
+					<!--这里放置真实显示的DOM内容-->
+				</div>
+			</div>
+			<div style="position:fixed;bottom: 0px; height: 50px;width: 100%;background-color: white;  overflow: hidden;">
+				<div id="footer-submit" style="position: absolute;top: 0px;width: 100%;padding-top: 8px;">
+					<button type="button" class="mui-btn mui-btn-blue  " id="A1">新建地址</button>
+				</div>
+				<div align="center" class="footer-delete">
+					<button class="mui-btn mui-btn-primary" type="button" style="width:100%;color: #888888;border: none !important; background-color: white !important;" disabled="disabled" id="footer-delete-button">
+						<span class="mui-icon iconfont icon-piliangshanchu" style="font-size: 22px;"></span>
+						<br />
+						<span style="font-size: 12px;">删除</span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="list" id="A2" style="display:none;">
+			<!--
+                	作者：wanping89@yeah.net
+                	时间：2017-12-12
+                	描述：地址的id和经纬度
+                -->
+			<div class="sublist">
+				<input name="id" class="id" type="hidden" value="" />
+				<input name="lon" class="lon" type="hidden" value="" />
+				<input name="lat" class="lat" type="hidden" value="" />
+				<input name="address" class="address" type="hidden" />
+				<input name="detailAddress" class="detailAddress" type="hidden" value="" />
+				<div class="listHeaher">
+					<span class="name" style="padding-right: 10px;"></span>
+					<span class="phone"></span>
+				</div>
+				<div class="body">
+					<div class="listBody poiName">
+					</div>
+					<div class="shanchu" style="display: none;">
+						<div class="mui-input-row mui-checkbox ">
+							<label style="height: 30px"></label>
+							<input class="checkbox" name="Checkbox" type="checkbox" disabled="disabled">
+						</div>
+					</div>
+				</div>
+			</div>
+			<img src="../../images/address/tick_.svg" class="img" style="display:none;float: none;" />
+			<span style="display:inline-block;color: grey;font-size: 13px;margin-top:8px;" class="default_starter "></span>
+			<div class="button delete">
+				<span class="mui-icon mui-icon-trash"></span>
+				<span>删除</span>
+			</div>
+			<div class="button edit"><span class="mui-icon mui-icon-compose"></span>编辑</div>
+		</div>
+		<!--右上角弹出菜单-->
+		<div id="topPopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" style="border-bottom: 1px solid #EBEBEB" id="batch_delete">
+					<a href="#"><span class="icon-common-css"><span class="mui-icon iconfont icon-piliangshanchu1"></span></span>批量删除 </a>
+				</li>
+				<li class="mui-table-view-cell" id="quickFind">
+					<a href="#"><span class="icon-common-css" style="padding: 0px;"><span class="mui-icon iconfont icon-chazhao" style="font-size:13px ;"></span></span>快速查找 </a>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/showLoading.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+
+		<script type="text/javascript">
+			var pageIndex = 0;
+			var originalTitle //原标题;
+			var choose_count = 0;
+			var leftTitle = '<a class="mui-action-back mui-icon mui-icon-arrowleft "></a>';
+			var rightTitle = '<a id="menu" class="mui-action-menu mui-icon mui-icon-bars " href="#topPopover"></a>';
+			mui.init({
+				pullRefresh: {
+					container: ".mui-scroll-wrapper", //待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+					up: {
+						height: 50, //可选.默认50.触发上拉加载拖动距离
+						auto: false, //可选,默认false.自动上拉加载一次
+						contentrefresh: "地址加载中...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+						contentnomore: '没有了~', //可选，请求完毕若没有更多数据时显示的提醒内容；
+						callback: pulldownRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				},
+				gestureConfig: {
+					tap: true, //默认为true
+					doubletap: false, //默认为false
+					longtap: true, //默认为false
+					swipe: false, //默认为true
+					drag: true, //默认为true
+					hold: true, //默认为false，不监听
+					release: false //默认为false，不监听
+				}
+
+			});
+			var title = '';
+			var flag = myStorage.getItem('flag');
+
+			function pulldownRefresh() {
+				setTimeout(function() {
+					if(flag == 'send') { //加载发件人常用地址
+						getData(getStarterAddressUrl(app.getCustomerId(), pageIndex, PAGESIZE));
+					} else if(flag == 'receive') { //加载收件人常用地址
+						getData(getReceiverAddressUrl(app.getCustomerId(), pageIndex, PAGESIZE));
+					} else {}
+				}, 1500);
+			}
+			mui.plusReady(function() {
+				plus.nativeUI.closeWaiting();
+				//新增页面的自定义刷新事件，刷新当前页面
+				window.addEventListener('refresh', function() {
+					plus.webview.currentWebview().reload(true);
+				});
+				setTimeout(function() {
+					closePage();
+				}, 300);
+				var editPage = plus.webview.getWebviewById("senderAddressEdit");
+				if(flag == 'send') { //加载发件人常用地址
+					getData(getStarterAddressUrl(app.getCustomerId(), pageIndex, PAGESIZE));
+				} else if(flag == 'receive') { //加载收件人常用地址
+					getData(getReceiverAddressUrl(app.getCustomerId(), pageIndex, PAGESIZE));
+				} else {}
+				if(editPage) {
+					plus.webview.close(editPage, "none", 0);
+				}
+				//编辑
+				mui('.mui-content').on('tap', '.edit', function() {
+					var node = this.parentNode;
+					var data = {
+						oldPageTitle: title,
+						pageName: "subpage_senderList",
+						flag: flag,
+						name: node.getElementsByClassName("name")[0].innerHTML,
+						phone: node.getElementsByClassName("phone")[0].innerHTML,
+						address: node.getElementsByClassName("address")[0].value,
+						detailAddress: node.getElementsByClassName("detailAddress")[0].value,
+						lon: node.getElementsByClassName("lon")[0].value,
+						lat: node.getElementsByClassName("lat")[0].value,
+						addressId: node.getElementsByClassName("id")[0].value,
+						poiName: node.getElementsByClassName("poiName")[0].innerHTML
+					}
+					app.openWindow("senderAddressEdit.html", 'senderAddressEdit', data);
+				});
+				mui('header').on('input', '.findone', function() {
+					var sreachVal = this.value;
+					if(!sreachVal) {
+						return;
+					}
+					var url;
+					if(flag == "send") {
+						url = quickFindStarterAddressURL(app.getCustomerId(), sreachVal);
+					} else {
+						url = quickFindReceiverAddressURL(app.getCustomerId(), sreachVal);
+					}
+					app.tokenAjax_Get({
+						url: encodeURI(url),
+						success: function(result) {
+							var parentNode = document.getElementById("dcontent");
+							if(result.status == 1) {
+								var data = result.data;
+								parentNode.innerHTML = "";
+								if(data.length == 0) {
+									parentNode.innerHTML = "<ul><li>未找到相关联系人</li></ul>"
+									return;
+								}
+								setData(data, sreachVal);
+							} else {
+								parentNode.innerHTML = "";
+								parentNode.innerHTML = "<ul><li>未找到相关联系人</li></ul>"
+							}
+						},
+						error: function(xhr) {}
+					});
+				})
+				//新建地址
+				document.getElementById('A1').addEventListener('tap', function() {
+					app.openWindow("senderAddress.html", 'senderAddress', {
+						'flag': 'add' + myStorage.getItem('flag')
+					});
+				});
+				//删除
+				mui('.mui-content').on('tap', '.delete', function() {
+					var node = this.parentNode;
+					var addressId = node.getElementsByClassName("id")[0].value;
+					var url = '';
+					if(flag == 'send') {
+						url = API_URL_POST_DELETE_STARTER_ADDRESS + addressId;
+					} else {
+						url = API_URL_POST_DELETE_RECEIVER_ADDRESS + addressId;
+					}
+					mui.confirm('确认删除该地址吗？', '提示', ['取消', '确认'], function(e) {
+						if(e.index == 1) {
+							app.tokenAjax({
+								url: url,
+								data: JSON.stringify({
+									"addressId": addressId
+								}),
+								success: function(result) {
+									if(result.status == 1) {
+										mui.toast('删除成功')
+										node.parentNode.removeChild(node);
+									} else {
+										mui.toast(result.msg);
+									}
+								},
+								error: function(xhr) {
+									app.httpError(xhr.status);
+								}
+							});
+						}
+					}, 'div');
+				});
+				//点击事件
+				mui('.mui-content').on('tap', '.sublist', function() {
+					chooseAddress(this);
+				});
+				//长按事件
+				mui('.mui-content').on('longtap', '.sublist', function() {
+					original_hidden();
+				});
+				//********************批量删除 *****************//
+				//右侧菜单栏弹出
+				document.getElementById('batch_delete').addEventListener('tap', function() {
+					mui('#topPopover').popover('toggle');
+					original_hidden();
+				});
+
+				//批量删除
+				document.getElementById('footer-delete-button').addEventListener('tap', function() {
+					//获取所有的选中状态的联系人
+					var data = new Array();
+					var eleArr = new Array();
+					var parentNode = document.getElementById("dcontent");
+					mui.each(parentNode.getElementsByClassName("shanchu"), function(index, element) {
+						if(element.getElementsByClassName("checkbox")[0].checked) {
+							var idEle = element.parentNode.parentNode.parentNode;
+							var id = idEle.getElementsByClassName("id")[0].value;
+							if(id) {
+								data.push({
+									"id": id
+								});
+								eleArr.push(idEle);
+							}
+						}
+					});
+
+					if(data.length == 0) {
+						mui.toast('请选择要删除的人');
+						return;
+					}
+					var title = "确认要删除这" + data.length + "个人吗？"
+
+					mui.confirm(title, '提示', ['取消', '确认'], function(e) {
+						if(e.index == 1) {
+							var url;
+							//发送ajax
+							if(flag == 'send') { //批量删除发件人常用地址
+								url = API_URL_POST_BATCH_DELETE_STARTER_ADDRESS;
+							} else if(flag == 'receive') {
+								url = API_URL_POST_BATCH_DELETE_RECEIVER_ADDRESS; //批量删除收件人常用地址
+							} else {}
+							app.tokenAjax({
+								url: url,
+								data: JSON.stringify(data),
+								success: function(result) {
+									if(result.status == 1) {} else {
+										mui.toast(result.msg);
+									}
+								},
+								error: function(xhr) {
+									app.httpError();
+								}
+							});
+							mui.each(eleArr, function(index, element) {
+								element.parentNode.removeChild(element);
+							})
+							original_show();
+						}
+					}, 'div');
+				});
+
+				//快速查找
+				document.getElementById('quickFind').addEventListener('tap', function() {
+					mui('#topPopover').popover('toggle');
+					app.openWindow("quickFind.html", "quickFind", {
+						"flag": flag
+					});
+				});
+
+				mui('.mui-content').on('tap', '.not-default-starter', function() {
+					var parentNode = this.parentNode;
+					//获取id
+					var starterId = parentNode.getElementsByClassName("id")[0].value;
+					var url = addOrEditDefaultStarter(app.getCustomerId(), starterId);
+					plus.nativeUI.showWaiting();
+					app.tokenAjax({
+						url: url,
+						success: function(result) {
+							if(result.status === 1) {
+								//找之前的默认地址
+								var nodeList = document.getElementsByClassName("mui-content")[0].getElementsByClassName("default_starter");
+								mui.each(nodeList, function(index, node) {
+									var className = node.className;
+									var f = className.indexOf("not-default-starter");
+									if(f === -1) {
+										defaultShow(node.parentNode, false);
+									}
+								})
+								defaultShow(parentNode, true);
+							} else {
+								mui.toast(result.msg);
+							}
+							plus.nativeUI.closeWaiting();
+							chooseAddress(parentNode);
+						},
+						error: function(xhr) {
+							app.httpError(xhr.status);
+						}
+					});
+				});
+			});
+
+			//原来的数据隐藏
+			function original_hidden() {
+				choose_count = 0;
+				document.getElementById("footer-submit").style.top = "70px";
+				document.getElementsByClassName("footer-delete")[0].style.top = "0px";
+				document.getElementById("left-title").innerHTML = '<a class="title-pull" id="title-pull-cancel">取消</a>'
+				document.getElementById("right-title").innerHTML = '<span class="title-pull" id="all-choose">全选</span>';
+				originalTitle = document.getElementsByTagName("h1")[0].innerHTML;
+				document.getElementsByTagName("h1")[0].innerHTML = "请选择联系人";
+				//全选按钮绑定点击事件
+				document.getElementById('all-choose').addEventListener('tap', function() {
+					var inner = this.innerHTML
+					var allElement = document.getElementsByClassName("list");
+					choose_count = 0;
+					if(inner == "全选") {
+						this.innerHTML = "取消全选";
+						mui.each(allElement, function(index, element) {
+							if(!element.style.display) {
+								element.getElementsByClassName("checkbox")[0].checked = true;
+								choose_count++;
+							} else {
+								element.getElementsByClassName("checkbox")[0].checked = false;
+							}
+						});
+					} else {
+						this.innerHTML = "全选";
+						mui.each(allElement, function(index, element) {
+							if(!element.style.display) {
+								element.getElementsByClassName("checkbox")[0].checked = false;
+							}
+						});
+					}
+					//更改标题
+					choose_count_much();
+				})
+				//所有的删除按钮出现
+				mui.each(document.getElementsByClassName("shanchu"), function(index, element) {
+					element.style.display = "";
+					element.getElementsByClassName("checkbox")[0].checked = false;
+				})
+				//移除原来的点击事件
+				mui('.mui-content').off('tap', '.sublist');
+				mui('.mui-content').off('longtap', '.sublist');
+				document.getElementById('title-pull-cancel').addEventListener('tap', function() {
+					original_show();
+				});
+				//联系人增加新的点击事件
+				mui('.mui-content').on('tap', '.sublist,.shanchu', function() {
+					xuanzhong(this);
+				});
+			}
+			//显示选中了多少个项目
+			function choose_count_much() {
+				if(choose_count > 0) {
+					document.getElementsByTagName("h1")[0].innerHTML = "已选择" + choose_count + "个";
+					//按钮可点击
+					document.getElementById("footer-delete-button").disabled = false;
+				} else {
+					//按钮不可点击
+					document.getElementsByTagName("h1")[0].innerHTML = "请选择联系人";
+					document.getElementById("footer-delete-button").disabled = true;
+				}
+			}
+			//显示
+			function original_show() {
+				mui('.mui-content').off('tap', '.sublist,.shanchu');
+
+				//增加新的点击事件
+				mui('.mui-content').on('tap', '.sublist', function() {
+					chooseAddress(this);
+				});
+				mui('.mui-content').on('longtap', '.sublist', function() {
+					original_hidden();
+				});
+				//所有的删除按钮隐藏
+				mui.each(document.getElementsByClassName("shanchu"), function(index, element) {
+					element.style.display = "none";
+				})
+				document.getElementById("footer-submit").style.top = "0px";
+				document.getElementsByClassName("footer-delete")[0].style.top = "70px";
+				document.getElementById("header").style.display = "";
+				document.getElementById("left-title").innerHTML = leftTitle;
+				//重写返回事件
+				mui('body').on('tap', '.mui-action-back', function() {
+					plus.webview.currentWebview().close();
+				})
+				document.getElementById("right-title").innerHTML = rightTitle;
+				document.getElementsByTagName("h1")[0].innerHTML = originalTitle;
+
+			}
+
+			/***
+			 * 可能存在的bug 点击input多次触发点击事件
+			 * @param {Object} ele
+			 */
+			function xuanzhong(ele) {
+				var element;
+				var checkstatus;
+				var classname = ele.className;
+				checkstatus = ele.getElementsByClassName("checkbox")[0].checked;
+				element = ele.getElementsByClassName("checkbox")[0];
+				if(checkstatus) {
+					element.checked = false;
+					choose_count--;
+				} else {
+					element.checked = true;
+					choose_count++;
+				}
+				choose_count_much();
+			}
+
+			function chooseAddress(ele) {
+				var name = ele.getElementsByClassName("name")[0].innerHTML;
+				var phone = ele.getElementsByClassName("phone")[0].innerHTML;
+				//快速检索的位置
+				var address = ele.getElementsByClassName("address")[0].value;
+				var poiName = ele.getElementsByClassName("poiName")[0].innerHTML;
+				var detailAddress = ele.getElementsByClassName('detailAddress')[0].value;
+				var lon = ele.getElementsByClassName('lon')[0].value;
+				var lat = ele.getElementsByClassName('lat')[0].value;
+				var addressId = ele.getElementsByClassName("id")[0].value;
+				var data = {
+					name: clearEM(name),
+					phonenumber: clearEM(phone),
+					addressName: clearEM(address),
+					addressDetail: clearEM(detailAddress),
+					longitude: lon,
+					latitude: lat,
+					addressId: addressId,
+					poiName: poiName
+				};
+				var flag = myStorage.getItem('flag');
+				var event; //自定义的事件名
+				if(flag == 'send') {
+					event = 'sender';
+				}
+				if(flag == 'receive') {
+					event = 'receiver';
+				}
+				var main = plus.webview.getWebviewById('order');
+				mui.fire(main, event, {
+					'data': data
+				});
+				plus.webview.currentWebview().close();
+			}
+
+			function getData(url) {
+				app.tokenAjax({
+					url: url,
+					success: function(data) {
+						if(data.status == 1) {
+							var flag = myStorage.getItem("flag");
+							var datas = data.data;
+							if(datas.length < 5) {
+								mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(true);
+							} else {
+								mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
+							}
+							pageIndex++; //页数+1
+							var parentNode = document.getElementById("dcontent");
+							setData(datas, "");
+						} else {
+							mui.toast(data.msg);
+						}
+					},
+					error: function(xhr) {
+						app.httpError(xhr.status);
+					}
+				});
+			}
+
+			function setData(datas, v) {
+				var parentNode = document.getElementById("dcontent");
+				mui.each(datas, function(index, element) {
+					node = document.getElementById("A2").cloneNode(true);
+					if(flag == 'send') {
+						//收件人
+						node.style.display = '';
+						var a = node.getElementsByClassName("shanchu")[0];
+						a.getElementsByClassName("checkbox")[0].checked = false;
+						node.getElementsByClassName("id")[0].value = element.id;
+						var name = element.starter.name
+						var phone = element.starter.phonenumber;
+
+						if(v) {
+							name = convertToEM(name, v);
+							phone = convertToEM(phone, v);
+						}
+						node.getElementsByClassName('name')[0].innerHTML = name;
+						node.getElementsByClassName('phone')[0].innerHTML = phone;
+						//快速检索的位置
+						node.getElementsByClassName('poiName')[0].innerHTML = element.starter.poiName || element.starter.addressName;
+						node.getElementsByClassName('address')[0].value = element.starter.addressName;
+						node.getElementsByClassName('lon')[0].value = element.starter.longitude;
+						node.getElementsByClassName('lat')[0].value = element.starter.latitude;
+						node.getElementsByClassName('detailAddress')[0].value = element.starter.addressDetail;
+
+						defaultShow(node, element.defaultStarter);
+
+						parentNode.appendChild(node);
+					} else {
+						node.style.display = '';
+						var a = node.getElementsByClassName("shanchu")[0];
+						a.getElementsByClassName("checkbox")[0].checked = false;
+
+						node.getElementsByClassName("id")[0].value = element.id;
+
+						var name = element.receiver.name;
+						var phone = element.receiver.phonenumber;
+
+						if(v) {
+							name = convertToEM(name, v);
+							phone = convertToEM(phone, v);
+						}
+
+						node.getElementsByClassName('name')[0].innerHTML = name;
+						node.getElementsByClassName('phone')[0].innerHTML = phone;
+						//快速检索的位置
+						node.getElementsByClassName('poiName')[0].innerHTML = element.receiver.poiName || element.receiver.addressName;
+						node.getElementsByClassName('address')[0].value = element.receiver.addressName;
+						node.getElementsByClassName('lon')[0].value = element.receiver.longitude;
+						node.getElementsByClassName('lat')[0].value = element.receiver.latitude;
+
+						node.getElementsByClassName('detailAddress')[0].value = element.receiver.addressDetail;
+						var addressId = myStorage.getItem("receiver_addressId");
+						if(addressId) {
+							if(addressId == element.id) {
+								node.getElementsByClassName("img")[0].style.display = '';
+							} else {
+								node.getElementsByClassName("img")[0].style.display = 'none';
+							}
+						}
+						parentNode.appendChild(node);
+					}
+				});
+			}
+
+			function convertToEM(s, v) {
+				return s.indexOf(v) >= 0 ? s.replace(v, "<em>" + v + "</em>") : s;
+			}
+
+			function clearEM(s) {
+				var s1 = s.replace("<em>", "");
+				return s1.replace("</em>", "");
+			}
+			/**
+			 * 是否显示为默认地址
+			 * @param {Node} parentNode 父节点
+			 * @param {Boolean} isActive 默认物品传true，否则传false
+			 */
+			function defaultShow(parentNode, isActive) {
+				var not_default_item = '<span class="mui-icon mui-icon-flag"></span><span style="font-size: 12px;">设为默认地址</span>';
+				var default_item = '<span style="font-size: 12px;">默认地址</span>';
+				var node = parentNode.getElementsByClassName("default_starter")[0];
+				if(isActive) { //默认地址
+					parentNode.getElementsByClassName("img")[0].style.display = '';
+					node.innerHTML = default_item;
+					node.className = node.className.replace('not-default-starter', "")
+				} else {
+					node.innerHTML = not_default_item;
+					if(node.className.indexOf("not-default-starter") === -1) {
+						node.className = node.className + " not-default-starter";
+					}
+					parentNode.getElementsByClassName("img")[0].style.display = 'none';
+				}
+			}
+			
+			function closePage (){
+				var a = plus.webview.getWebviewById('senderAddress');
+				if(a){
+					a.close('none',0);
+				}
+				var b = plus.webview.getWebviewById('senderAddress_receive');
+				if(b){
+					b.close('none',0);
+				}
+				var c = plus.webview.getWebviewById('map');
+				if(c){
+					c.close('none',0);
+				}
+				var d = plus.webview.getWebviewById('map_receive');
+				if(d){
+					d.close('none',0);
+				}
+			}
+			
+			
+		</script>
+	</body>
+
+</html>

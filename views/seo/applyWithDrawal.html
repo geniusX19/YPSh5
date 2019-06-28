@@ -1,0 +1,326 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+	</head>
+	<style>
+		body,
+		html,
+		.mui-content {
+			background: #FFFFFF !important;
+		}
+		
+		.mui-input-row label {
+			font-size: 15px;
+			width: 30%;
+		}
+		
+		.mui-input-row label~input {
+			float: left !important;
+			width: 65% !important;
+		}
+		
+		.mui-input-row-s label~input {
+			width: 40% !important;
+		}
+		
+		button {
+			background: #4dbeca !important;
+			border-color: #4dbeca !important;
+			width: 80% !important;
+			margin-left: 10% !important;
+			margin-top: 20px !important;
+		}
+		
+		#all {
+			float: right;
+			width: 50px !important;
+			font-size: 14px;
+			margin-top: 5px !important;
+			margin-left: 0px !important;
+			margin-right: 16px !important;
+			height: 30px;
+			padding-top: 8px !important;
+			padding-left: 10px !important;
+		}
+		
+		input::-webkit-input-placeholder {
+			/* WebKit browsers */
+			font-size: 15px;
+		}
+		
+		input:-moz-placeholder {
+			/* Mozilla Firefox 4 to 18 */
+			font-size: 15px;
+		}
+		
+		input::-moz-placeholder {
+			/* Mozilla Firefox 19+ */
+			font-size: 15px;
+		}
+		
+		input :-ms-input-placeholder {
+			/* Internet Explorer 10+ */
+			font-size: 15px;
+		}
+		
+		.mui-input-row-s .mui-input-clear~.mui-icon-clear {
+			top: 0px !important;
+			right: 30% !important;
+		}
+		
+		.content {
+			text-align: left;
+			padding: 5px 5px;
+		}
+		
+		.title {
+			display: inline-block;
+			width: 70px;
+			padding-right: 5px;
+		}
+		
+		.mui-input-group:before,
+		.mui-input-group:after,
+		.mui-input-group .mui-input-row:after {
+			background-color: #EEEEEE;
+		}
+		
+		p {
+			font-size: 14px;
+			margin-top: 0px;
+			margin-bottom: 0px;
+			color: #8f8f94;
+			padding-bottom: 0px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">提现申请</h1>
+			<a class="mui-icon  mui-pull-right" style="display:inline-block;font-size: 13px;padding-top: 18px;" id="drawRecords">提现记录</a>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<form class="mui-input-group" style="margin-top: 10px;">
+				<div class="mui-input-row">
+					<label>账户余额</label>
+					<input type="text" class="mui-input" id="balance" readonly="readonly">
+				</div>
+				<div class="mui-input-row mui-input-row-s">
+					<label>提现金额</label>
+					<input type="number" class="mui-input-clear" placeholder="提现金额" id="draw"><span style="padding-top: 10px;display: inline-block;">元</span>
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="all">全部</button>
+				</div>
+				<div class="mui-input-row">
+					<label>开户行</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入开户行" id="bankName">
+				</div>
+				<div class="mui-input-row">
+					<label>银行卡号</label>
+					<input type="number" class="mui-input-clear" placeholder="请输入银行卡号" id="bankNumber">
+				</div>
+			</form>
+			<p style="padding-top:10px;padding-left: 15px;font-size: 13px;padding-right:5px;">注意事项：</p>
+			<p style="padding-left: 15px;font-size: 13px;padding-right:5px;">1、每月5日为提现日，其他时间不能提现，不能同时发起多次提现。</p>
+			<p style="padding-left: 15px;font-size: 13px;padding-right:5px;">2、提现申请提交成功后，一般2~5个工作日（周末除外）内放款。</p>
+			<p style="padding-left: 15px;font-size: 13px;padding-right:5px;">3、放款成功之后，系统才会自动扣除账户中的钱，可在“申请记录”中查看提现情况。</p>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block" style="" id="submit">提现</button>
+		</div>
+		<div class="mui-popup mui-popup-in" style="display:none;color: #000000;" id="info_area">
+			<div class="mui-popup-inner">
+				<div class="mui-popup-title" style="border-bottom: 1px solid #D8D8D8;">信息确认</div>
+				<div class="mui-popup-text" style="font-size: 14px; margin-top: 5px;">
+					<div class="content">
+						<span class="title">提现金额</span>
+						<span id="draw_sub"></span>
+					</div>
+					<div class="content">
+						<span class="title">开户行</span>
+						<span id="bankName_sub"></span>
+					</div>
+					<div class="content">
+						<span class="title">银行卡</span>
+						<span id="bankNumber_sub"></span>
+					</div>
+				</div>
+			</div>
+			<div class="mui-popup-buttons"><span class="mui-popup-button" id="cancel">取消</span><span class="mui-popup-button mui-popup-button-bold"
+				 id="normal_submit">确定</span></div>
+		</div>
+		<div class="mui-popup-backdrop mui-active" style="display: none;" id="AAA"></div>
+
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var flag = true;
+			var total = 0,
+				draw = 0,
+				bankName = null,
+				bankNumber = null;
+
+			mui.plusReady(function() {
+				app.tokenAjax_Get({
+					url: getBusinessManAccount(app.getCustomerId()),
+					success: function(e) {
+						if (e.status === 1) {
+							//账户余额
+							total = e.data.moneyRemain;
+							if (!total) {
+								total = 0.00
+							}
+							document.getElementById("balance").value = total + " 元";
+						}
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show('slide-in-right', 300);
+					},
+					error: function(xhr) {
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show('slide-in-right', 300);
+						app.httpError(xhr.status);
+					}
+				});
+				var url = getDrawRecords(app.getCustomerId(), 0, 1);
+				app.tokenAjax_Get({
+					url: url,
+					success: function(data) {
+						if (data.status == 1) {
+							var d = data.data.dataList;
+							if (d.length === 1) {
+								var drawInfo = d[0].drawInfo;
+								if (drawInfo) {
+									var arr = drawInfo.split("，");
+									var bankName = '',
+										bankNumber = '';
+									try {
+										bankName = arr[0].replace("开户行：", '');
+										bankNumber = arr[1].replace('银行卡号：', '');
+									} catch (e) {}
+									document.getElementById("bankName").value = bankName;
+									document.getElementById("bankNumber").value = bankNumber;
+								}
+							}
+						}
+					},
+					error: function(xhr) {}
+				});
+				document.getElementById('all').addEventListener('tap', function() {
+					document.getElementById("draw").value = total;
+				});
+
+				document.getElementById('submit').addEventListener('tap', function() {
+					draw = document.getElementById("draw").value;
+					bankName = document.getElementById("bankName").value;
+					bankNumber = document.getElementById("bankNumber").value;
+					if (validate(draw, bankName, bankNumber)) {
+						document.getElementById("draw_sub").innerText = draw + " 元";
+						document.getElementById("bankName_sub").innerText = bankName;
+						document.getElementById("bankNumber_sub").innerText = bankNumber;
+						show();
+					}
+				});
+				document.getElementById('cancel').addEventListener('tap', function() {
+					hidden();
+				});
+
+				var index = 0;
+				document.getElementById('normal_submit').addEventListener('tap', function() {
+					hidden();
+					plus.nativeUI.showWaiting('提交中...');
+					if (flag) {
+						flag = false;
+						setTimeout(function() {
+							flag = true;
+						}, 2000);
+						if (validate(draw, bankName, bankNumber)) {
+							var data = {
+								amount: draw,
+								drawInfo: "开户行：" + bankName + "，银行卡号：" + bankNumber
+							}
+							app.tokenAjax({
+								url: postDraws(app.getCustomerId()),
+								data: data,
+								success: function(e) {
+									plus.nativeUI.closeWaiting();
+									if (e.status === 1) {
+										mui.toast('申请提交成功！')
+									} else {
+										mui.toast(e.msg);
+									}
+								},
+								error: function(xhr) {
+									plus.nativeUI.closeWaiting();
+									app.httpError(xhr.status);
+								}
+							});
+
+						}
+					}
+				});
+				//提现记录
+				document.getElementById('drawRecords').addEventListener('tap', function() {
+					app.openWindowNoAutoShow('drawRecords.html', 'drawRecords');
+				})
+
+				//参数验证
+				function validate(draw, bankName, bankNumber) {
+					if (!draw) {
+						mui.toast('无效的提现金额');
+						return false;
+					}
+					draw = Math.abs(draw);
+					if (draw > total) {
+						mui.toast('提现金额不能大于账户余额');
+						return false;
+					}
+					if (!bankName || bankName.trim().length == 0) {
+						mui.toast('请填写银行卡开户行');
+						return false;
+					}
+
+					if (!bankNumber || bankNumber.trim().length == 0) {
+						mui.toast('请输入银行卡号');
+						return false;
+					}
+					var date = new Date().getDate();
+					if (date != 5) {
+						mui.toast('今日不是提现日');
+						return false;
+					}
+					return true;
+				}
+
+				function show() {
+					document.getElementById("info_area").style.display = "";
+					document.getElementById("AAA").style.display = '';
+				}
+
+				function hidden() {
+					document.getElementById("info_area").style.display = "none";
+					document.getElementById("AAA").style.display = 'none';
+					clear();
+				}
+
+				function clear() {
+					document.getElementById("draw_sub").innerText = 0 + " 元";
+					document.getElementById("bankName_sub").innerText = '';
+					document.getElementById("bankNumber_sub").innerText = '';
+				}
+
+			});
+		</script>
+	</body>
+
+</html>

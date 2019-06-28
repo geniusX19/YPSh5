@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>壹客送</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<style>
+			.mui-bar-tab .mui-tab-item.mui-active {
+				color: #4dbeca;
+			}
+			
+			#bottomx {
+				position: absolute !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<nav class="mui-bar mui-bar-tab" id="bottomx">
+				<a class="mui-tab-item mui-active" href="main-subpage/index.html">
+					<span class="mui-icon iconfont icon-iconfonthome0"></span>
+					<span class="mui-tab-label">首页</span>
+				</a>
+				<a class="mui-tab-item" href="main-subpage/historyList.html">
+					<span class="mui-icon iconfont icon-dingdan"></span>
+					<span class="mui-tab-label">历史订单</span>
+				</a>
+				<a class="mui-tab-item" href="main-subpage/user.html">
+					<span class="mui-icon iconfont icon-yonghuzhongxin_f"></span>
+					<span class="mui-tab-label">我的</span>
+				</a>
+			</nav>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.enterfocus.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/myStorage.js"></script>
+		<script src="../js/config.js"></script>
+		<script src="../js/immersed.js"></script>
+
+		<script>
+			var isClickOpen = 0;
+			var flag = false;
+			var mask = mui.createMask(function() {
+				return flag;
+			}); //callback为用户点击蒙版时自动执行的回调；;
+
+			mui.init();
+			//设置默认打开首页显示的子页序号；
+			var Index = 0;
+			//把子页的路径写在数组里面
+			var subpages = ['main-subpage/index.html', 'main-subpage/historyList.html', 'main-subpage/user.html'];
+			window.addEventListener("openMask", function(e) {
+
+				mask.show(); //显示遮罩
+			});
+			window.addEventListener("closeMask", function(e) {
+				flag = true;
+				mask.close();
+			});
+			mui.plusReady(function() {
+				var device = plus.device.model;
+				var h = 50;
+				if(device === IPHONEX) {
+					h += 34;
+					document.getElementById("bottomx").style.paddingBottom = '34px';
+				}
+				//设置bottom绝对位置
+				var bottom = document.getElementById('bottomx');
+				var height = (plus.display.resolutionHeight - h + STATUSBARHEIGHT) + "px"
+				bottom.style.top = height;
+				//获取当前页面所属的Webview窗口对象
+				var self = plus.webview.currentWebview();
+				for(var i = 0; i < 4; i++) {
+					var sub = null;
+					if(subpages[i] === "main-subpage/user.html") {
+						var titleNView = {
+							backgroundColor: '#4dbeca', //导航栏背景色
+							titleText: '个人中心', //导航栏标题
+							titleColor: '#FFFFFF', //文字颜色
+							type: 'transparent', //透明渐变样式
+							autoBackButton: false, //自动绘制返回箭头
+							coverage: '100px'
+						}
+						//创建webview子页
+						sub = plus.webview.create(
+							subpages[i], //子页url
+							subpages[i], //子页id
+							{
+								//								top: '0px', //设置距离顶部的距离
+								bottom: '50px', //设置距离底部的距离
+								height: height,
+								titleNView: titleNView,
+								scrollIndicator: "none",
+								statusbar: {
+									background: "#4dbeca"
+								}
+							}
+						);
+
+					} else {
+						//创建webview子页
+						sub = plus.webview.create(
+							subpages[i], //子页url
+							subpages[i], //子页id
+							{
+								top: '0px', //设置距离顶部的距离
+								bottom: '50px', //设置距离底部的距离
+								height: height
+							}
+						);
+					}
+					//如不是我们设置的默认的子页则隐藏，否则添加到窗口中
+					if(i != Index) {
+						sub.hide();
+					}
+					//将webview对象填充到窗口
+					self.append(sub);
+				}
+				//当前激活的选项卡
+				var activeTab = subpages[Index];
+				//选项卡点击事件
+				mui('.mui-bar-tab').on('tap', 'a', function(e) {
+					//获取目标子页的id
+					var targetTab = this.getAttribute('href');
+					if(targetTab === activeTab) {
+						return;
+					}
+					if(targetTab === "main-subpage/historyList.html") {
+						mui.fire(plus.webview.getWebviewById("main-subpage/historyList.html"), 'refresh', {})
+					}
+					//显示目标选项卡
+					plus.webview.show(targetTab);
+
+					//					if(targetTab == "main-subpage/historyList.html")
+					//隐藏当前选项卡
+					plus.webview.hide(activeTab);
+					//更改当前活跃的选项卡
+					activeTab = targetTab;
+				});
+
+				/**
+				 *重写返回键方法 
+				 */
+				var backButtonPress = 0;
+				mui.back = function(event) {
+					backButtonPress++;
+					if(backButtonPress > 1) {
+						plus.runtime.quit();
+					} else {
+						plus.nativeUI.toast('再按一次退出应用');
+					}
+					setTimeout(function() {
+						backButtonPress = 0;
+					}, 1000);
+					return false;
+				};
+				/**
+				 * 
+				 * 监听个推消息
+				 * 
+				 * 
+				 */
+				plus.navigator.setStatusBarBackground("#757575");
+
+				// 监听在线消息事件
+				plus.push.addEventListener("receive",
+					function(msg) {
+						try {
+							var obj = msg.payload;
+							obj = obj.replace('content', '"content"');
+							obj = obj.replace('title', '"title"');
+							obj = obj.replace('payload', '"payload"');
+							var object = JSON.parse(obj);
+							if(typeof(object) == "object") {
+								var title = object.title;
+								var content = object.content;
+								var orderId = object.payload.orderId;
+								mui.confirm(content, title, ['确认', '查看'], function(e) {
+									if(e.index == 1) {
+										app.openWindow("order/orderDetail.html", "orderDetail", {
+											"orderId": orderId
+										});
+									}
+								});
+							} else {}
+						} catch(e) {}
+					}, false); // 监听点击消息事件
+				plus.push.addEventListener("click", function(msg) {
+					if(isClickOpen == 1) {
+						isClickOpen = 0;
+						return;
+					}
+					try {
+						//打开订单明细页面
+						var payload = msg.payload;
+						isClickOpen++;
+						if(!payload || payload == null) {
+							return;
+						}
+						app.openWindow("order/orderDetail.html", "orderDetail", {
+							"orderId": payload.orderId
+						});
+					} catch(e) {}
+
+				}, false);
+			});
+		</script>
+	</body>
+
+</html>

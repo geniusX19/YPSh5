@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<title>壹客送</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/icons-extra.css" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<style>
+			.win {
+				margin-top: 10px;
+				width: 98%;
+				margin-left: 1%;
+				background-color: #fff6f1;
+				border-radius: 10px;
+				padding-bottom: 20px;
+			}
+			
+			.title {
+				margin-top: 5px;
+				padding-top: 5px;
+				width: 130px;
+				height: 30px;
+				text-align: left;
+				padding-left: 10px;
+				margin-bottom: 15px;
+				color: white;
+				font-family: "微软雅黑";
+				background-color: #4dbeca;
+				border-radius: 5px;
+			}
+			.content {
+				margin-top: 15px;
+				font-family: "微软雅黑";
+				font-size: 12px;
+			}
+			.title_1 {
+				display: inline-block;
+				width: 32% !important;
+				text-align: left;
+				font-size: 15px;
+				padding-left: 10px;
+			}
+			.input-msg {
+				display: inline-block;
+				width: 66% !important;
+				text-align: right;
+				font-size: 14px;
+				color: #555555;
+				padding-right: 5px;
+			}
+			.special {
+				color: #080808 !important;
+				font-size: 15px;
+			}
+			.add_reason {
+				width: 100%;
+				text-align: right;
+				padding-right: 3px;
+				color: #D43F3A;
+				font-size: 12px;
+			}
+			
+			.input-msg1 {
+				display: inline-block;
+				width: 68%;
+				font-size: 14px;
+				height: 22px;
+				text-align: right;
+				padding-right: 10px;
+			}
+			
+			.title_2 {
+				width: 25px;
+				height: 25px;
+				float: left;
+				margin-top: -2px;
+				margin-right: 5px;
+				margin-left: 10px;
+				background-size: contain;
+				background-repeat: no-repeat;
+				border-radius: 5px;
+			}
+			
+			.title_3 {
+				float: right;
+				margin-top: -2px;
+				margin-right: 10px;
+				color: lightsteelblue;
+			}
+			
+			.icon-xuanzhong {
+				font-size: 25px;
+			}
+			
+			#pay_area {
+				margin-top: 10px;
+			}
+			
+			.color-active {
+				color: orangered;
+			}
+			
+			#count_coupon {
+				padding: 0 5px 0 5px;
+				background: -webkit-linear-gradient(left, #efeff4, red);
+				/* Safari 5.1 - 6.0 */
+				background: -o-linear-gradient(right, #efeff4, red);
+				/* Opera 11.1 - 12.0 */
+				background: -moz-linear-gradient(right, #efeff4, red);
+				/* Firefox 3.6 - 15 */
+				background: linear-gradient(to right, #efeff4, red);
+				/* 标准的语法 */
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav " id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">订单预览</h1>
+		</header>
+		<div class="mui-content" id="dcontent" style="margin-bottom: 60px;">
+			<div class="win">
+				<div class="title">订单信息</div>
+				<div class="content">
+					<span class="title_1">订单类型</span>
+					<span class="input-msg special" id="orderType"></span>
+				</div>
+				<div class="content" style="display: none;">
+					<span class="title_1">预约取件时间</span>
+					<span class="input-msg " id="startTime"></span>
+				</div>
+				<div class="content" style="display: none;">
+					<span class="title_1">预约送件时间</span>
+					<span class="input-msg " id="endTime"></span>
+				</div>
+
+				<div class="content">
+					<span class="title_1">配送距离</span>
+					<span class="input-msg special" id="distance"></span>
+				</div>
+				<div class="content add_area" style="display: none;">
+					<span class="title_1">加价 </span>
+					<div class="input-msg special"><span id="addPrice"></span>元</div>
+				</div>
+				<div class="add_area" style="display:none;margin-top: -6px;width: 100% !important;">
+					<div class="add_reason">因恶劣天气、高峰期、夜间等因素加价</div>
+				</div>
+				<div class="content">
+					<div class="title_1">配送总费用<img src="../../images/order/question.svg" style="height: 25px;vertical-align: bottom;margin-left: 2px;" id="price_explain" /></div>
+					<div class="input-msg special" id="price"></div>
+				</div>
+
+				<div class="content" style="height: 26px;">
+					<span class="title_1" style="float: left;height: 100%;padding-top: 1px;"><b>红包</b> </span>
+					<div class="input-msg1" style="height: 100%;" id="selectHongbao">
+						<div style="float: left;font-size: 16px;padding-left: 5px;color: red;"><span id="couponPrice"></span><span style="font-size: 13px;display: none;" id="unit">元</span> </div>
+						<div id="" style="float: right;color: #C8C7CC;margin-right: -9px;">
+							<span style="font-size: 12px;vertical-align: calc(1px);" class="show_1">暂无可用红包</span>
+							<span style="color: white;vertical-align: calc(1px); display: none;" class="show_1" id="count_coupon"><span id="countUse">  </span>个红包</span>
+							<span class="mui-icon mui-icon-arrowright" style=""></span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="win">
+				<div class="title">选择支付方式</div>
+				<div class="content pay" id="pay_area">
+					<img class="title_2" src="../../images/payIcon/CUSTOMER_RECHARGE.png" />
+					<span class="title_1">账户支付</span>余额：<span id="recharge">0.00</span>
+					<div class="title_3"> <span class="mui-icon iconfont icon-xuanzhong" id="CUSTOMER_RECHARGE"></span></div>
+				</div>
+				<div class="content pay">
+					<img class="title_2" src="../../images/payIcon/Alipay.png" />
+					<span class="title_1">支付宝</span>
+					<div class="title_3"> <span class="mui-icon iconfont icon-xuanzhong" id="ALIPAY_ANDROID"></span></div>
+				</div>
+				<div class="content pay">
+					<img class="title_2" src="../../images/payIcon/weixin.png" />
+					<span class="title_1">微信支付</span>
+					<div class="title_3"> <span class="mui-icon iconfont icon-xuanzhong" id="WXPAY_ANDROID"></span></div>
+				</div>
+				<div class="content pay">
+					<img class="title_2" src="../../images/payIcon/arrival_pay.png" />
+					<span class="title_1">到付</span>
+					<div class="title_3"><span class="mui-icon iconfont icon-xuanzhong" id="ArrivalPay"></span></div>
+				</div>
+			</div>
+			<div class="win" id="item-info">
+				<div class="title">物品信息</div>
+				<div class="content">
+					<div class="title_1">物品</div>
+					<div class="input-msg" id="item-name"></div>
+				</div>
+				<div class="content">
+					<div class="title_1">重量</div>
+					<div class="input-msg" id="item-weight"></div>
+				</div>
+				<div class="content">
+					<div class="title_1"><span>尺寸</span></div>
+					<div class="input-msg" id="item-size"></div>
+				</div>
+			</div>
+			<div class="win">
+				<div class="title">收件人信息</div>
+				<div class="content">
+					<div class="title_1">收件人</div>
+					<div class="input-msg" id="receiveName"></div>
+				</div>
+				<div class="content">
+					<div class="title_1">联系电话</div>
+					<div class="input-msg" id="receivePhone"></div>
+				</div>
+				<div class="content">
+					<div class="title_1">收件地址</div>
+					<div class="input-msg" style="vertical-align: text-top;" id="receive_poiName"></div>
+				</div>
+			</div>
+			<div class="win" style="margin-bottom: 10px;" id="footer-win">
+				<div class="title">发件人信息</div>
+				<div class="content">
+					<div class="title_1">发件人</div>
+					<div class="input-msg" id="starterName"></div>
+				</div>
+				<div class="content">
+					<div class="title_1">联系电话</div>
+					<div class="input-msg" id="starterPhone"></div>
+				</div>
+				<div class="content">
+					<div class="title_1">发件地址</div>
+					<div class="input-msg" style="vertical-align: text-top;" id="starter_poiName"></div>
+				</div>
+			</div>
+
+		</div>
+		<div style="position:fixed; bottom: 0px;height: 50px;width: 100%;background:rgba(105, 105, 105, 0.95);z-index: 10000;" id="footer">
+			<div style="height:100%;width: 65%;float: left;color: white;padding-left: 15px;padding-top: 14px;">
+				<span style="font-size: 20px;">¥<span id="payPrice"></span> </span>
+				<span style="font-size: 13px; color: #E3E3E3;">| 已优惠¥<span id="hongbaoPrice">0</span></span>
+			</div>
+			<div style="height:100%;width: 35%;float: left;background-color:#4dbeca;color: white;padding-top: 15px;" align="center" id="confirm">
+				<span style="font-size: 20px;">确认</span>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script>
+			var dataSource; //所有的数据源
+			var orderType; //订单的方式：拼单TO、单件SO、预约（AO、高级AOA有确定的送达时间）
+			var price;
+			var distance;
+			var payArr = ['ALIPAY_ANDROID', 'WXPAY_ANDROID'];
+			var payMode = "ArrivalPay";
+			var couponId;
+			var factPriceEle;
+			mui.init();
+			//红包选择页面的监听choose自定义事件
+			window.addEventListener("choose", function(e) {
+				var couponPrice = e.detail.couponPrice;
+				couponId = e.detail.couponId;
+				dataSource.couponId = couponId;
+				document.getElementById("couponPrice").innerHTML = "-" + couponPrice;
+				document.getElementById("unit").style.display = "";
+				var res = accSub(price, couponPrice);
+				factPriceEle.innerHTML = res <= 0 ? 0.01 : res;
+				document.getElementById("hongbaoPrice").innerHTML = couponPrice;
+			});
+			mui.plusReady(function() {
+				if(plus.device.model === IPHONEX) {
+					document.getElementById("footer").style.height = '84px';
+					document.getElementById("footer-win").style.marginBottom = '44px';
+				}
+				//获取订单页面传入的参数
+				var self = plus.webview.currentWebview();
+				dataSource = self.dataSource;
+				//订单类型
+				orderType = self.orderType;
+				price = dataSource.price;
+				distance = dataSource.distance;
+				var addprice = dataSource.priceAdditional;
+				if(!isNaN(addprice) && addprice > 0) {
+					mui.each(document.getElementsByClassName("add_area"), function(index, element) {
+						element.style.display = "";
+					})
+					document.getElementById("addPrice").innerHTML = addprice;
+				} else {
+					mui.each(document.getElementsByClassName("add_area"), function(index, element) {
+						element.style.display = "none";
+					})
+				}
+				var vehicle = dataSource.vehicle;
+				if(vehicle && vehicle.length != 0) {
+					var nodeDiv = document.getElementById("item-info");
+					var childNode = document.createElement('div');
+					childNode.setAttribute('class', 'content');
+					childNode.innerHTML = '<div class="title_1" >交通工具</div><div class="input-msg" >' + app.carType(vehicle) + '</div>'
+					nodeDiv.appendChild(childNode);
+				}
+				factPriceEle = document.getElementById("payPrice");
+				document.getElementById("orderType").innerHTML = getOrderTypeName(orderType);
+				var startTime = dataSource.fetchTime;
+				if(startTime) {
+					var sSpan = document.getElementById("startTime");
+					sSpan.innerHTML = app.getTimeString(startTime);
+					sSpan.parentNode.style.display = '';
+				}
+				var endTime = dataSource.sendTime;
+				if(endTime) {
+					var eSpan = document.getElementById("endTime");
+					eSpan.innerHTML = app.getTimeString(endTime);
+					eSpan.parentNode.style.display = '';
+				}
+
+				//给收件人信息赋值
+				document.getElementById("receiveName").innerHTML = dataSource.receiver.name;
+				document.getElementById("receivePhone").innerHTML = dataSource.receiver.phonenumber;
+				document.getElementById("receive_poiName").innerHTML = app.showAddressInfoFormat(dataSource.receiver.poiName, dataSource.receiver.addressName, dataSource.receiver.addressDetail);
+
+				//发件人
+				document.getElementById("starterName").innerHTML = dataSource.starter.name;
+				document.getElementById("starterPhone").innerHTML = dataSource.starter.phonenumber;
+				document.getElementById("starter_poiName").innerHTML = app.showAddressInfoFormat(dataSource.starter.poiName, dataSource.starter.addressName, dataSource.starter.addressDetail);
+
+				document.getElementById("distance").innerHTML = Math.floor(distance / 10) / 100 + "km";
+				document.getElementById("price").innerHTML = price + "元";
+				factPriceEle.innerHTML = price;
+				document.getElementById("item-name").innerHTML = (dataSource.item.name || dataSource.item.type) + "-" + (dataSource.item.type || "");
+				document.getElementById("item-weight").innerHTML = dataSource.item.weight + " kg";
+				document.getElementById("item-size").innerHTML = app.show_itemSize(dataSource.item.size);
+				app.tokenAjax_Get({
+					url: countCanUseCouponUrl(app.getCustomerId(), price, getOrderType(orderType)),
+					success: function(result) {
+						if(result.status == "1") {
+							var count = result.data;
+							if(count > 0) {
+								document.getElementById('countUse').innerText = count;
+								var showElem = document.getElementsByClassName("show_1");
+								mui.each(showElem, function(index, element) {
+									if(index == 0) {
+										element.style.display = "none";
+									}
+									if(index == 1) {
+										element.style.display = "";
+									}
+								});
+							}
+						}
+					},
+					error: function(err) {}
+				});
+				//账户余额
+				app.getUserAccountInfo(getAccountInfo(app.getCustomerId()), function(e) {
+					if(e) {
+						var d = e.data.moneyRemain;
+						if(d) {
+							document.getElementById("recharge").innerHTML = Math.abs(d).toFixed(2);
+						}
+					}
+				});
+				//支付方式的选择
+				mui('.win').on('tap', '.pay', function() {
+					var choosed = this.getElementsByClassName("icon-xuanzhong")[0];
+					app.chooseStatusDoubleCancel(choosed, "icon-xuanzhong", "color-active", function(e, s) {})
+				});
+				//选择红包
+				document.getElementById('selectHongbao').addEventListener('tap', function() {
+					app.openWindow("../hongbao/chooseRedPacket.html", "chooseRedPacket", {
+						"orderPrice": price,
+						"couponId": couponId,
+						'couponType': getOrderType(orderType)
+					});
+				});
+				//打开price_explain.html页面
+				document.getElementById('price_explain').addEventListener('tap', function() {
+					app.openWindowNoAutoShow('../price_explain.html', 'price_explain');
+				});
+				document.getElementById('confirm').addEventListener('tap', function() {
+					var payType = ''; //支付的方式
+					var url;
+					mui.each(document.getElementsByClassName("icon-xuanzhong"), function(index, element) {
+						if(element.className.indexOf("color-active") != -1) {
+							payType = this.id;
+						}
+					});
+					if(payType.length == 0) {
+						mui.toast('请选择支付方式')
+						return;
+					}
+					if(payType === payMode) {
+						dataSource.payMode = payMode;
+						dataSource.payType = null;
+					} else {
+						dataSource.payType = payType;
+						dataSource.payMode = null;
+					}
+					console.log(orderType)
+					switch(orderType) {
+						case "TO":
+							//拼单	
+							url = API_URL_POST_CREATE_ORDER_MERGE + app.getCustomerId();
+							break;
+						case "SO":
+							//直发
+							url = API_URL_POST_CREATE_ORDER_DIRECT + app.getCustomerId();
+							break;
+						case "AO":
+							//普通预约
+							url = API_URL_POST_CREATE_ORDER_APPOINTMENT + app.getCustomerId();
+							break;
+						case "AOA":
+							//高级预约
+							url = API_URL_POST_CREATE_ORDER_ADVANEDAPPOINTMENT + app.getCustomerId();
+							break;
+						default:
+							return;
+					}
+					plus.nativeUI.showWaiting("订单创建中...");
+					//向服务器发送数据,创建订单
+					app.tokenAjax({
+						url: url,
+						data: JSON.stringify(dataSource),
+						success: function(result) {
+							if(result.status == 1) {
+								//获取支付信息
+								var orderId = result.data.id;
+								if(!dataSource.payMode) { //在线支付
+									app.tokenAjax_Get({
+										url: getPaymentURL() + orderId,
+										success: function(result) {
+											console.log("22222")
+											console.log(JSON.stringify(result))
+											plus.nativeUI.closeWaiting();
+											if(result.status == 1) {
+												//打开支付页面并传参
+												app.openWindow("confirmPay.html", "confirmPay", {
+													"dataSource": result.data
+												});
+											} else {
+												mui.toast(result.msg);
+											}
+										},
+										error: function(xhr) {
+											plus.nativeUI.closeWaiting();
+											app.httpError(xhr.status);
+										}
+									});
+								} else { //到付单
+									//跳转到我的订单页面
+									app.openRefreshOrderListPage();
+								}
+							} else {
+								mui.toast(result.msg);
+							}
+						},
+						error: function(xhr) {
+							plus.nativeUI.closeWaiting();
+							app.httpError(xhr);
+						}
+					});
+				});
+			})
+
+			function accSub(arg1, arg2) {　　
+				var r1, r2, m, n;　　
+				try {
+					r1 = arg1.toString().split(".")[1].length
+				} catch(e) {
+					r1 = 0
+				}　　
+				try {
+					r2 = arg2.toString().split(".")[1].length
+				} catch(e) {
+					r2 = 0
+				}　　
+				m = Math.pow(10, Math.max(r1, r2));　　 //last modify by deeka
+				　　 //动态控制精度长度
+				n = (r1 >= r2) ? r1 : r2;　　
+				return((arg1 * m - arg2 * m) / m).toFixed(n);
+			}
+
+			function getOrderType(type) {
+				//订单的方式：拼单TO、单件SO、预约（AO、高级AOA有确定的送达时间）
+				switch(type) {
+					case 'TO':
+						return 'merge';
+					case 'SO':
+						return 'direct';
+					default:
+						return 'common';
+				}
+			}
+
+			function getOrderTypeName(type) {
+				//订单的方式：拼单TO、单件SO、预约（AO、高级AOA有确定的送达时间）
+				switch(type) {
+					case 'TO':
+						return '拼单';
+					case 'SO':
+						return '直发单';
+					case 'AO':
+						return '预约单';
+
+					case 'AOA':
+						return '高级预约单'
+					default:
+						return '';
+				}
+			}
+
+			function getSizeName(size) {
+				switch(size) {
+					case "SMALL":
+						return "小件";
+					case "MIDDLE":
+						return "中件";
+					case "BIG":
+						return "大件";
+					case "VERY_BIG":
+						return "超大件";
+					default:
+						return "";
+				}
+			}
+		</script>
+
+	</body>
+
+</html>

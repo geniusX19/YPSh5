@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style>
+			ul {
+				margin-top: 30px !important;
+			}
+			
+			li {
+				height: 50px;
+				padding-top: 13.5px !important;
+			}
+			
+			.update {
+				position: relative;
+				right: calc(-55%);
+				font-style: normal;
+				color: #999999;
+				font-size: 17px
+			}
+			
+			.mui-table-view span.mui-pull-right {
+				color: #999;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">设置</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" id="company">
+						了解壹客送
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a class="">
+						当前版本号<i class="update" id="version"></i>
+					</a>
+
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" id="changePassword">
+						修改密码
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" id="clearAll">
+						清除缓存
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" id="changeAccount">
+						注销登录
+					</a>
+				</li>
+			</ul>
+
+		</div>
+
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				//版本号
+				document.getElementById("version").innerHTML = plus.runtime.version;
+
+				document.getElementById('company').addEventListener('tap', function() {
+					var titleNView = {
+						backgroundColor: '#4dbeca', //导航栏背景色
+						titleText: '壹客送', //导航栏标题
+						titleColor: 'white', //文字颜色
+						type: 'transparent', //透明渐变样式
+						autoBackButton: true, //自动绘制返回箭头
+						splitLine: { //底部分割线
+							color: '#cccccc'
+						}
+					}
+					//使用mui的窗口打开方式
+					mui.openWindow({
+						url: "company.html",
+						id: "company",
+						styles: {
+							titleNView: titleNView
+						}
+					});
+				});
+				/**
+				 * 修改密码
+				 */
+				document.getElementById("changePassword").addEventListener("tap", function() {
+					app.openWebView("changePassword.html", "changePassword");
+
+				});
+				document.getElementById('changeAccount').addEventListener('tap',function () {
+				   app.deleteToken();
+				   var page = plus.webview.getWebviewById("login");
+				   mui.fire(page,'closeAll',{})
+				   app.openWebView("../../login.html","login");
+				});
+				
+				
+				document.getElementById('clearAll').addEventListener('tap', function() {
+					mui.confirm('缓存文件可用来帮您节约部分流量，确定要清空吗？', '提示', ['取消', '确认'],
+						function(e) {
+							if(e.index) {
+								var keys = myStorage.getItems();
+								mui.each(keys, function(index, element) {
+									var keyname = element;
+									if(keyname == "username" || keyname == "authname" || keyname == "icon" || keyname == "authicon") {
+										myStorage.removeItem(keyname);
+									}
+								});
+								mui.toast('缓存数据清除成功');
+							}
+						}, 'div');
+				});
+
+			})
+		</script>
+	</body>
+
+</html>

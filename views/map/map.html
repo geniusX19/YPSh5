@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>壹用户</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<script src="https://api.map.baidu.com/api?v=3.0&ak=iOYBmDKHicYmzZigGIGnurrPf1YMKlEj"></script>
+		<!--<script src="https://api.map.baidu.com/api?v=2.0&ak=B9wXVqeX0Qpcy7Mp2sZQe9h7VE2GardO"></script>-->
+	</head>
+	<style>
+		#button {
+			position: absolute;
+			width: 100% !important;
+			height: 40px !important;
+			bottom: 0px !important;
+		}
+		
+		#map {
+			width: 100%;
+			height: 100%;
+			margin-top: 0px;
+			font-family: "微软雅黑";
+		}
+		
+		.mui-table-view-cell {
+			height: 30px;
+			font-size: 14px;
+			color: #8F8F94;
+			padding-top: 6px;
+			list-style: none;
+			padding-left: 19px !important;
+		}
+		/*.anchorBL {
+			display: none;
+		}*/
+		
+		#show_location_area {
+			position: absolute;
+			left: 2%;
+			top: 80%;
+			background: white;
+			height: 30px;
+			width: 30px;
+			border-radius: 15px;
+		}
+		
+		#show_location {
+			margin: 5px;
+			width: 20px;
+			height: 20px;
+		}
+		
+		#location_icon {
+			position: fixed;
+			left: calc(44%);
+			height: 50px;
+			width: 40px;
+		}
+		
+		.poi-title {
+			font-family: "黑体";
+			color: #000000;
+			font-weight: 700;
+			font-size: 15px;
+			display: inline-block;
+			margin-top: 5px;
+		}
+		
+		.address-name {
+			display: inline-block;
+			font-size: 14px;
+			padding-top: 4px;
+			padding-bottom: 4px;
+		}
+		
+		.poi-sreach {
+			padding: 5px;
+		}
+		
+		#footer-submit {
+			position: absolute;
+			top: 0px !important;
+			left: 100%;
+			background: white;
+			width: 100%;
+			height: 100%;
+			-webkit-transition: all 0.3s;
+			-moz-transition: all 0.3s;
+			-o-transition: all 0.3s;
+			transition: all 0.3s;
+		}
+		
+		#footer-list {
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			height: 100%;
+			width: 100%;
+		}
+		
+		#show_address {
+			font-size: 14px;
+			padding: 5px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left "></a>
+			<h1 class="mui-title" style="color: white;" id="city"><span id="city_1"></span><span class="mui-icon mui-icon-location"></span></h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div class="mui-input-row" style="height: 40px;">
+				<input type="text" class="mui-input" style="font-size: 15px;" id="search" placeholder="输入要检索的位置..">
+			</div>
+			<!--
+            	作者：wanping89@yeah.net
+            	时间：2018-05-16
+            	描述：隐藏域保存所选的地址的poiName,addressName,lng,lat
+            -->
+			<input id="lon" type="hidden" />
+			<input id="lat" type="hidden" />
+			<input id="poi-address" type="hidden" />
+			<input id="address_name" type="hidden" />
+			<!--
+            	作者：wanping89@yeah.net
+            	时间：2017-12-11
+            	描述：地图区域
+            -->
+			<div id="map">
+
+			</div>
+			<div id="footer" style="position:relative;overflow: hidden; background-color: azure;">
+				<div id="footer-list">
+					<div class="mui-scroll-wrapper" style="height: 100%;background: #FFFFFF !important;">
+						<div class="mui-scroll" id="searchList" style="">
+							<div class="" style="width: 100%;padding: 30px;" align="center">
+								定位中......
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="footer-submit">
+					<div id="show_address">
+
+					</div>
+					<div id="button">
+						<button type="button" style="height: 40px;width: 100%;" class="mui-btn mui-btn-blue ">确定</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div id="allmap" style="display: none;"></div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			var poi;
+			// 创建点坐标  
+			var pointCenter;
+			var searchInput;
+			var longitudeInput;
+			var latitudeInput;
+			var poiAddressInput, addressNameInput;
+			var cityEle;
+			//父页面的id
+			var html;
+			var map = null,
+				mapHeight, mapLeft;
+			var srcoll;
+			mui.init({
+				preloadPages: [{
+					url: 'quickSearch.html',
+					id: 'quickSearch',
+					styles: {},
+					extras: {}
+				}]
+			});
+			window.onload = function() {
+				//监听自定义事件，用于和city页面进行通信
+				window.addEventListener("changeCity", function(e) {
+					cityEle.innerHTML = e.detail.cityName;
+					myStorage.setItem("area_city", e.detail.cityName);
+				});
+				window.addEventListener("quick_search", function(e) {
+					var data = e.detail;
+					var back_point = new plus.maps.Point(data.lng, data.lat);
+					listenMapEvent(map, back_point, 18);
+					chooseAddress(data.lng, data.lat, data.poiName, data.addressName);
+				});
+				mui.plusReady(function() {
+					//接收父页面传过来的值
+					var self = plus.webview.currentWebview();
+					html = self.html;
+					var lon = self.lon || "";
+					var lat = self.lat || "";
+					//poi
+					var address = self.address || "";
+					//poiAddress
+					var poi_Address_name = self.poiAddress;
+
+					searchInput = document.getElementById("search");
+					longitudeInput = document.getElementById("lon");
+					latitudeInput = document.getElementById("lat");
+					poiAddressInput = document.getElementById("poi-address");
+					addressNameInput = document.getElementById("address_name");
+					mapHeight = (plus.display.resolutionHeight - 330);
+					mapLeft = (plus.display.resolutionWidth - 30) / 2;
+					//地址描述
+					cityEle = document.getElementById("city_1");
+					var cityName = myStorage.getItem("area_city", city);
+
+					//定位当前城市
+					if(cityName) {
+						cityEle.innerHTML = cityName;
+					} else {
+						plus.geolocation.getCurrentPosition(function(p) {
+							var addComp = p.address;
+							var city = addComp.city;
+							if(addComp.district.indexOf("县") != -1) {
+								city = addComp.district;
+							}
+							cityEle.innerHTML = city;
+							myStorage.setItem("area_city", city);
+						}, function(e) {
+							mui.toast('定位失败,请手动选择');
+						}, {
+							provider: 'baidu',
+							coordsType: "bd09ll"
+						});
+					}
+					listenIconTapEvent();
+					//关闭等待框
+					plus.nativeUI.closeWaiting();
+					//显示当前页面
+					mui.currentWebview.show('slide-in-right', 300);
+					/**
+					 * 
+					 */
+					srcoll = mui('.mui-scroll-wrapper').scroll({
+						scrollY: true, //是否竖向滚动
+						scrollX: false, //是否横向滚动
+						startX: 0, //初始化时滚动至x
+						startY: 0, //初始化时滚动至y
+						indicators: true, //是否显示滚动条
+						deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
+						bounce: true //是否启用回弹
+					});
+					//设置底部按钮的位置
+					document.getElementById("map").style.height = mapHeight + "px"
+					var footHeight = (plus.display.resolutionHeight - mapHeight - plus.navigator.getStatusbarHeight() - 65);
+					document.getElementById("footer").style.height = footHeight + "px";
+					plus.nativeUI.closeWaiting();
+					if(lon && lat) {
+						pointCenter = new plus.maps.Point(lon, lat);
+						longitudeInput.value = lon;
+						latitudeInput.value = lat;
+						//						searchInput.value = address;
+						poiAddressInput.value = poi_Address_name;
+						// 初始化地图，设置中心点坐标和地图级别
+						chooseAddress(lon, lat, '', poi_Address_name);
+						listenMapEvent(map, pointCenter, 18);
+					} else {
+						//显示用户当前位置
+						showUserLocation(map);
+					}
+					/**
+					 * 快捷搜索
+					 */
+					document.getElementById('search').addEventListener('focus', function() {
+						// 将检索到结果作为标点添加到地图中
+						var searchVal = searchInput.value;
+						app.inputBlur();
+						mui.openWindow({
+							url: 'quickSearch.html',
+							id: 'quickSearch',
+							show: {
+								autoShow: true, //页面loaded事件发生后自动显示，默认为true
+								aniShow: "fade-in" //页面显示动画，默认为”slide-in-right“；
+							},
+							waiting: {
+								autoShow: false //自动显示等待框，默认为true
+							}
+						})
+					});
+
+					/**
+					 * 确认，向详情页面传参
+					 */
+					document.getElementById('button').addEventListener('tap', function() {
+						var poiName = searchInput.value;
+						var lon = longitudeInput.value;
+						var lat = latitudeInput.value;
+						var poiAddress = addressNameInput.value;
+						if(!poiName) {
+							//没找到poiname
+							//获取中心点的
+							//显示poi
+							var geocoder = new BMap.Geocoder();
+							lon = pointCenter.longitude;
+							lat = pointCenter.latitude;
+							geocoder.getLocation(new BMap.Point(lon, lat), function(GeocoderResult) {
+								var addComp = GeocoderResult.addressComponents;
+								//地址描述
+								poiAddress = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+								var data = GeocoderResult.surroundingPois
+								if(data.length > 0) {
+									poiName = data[0].title;
+								}
+								confirmEvent(poiName, poiAddress, lon, lat);
+							}, {
+								numPois: 1
+							});
+
+						} else {
+							confirmEvent(poiName, poiAddress, lon, lat);
+						}
+					});
+					//当前位置
+					//选择城市，绑定点击事件
+					document.getElementById("city").addEventListener("click", function() {
+						app.openWindow("../city/city.html", "city", {
+							"pageId": "map"
+						});
+					});
+					mui('.mui-scroll-wrapper').on('tap', '.poi-sreach', function() {
+						var addressName = this.getElementsByClassName("address-name")[0].innerHTML;
+						var poiName = this.getElementsByClassName("poi-title")[0].innerHTML;
+						var lng = this.getElementsByClassName('poi-lng')[0].value;
+						var lat = this.getElementsByClassName("poi-lat")[0].value;
+						chooseAddress(lng, lat, poiName, addressName);
+
+					})
+				})
+
+				function confirmEvent(poiName, poiAddress, lon, lat) {
+					var main = plus.webview.getWebviewById(html);
+					//向父页面传值
+					mui.fire(main, 'reLonLatAddress', {
+						address: poiName,
+						addressDescription: poiAddress,
+						lon: lon,
+						lat: lat
+					});
+					mui.back();
+				}
+
+				function getCell(result, centerPoint) {
+					var res = document.getElementById("searchList");
+					res.innerHTML = "";
+					if(!result || result.length == 0) {
+						var html = '<div style="margin-top: 10px;text-indent: 10px;">对不起，当前所选位置没有找到相关地址信息，如确认位置是当前所选的点，请点击"确定"按钮</div>';
+						showButton(html);
+						return;
+					}
+					//关闭
+					closeButton();
+					var s = "";
+					mui('.mui-scroll-wrapper').scroll().scrollTo(0, 0); //100毫秒滚动到顶
+					//循环取出数据
+					mui.each(result, function(index, element) {
+						// 判断状态是否正确      
+						if(element.point.lat && element.point.lng) {
+							s = s + '<li class="mui-table-view-cell poi-sreach" style="height:auto;"><span class="poi-title">' + element.title + '</span><br/><span class="address-name">' + element.address + '</span><input class="poi-lng" type="hidden" value ="' + element.point.lng + '" /><input class="poi-lat" type="hidden" value="' + element.point.lat + '"/></li>'
+						}
+						if(s) {
+							res.innerHTML = s;
+						}
+					})
+				}
+
+
+				//显示用户当前位置
+				function showUserLocation(m) {
+					app.getCurrentLocation(true, function(p) {
+						pointCenter = new plus.maps.Point(p.coords.longitude, p.coords.latitude);
+						listenMapEvent(m, pointCenter, 18);
+						nearSearch(new BMap.Point(p.coords.longitude, p.coords.latitude));
+					}, function(e) {});
+				}
+
+				function showButton(html) {
+					document.getElementById("footer-list").style.left = "100%";
+					document.getElementById("footer-submit").style.left = "0px";
+					//设置按钮上面的内容
+					document.getElementById("show_address").innerHTML = html;
+					document.getElementById("footer").style.backgroundColor = "#FFFFFF"
+				}
+
+				function closeButton() {
+					document.getElementById("footer-list").style.left = "0px";
+					document.getElementById("footer-submit").style.left = "100%";
+					document.getElementById("footer").style.backgroundColor = "#F0FFFF";
+				}
+				/**
+				 * 检索附近的地址
+				 * @param {Object} point 百度经纬度点
+				 */
+				function nearSearch(point) {
+					//显示poi
+					var geocoder = new BMap.Geocoder();
+					geocoder.getLocation(point, function(GeocoderResult) {
+						var result = GeocoderResult.surroundingPois;
+						clear();
+						getCell(result, point);
+					}, {
+						poiRadius: 3000,
+						numPois: 20
+					});
+
+				}
+				/**
+				 * 选中地址后，将地图显示，poi 、address显示，保存所选经纬度
+				 * 
+				 * @param {Object} lng 经度
+				 * @param {Object} lat 纬度
+				 * @param {Object} poi 
+				 * @param {Object} address
+				 */
+				function chooseAddress(lng, lat, poi, address) {
+					var p = new plus.maps.Point(lng, lat);
+					listenMapEvent(map, p, 17);
+					longitudeInput.value = lng;
+					latitudeInput.value = lat;
+					poiAddressInput.value = poi;
+					searchInput.value = poi;
+					addressNameInput.value = address;
+					var html = '<div style="margin-top: 10px;">当前选择的地址：</div>	<div style="margin-left: 15px;padding: 3px;">' + address + '</div>'
+					showButton(html);
+				}
+				/**
+				 * 清除所选中的位置信息
+				 */
+				function clear() {
+					longitudeInput.value = "";
+					latitudeInput.value = "";
+					poiAddressInput.value = "";
+					addressNameInput.value = '';
+					searchInput.value = '';
+					document.getElementById("show_address").innerHTML = "";
+				}
+
+				function listenMapEvent(m, point, zoom) {
+					if(m) {
+						m.close();
+					}
+					map = new plus.maps.Map("map", {
+						center: point,
+						zoom: zoom
+					});
+					//地图注册事件
+					map.onstatuschanged = function(e) {
+						pointCenter = e.center;
+						var bmPoint = new BMap.Point(e.center.longitude, e.center.latitude);
+						nearSearch(bmPoint);
+					}
+				}
+
+				function listenIconTapEvent() {
+					plus.nativeObj.View.getViewById("view_icon_1").addEventListener("click", function() {
+						//重新定位到用户的当前位置
+						showUserLocation();
+					}, false);
+				}
+			}
+		</script>
+	</body>
+
+</html>

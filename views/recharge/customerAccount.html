@@ -1,0 +1,406 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+	</head>
+	<style>
+		#header {
+			box-shadow: none;
+		}
+		
+		#money_area {
+			width: 100%;
+			height: 150px;
+			color: white !important;
+			background: -webkit-gradient(linear, 0 0, 100% 0, from(#4dbeca), to(#3da0c5));
+			background: -webkit-linear-gradient(left, #4dbeca, #3da0c5);
+			background: -moz-linear-gradient(left, #4dbeca, #3da0c5);
+			background: -o-linear-gradient(left, #4dbeca, #3da0c5);
+			background: linear-gradient(left, #4dbeca, #3da0c5);
+			/* Safari 5.1 - 6.0 */
+			/* Opera 11.1 - 12.0 */
+			/* Firefox 3.6 - 15 */
+			text-align: center;
+			padding-top: 55px;
+		}
+		
+		#money {
+			font-size: 30px;
+		}
+		
+		.mui-table-view:before,
+		.mui-table-view:after {
+			background-color: #FFFFFF;
+		}
+		
+		.mui-navigate-right:after,
+		.mui-push-left:after,
+		.mui-push-right:after {
+			font-size: 20px !important;
+			color: #666666 !important;
+		}
+		
+		.title_1 {
+			display: inline-block;
+			width: 32% !important;
+			text-align: left;
+			font-size: 15px;
+			padding-left: 10px;
+			padding-top: 2px;
+		}
+		
+		.title_2 {
+			width: 25px;
+			height: 25px;
+			float: left;
+			margin-top: -2px;
+			margin-right: 5px;
+			margin-left: 10px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			border-radius: 5px;
+		}
+		
+		.title_3 {
+			float: right;
+			margin-top: 3px;
+			margin-right: 10px;
+			color: lightsteelblue;
+		}
+		
+		.content {
+			height: 30px;
+		}
+		
+		.color-active {
+			color: #4dbeca;
+		}
+		
+		input::-webkit-input-placeholder {
+			/* WebKit browsers */
+			font-size: 16px;
+			padding-top: 5px;
+		}
+		
+		input:-moz-placeholder {
+			/* Mozilla Firefox 4 to 18 */
+			font-size: 16px;
+			padding-top: 5px;
+			
+		}
+		
+		input::-moz-placeholder {
+			/* Mozilla Firefox 19+ */
+			font-size: 16px;
+			padding-top: 5px;
+			
+		}
+		
+		input :-ms-input-placeholder {
+			/* Internet Explorer 10+ */
+			font-size: 16px;
+			padding-top: 5px;
+			
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的账户</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div id="money_area">
+				<span>¥<span id="money">--</span></span>
+				<br />
+				<span style="font-size: 13px;">余额</span>
+				<p style="text-align:right;color:#FFFFFF;padding-top:20px;padding-left: 15px;font-size: 13px;padding-right:15px;">
+					首次充值赠送10%</p>
+			</div>
+			<div style="margin-top:40px;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="recharge">
+						<a class="mui-navigate-right">
+							<span class="icon-content">充值</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="rechargeRecord">
+						<a class="mui-navigate-right">
+							<span class="icon-content">充值记录</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="payRecords">
+						<a class="mui-navigate-right">
+							<span class="icon-content">支付记录</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="mui-popup mui-popup-in" style="display:none ;color: #000000;" id="pay_area">
+				<div class="mui-popup-inner">
+					<div class="mui-popup-title" style="border-bottom: 1px solid #D8D8D8;">充值</div>
+					<div class="mui-popup-text" style="font-size: 14px; margin-top: 5px;">
+						<div class="mui-input-row">
+							<label style="text-align: left;height:50px;width:15%;color: #000000;font-size: 25px;">¥</label>
+							<input type="number" style="height:50px;width:85%;font-size: 25px;" class="mui-input-clear" id="recharge_money"
+							 placeholder="请输入充值金额">
+						</div>
+						<div style="font-size: 14px;color: #ACACB4; text-align: left;padding: 10px;">支付方式</div>
+						<div class="content pay">
+							<img class="title_2" src="../../images/payIcon/Alipay.png" />
+							<span class="title_1">支付宝</span>
+							<div class="title_3"> <span class="mui-icon iconfont icon-xuanzhong" id="ALIPAY_ANDROID"></span></div>
+						</div>
+						<div class="content pay">
+							<img class="title_2" src="../../images/payIcon/weixin.png" />
+							<span class="title_1">微信支付</span>
+							<div class="title_3"> <span class="mui-icon iconfont icon-xuanzhong" id="WXPAY_ANDROID"></span></div>
+						</div>
+					</div>
+				</div>
+				<div class="mui-popup-buttons"><span class="mui-popup-button" id="cancel">取消</span><span class="mui-popup-button mui-popup-button-bold"
+					 id="normal_submit">确定</span></div>
+			</div>
+			<div class="mui-popup-backdrop mui-active" style="display: none;" id="AAA"></div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/countUp.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			var payArr = ['ALIPAY_ANDROID', 'WXPAY_ANDROID'];
+			var flag = true;
+			var payType = '',
+				numAnim;
+
+			window.onload = function() {
+				app.getUserAccountInfo(getAccountInfo(app.getCustomerId()), function(e) {
+					var p = 0.00;
+					if (e) {
+						var d = e.data.moneyRemain;
+						if (d) {
+							p = d;
+						}
+					}
+					numAnim = new CountUp('money', 0, p, 2, 1);
+					numAnim.start();
+				});
+			}
+
+			mui.plusReady(function() {
+
+				document.getElementById('recharge').addEventListener('tap', function() {
+					setTimeout(function() {
+						document.getElementById("AAA").style.display = '';
+						document.getElementById("pay_area").style.display = '';
+					}, 100);
+				});
+				document.getElementById('cancel').addEventListener('tap', function() {
+					hidden();
+				});
+
+				document.getElementById('normal_submit').addEventListener('tap', function() {
+					var recharge = document.getElementById("recharge_money").value;
+					if (recharge <= 0) {
+						mui.toast('充值金额必须大于0元')
+						return;
+					}
+					mui.each(document.getElementsByClassName("icon-xuanzhong"), function(index, element) {
+						if (element.className.indexOf("color-active") != -1) {
+							payType = this.id;
+						}
+					});
+
+					if (payType.length == 0) {
+						mui.toast('请选择支付方式')
+						return;
+					}
+					if (flag) {
+						flag = false;
+						setTimeout(function() {
+							flag = true;
+						}, 1000);
+						hidden();
+						plus.nativeUI.showWaiting("账单创建中");
+						//创建账单						
+						var url = createRechargeBill(app.getCustomerId());
+
+						app.tokenAjax({
+							url: url,
+							data: {
+								"payAmount": recharge,
+								"payType": payType
+							},
+							success: function(res) {
+								plus.nativeUI.closeWaiting();
+								if (res.status === 1) {
+									pay(payType, res.data.paymentString, res.data.billId);
+								} else {
+									mui.toast('创建账单失败');
+								}
+							},
+							error: function(xhr) {
+								app.httpError(xhr.status);
+							}
+						});
+
+					}
+
+				})
+
+				//支付方式的选择
+				mui('#pay_area').on('tap', '.pay', function() {
+					app.inputBlur();
+					var choosed = this.getElementsByClassName("icon-xuanzhong")[0];
+					var className = choosed.className;
+					var res = className.indexOf("color-active");
+					if (res != -1) {
+						choosed.className = className.replace("color-active", "");
+					} else {
+						choosed.className = className + " " + "color-active";
+					}
+					var id = choosed.id;
+					if (id == payArr[0]) {
+						var c = document.getElementById(payArr[1]).className;
+						document.getElementById(payArr[1]).className = c.replace("color-active", "");
+					}
+					if (id == payArr[1]) {
+						var c = document.getElementById(payArr[0]).className;
+						document.getElementById(payArr[0]).className = c.replace("color-active", "");
+					}
+				});
+
+
+				document.getElementById('rechargeRecord').addEventListener('tap', function() {
+					app.openWindowNoAutoShow("rechargeRecord.html", "rechrageRecord");
+				})
+
+				document.getElementById('payRecords').addEventListener('tap', function() {
+					app.openWindowNoAutoShow("payRecords.html", "payRecords");
+				})
+
+				function hidden() {
+					document.getElementById("AAA").style.display = 'none';
+					document.getElementById("pay_area").style.display = 'none';
+				}
+
+				/**
+				 * 支付
+				 * @param {Object} payType  支付类型
+				 * @param {Object} payStatement  调起支付宝或微信的statment支付订单信息
+				 */
+				function pay(payType, payStatement, billId) {
+					/***判断支付通道****/
+					//最终的支付通道
+					var channel;
+					/***
+					 * 用于标识支付通道： 
+					 * "alipay" - 表示支付宝；
+					 * "wxpay" - 表示微信支付； 
+					 */
+					var payId; //支付标识
+					if (payType == "ALIPAY_ANDROID") {
+						payId = "alipay";
+					} else {
+						payId = "wxpay";
+					}
+					// 取出支付宝和微信的支付通道
+					plus.payment.getChannels(function(channels) {
+						mui.each(channels, function(index, element) {
+							if (element.id == payId) {
+								channel = element;
+							}
+						});
+						if (!channel) {
+							mui.toast('获取支付通道失败，请重试！');
+						}
+						//					setTimeout(function() {
+						//						mui.confirm('支付已完成', '提示', ['支付遇到问题', '支付完成'], function(e) {
+						//							if(e.index == 1) {
+						//								app.tokenAjax_Get({
+						//									url: API_URL_GET_ORDER_STATUS + dataSource.orderId,
+						//									success: function(result) {
+						//										if(result.status == 1) {
+						//											var status = result.data;
+						//											if(status == "JUST_CREATED") {
+						//												mui.toast('订单未支付');
+						//											} else if(status == 'CANCEL') {
+						//												mui.toast('订单已被取消');
+						//												//清除定时器
+						//												clearInterval(timer);
+						//												//打开
+						//												plus.webview.currentWebview().close();
+						//												plus.webview.getWebviewById("pay").close();
+						//												plus.webview.getWebviewById("order").close();
+						//											} else {
+						//												//清除定时器
+						//												clearInterval(timer);
+						//												//打开
+						//												app.openRefreshOrderListPage();
+						//											}
+						//										}
+						//									},
+						//									error: function(xhr) {
+						//										app.httpError(xhr.status);
+						//									}
+						//								});
+						//							}
+						//						}, 'div')
+						//					}, 3000);
+						//发起支付
+						plus.payment.request(channel, payStatement, function(result) {
+							mui.toast('支付完成');
+							//检查账单是否支付完成余额
+							var url = checkBillAlreadyPayed(app.getCustomerId(), billId);
+							var timer = window.setInterval(function() {
+								app.tokenAjax_Get({
+									url: url,
+									success: function(r) {
+										console.log(JSON.stringify(r));
+										if (r.status === 1) {
+											if (r.data) {
+												window.clearInterval(timer);
+												app.getUserAccountInfo(getAccountInfo(app.getCustomerId()), function(e) {
+													var p = 0.00;
+													if (e) {
+														var d = e.data.moneyRemain;
+														if (d) {
+															p = d;
+														}
+													}
+													numAnim.update(p);
+												});
+											}
+										}
+
+									},
+									error: function(xhr) {}
+
+								});
+							}, 1000);
+						}, function(error) {
+							mui.toast("支付失败");
+						});
+
+					}, function(e) {
+						mui.toast("获取支付通道列表失败：" + e.message);
+					});
+				}
+
+			});
+		</script>
+	</body>
+
+</html>

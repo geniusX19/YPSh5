@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.subTitle {
+			width: 100%;
+			height: 40px;
+			line-height: 45px;
+			padding-left: 20px;
+			font-size: 15px;
+			margin-top: 10px;
+		}
+		
+		.intr p {
+			padding: 0px 10px;
+			font-size: 14px;
+			color: #666;
+			text-indent: 2em;
+		}
+		
+		.handle p {
+			padding: 0px 10px;
+			font-size: 14px;
+			color: #666;
+			text-indent: 2em;
+			margin-bottom: 2px;
+		}
+		
+		.price {
+			padding-left: 35px;
+			color: #666;
+			font-size: 15px;
+		}
+		
+		.vehicle span {
+			margin-left: 8px;
+		}
+		
+		.tips {
+			margin-top: 30px;
+			height: 70px;
+			bottom: 0px;
+		}
+		
+		.tips p {
+			height: 50px;
+			padding: 0px 10px;
+			font-size: 13px;
+			text-indent: 2em;
+			padding-bottom: 0px !important;
+		}
+		
+		.price-list {
+			display: inline-block;
+			width: 140px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">一键呼叫说明</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div class="subTitle" style="margin-top: 0px !important;">什么是一键呼叫？</div>
+			<div class="intr">
+				<p>一键呼叫是用户发布需求，系统根据用户需求推送相应服务人员， 壹配送仅收取相应呼叫费用，具体服务内容与价格，由用户与服务 人员协商而定，壹配送不承担任何法律责任与风险。
+				</p>
+			</div>
+			<div class="subTitle">一键呼叫怎么操作？</div>
+			<div class="handle">
+				<p>
+					用户进入一键呼叫页面。
+				</p>
+				<p>
+					1、填写呼叫地址；
+				</p>
+				<p>
+					2、选择交通工具；
+				</p>
+				<p>
+					3、选择呼叫类型及备注说明；
+				</p>
+				<p>
+					4、服务费根据情况而定；
+				</p>
+				<p>
+					5、点击确认发布需求。
+				</p>
+			</div>
+			<div class="subTitle">相关建议与说明</div>
+			<div class="handle">
+				<p>
+					1、一键呼叫服务人员皆为壹配送平台实名认证审核的人员。
+				</p>
+				<p>
+					2、服务费可以包括服务费，也可以是服务费之额外的奖励，具体根 据服务价值及双方主体协商而定。
+				</p>
+				<p>
+					3、配送呼叫需求，建议价格不超过壹配送专人专送价格，特殊情 况除外。
+				</p>
+				<p>
+					4、对于服务人员漫天要价，服务态度恶劣，呼叫人可以拨打 4000-828-929进行投诉，公司查证后将严肃处理。
+				</p>
+			</div>
+
+			<div class="subTitle">价格说明</div>
+			<div class="price">
+				<div class="vehicle">
+
+				</div>
+			</div>
+			<div class="tips footer">
+				<p>
+					温馨提示：如有投诉或建议请在我的-反馈与建议中填写，以便我们更好的完善功能，为您提供更优质的服务。
+				</p>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function() {
+				var priceMap = myStorage.getItem("phone_call_price_map");
+				var text = "";
+				var i = 0;
+				for(var k in priceMap) {
+					++i;
+					var car = app.carType(k);
+					var price = priceMap[k];
+					text += "<span class ='price-list'>" + car + ": <i>￥<i style='font-size:16px;'>" + price + "</i></i></span>";
+					if(i % 2 == 0) {
+						text += '<br/>'
+					}
+				}
+				document.getElementsByClassName("vehicle")[0].innerHTML = text;
+			});
+		</script>
+	</body>
+
+</html>

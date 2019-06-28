@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<title>壹客送</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/icons-extra.css" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<style>
+			.mui-content,
+			html,
+			body {
+				background-color: white;
+			}
+			
+			.win {
+				width: 98%;
+				margin-left: 1%;
+				padding-bottom: 10px;
+				background-color: #fff6f1;
+				border-radius: 5px;
+			}
+			
+			.title {
+				position: relative;
+				margin-top: 5px;
+				padding-top: 2px;
+				width: 140px;
+				height: 24px;
+				text-align: left;
+				text-indent: 15px;
+				color: white;
+				background-color: #4dbeca;
+				border-radius: 5px;
+			}
+			
+			.content {
+				min-height: 30px;
+				margin-top: 8px;
+			}
+			
+			.title_1 {
+				float: left;
+				padding-left: 10px;
+				font-size: 15px !important;
+			}
+			
+			.input-msg {
+				width: 70%;
+				float: right;
+				font-size: 13px;
+				padding-top: 3px;
+				text-align: right;
+				overflow: hidden !important;
+				padding-right: 6px;
+			}
+			
+			.title_2 {
+				width: 25px;
+				height: 25px;
+				float: left;
+				margin-top: -2px;
+				margin-right: 8px;
+				margin-left: 13px;
+				background-size: contain;
+				background-repeat: no-repeat;
+				border-radius: 5px;
+			}
+			
+			.title_3 {
+				float: right;
+				margin-top: -2px;
+				margin-right: 10px;
+				color: lightsteelblue;
+			}
+			
+			.icon-xuanzhong {
+				font-size: 25px;
+			}
+			
+			#pay_area {
+				margin-top: 10px;
+			}
+			
+			.color-active {
+				color: orangered;
+			}
+			
+			.pay {
+				border: none !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav " id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">呼叫信息确认</h1>
+		</header>
+		<div class="mui-content" id="dcontent" style="margin-bottom: 60px;">
+			<div id="map" style="height: 120px;"></div>
+			<div class="win" style="height: auto;min-height: 150px;margin-top:0px !important;">
+				<div class="title">信息</div>
+				<div class="content" style="">
+					<div class="title_1"><span class="mui-icon mui-icon-person" style="color: #4577fc;"> </span>联系人</div>
+					<div class="input-msg" id="receiveName"></div>
+				</div>
+				<div class="content">
+					<div class="title_1"><span class="mui-icon mui-icon-phone" style="color: #f9602a;"> </span>联系电话</div>
+					<div class="input-msg" id="receivePhone"></div>
+				</div>
+				<div class="content">
+					<div class="title_1"><img src="../../images/phone_call/demand.png" style="height: 22px;width: 20px;vertical-align: calc(-3px);" /> 呼叫需求</div>
+					<div class="input-msg" id="demand_name"></div>
+				</div>
+				<div class="content">
+					<div class="title_1"><img src="../../images/phone_call/carIcon.png" style="height: 20px;width: 19px;vertical-align: calc(-2px);" /> 呼叫车型</div>
+					<div class="input-msg" id="vehicle"></div>
+				</div>
+				<div class="content">
+					<div class="title_1"><img src="../../images/phone_call/tip.png" style="height: 22px;width: 20px;vertical-align: calc(-3px);" /> 服务费</div>
+					<div class="input-msg">¥<span style="font-size: 15px; " id="tip"></span></div>
+				</div>
+				<div class="content" style="height: 50px;">
+					<div class="title_1"><span class="mui-icon mui-icon-location" style="color: #fe7059;"> </span>地址</div>
+					<div class="input-msg" id="receiveAddress" style="width: 75%;"></div>
+				</div>
+			</div>
+			<div class="win">
+				<div class="title">选择支付方式</div>
+				<div class="content pay" id="pay_area">
+					<img class="title_2" src="../../images/payIcon/CUSTOMER_RECHARGE.png" />
+					<span class="title_1">账户支付</span><span style="font-size: 13px;">余额：<span id="recharge">0.00</span></span>
+					<div class="title_3"> <span class="mui-icon iconfont icon-xuanzhong" id="CUSTOMER_RECHARGE"></span></div>
+				</div>
+				<div class="content pay">
+					<img class="title_2" src="../../images/payIcon/Alipay.png" />
+					<div class="title_1">支付宝</div>
+					<div class="title_3"> <span class="mui-icon iconfont icon-xuanzhong" id="ALIPAY_ANDROID"></span></div>
+				</div>
+				<div class="content pay">
+					<img class="title_2" src="../../images/payIcon/weixin.png" />
+					<div class="title_1">微信支付</div>
+					<div class="title_3"><span class="mui-icon iconfont icon-xuanzhong" id="WXPAY_ANDROID"></span></div>
+				</div>
+			</div>
+		</div>
+		<div style="position:fixed; bottom:0px;height: 50px;width: 100%;background:rgba(105, 105, 105, 0.95);z-index: 10000;" id="footer">
+			<div style="height:100%;width: 65%;float: left;color: white;padding-left: 15px;padding-top: 14px;">
+				<span style="font-size: 20px;">¥<span id="payPrice"></span> 元</span>
+			</div>
+			<div style="height:100%;width: 35%;float: left;background-color:#4dbeca;color: white;padding-top: 15px;" align="center" id="confirm">
+				<span style="font-size: 20px;">确认</span>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script>
+			var dataSource; //所有的数据源
+			var price;
+			var payArr = ['ALIPAY_ANDROID', 'WXPAY_ANDROID'];
+			mui.init({
+				gestureConfig: {
+					tap: true, //默认为true
+					doubletap: false, //默认为false
+					longtap: false, //默认为false
+					swipe: false, //默认为true
+					drag: false, //默认为true
+					hold: false, //默认为false，不监听
+					release: false //默认为false，不监听
+				}
+			});
+			mui.plusReady(function() {
+				if(plus.device.model === IPHONEX) {
+					document.getElementById("footer").style.height = '84px';
+				}
+				//获取订单页面传入的参数
+				var self = plus.webview.currentWebview();
+				dataSource = self.data;
+				var demand_name = self.demand_name;
+				var totalPrice = self.totalPrice;
+				var starter = dataSource.starter;
+				//赋值显示
+				var map = new plus.maps.Map("map", {
+					'center': new plus.maps.Point(starter.longitude, starter.latitude),
+					'zoom': 18
+				});
+				app.addMarkerByDrawLine(map, '../../images/phone_call/call.png', new plus.maps.Point(starter.longitude, starter.latitude));
+				document.getElementById("receiveName").innerText = starter.name;
+				document.getElementById("receivePhone").innerText = starter.phonenumber;
+				document.getElementById("demand_name").innerText = demand_name;
+				document.getElementById("vehicle").innerText = app.carType(dataSource.vehicle);
+				document.getElementById("tip").innerText = dataSource.tip || 0;
+				document.getElementById("receiveAddress").innerText = convertAddress(starter.poiName, starter.addressDetail);
+				document.getElementById("payPrice").innerText = totalPrice;
+				app.getUserAccountInfo(getAccountInfo(app.getCustomerId()), function(e) {
+					if(e) {
+						var d = e.data.moneyRemain;
+						if(d) {
+							document.getElementById("recharge").innerHTML = Math.abs(d).toFixed(2);
+						}
+					}
+				});
+				//显示页面
+				plus.nativeUI.closeWaiting();
+				mui.currentWebview.show("slide-in-right", 300);
+
+				//支付方式的选择
+				mui('.mui-content').on('tap', '.pay', function() {
+					var choosed = this.getElementsByClassName("icon-xuanzhong")[0];
+					app.chooseStatusDoubleCancel(choosed, "icon-xuanzhong", "color-active", function(e, s) {})
+				});
+				document.getElementById('confirm').addEventListener('tap', function() {
+					var payType = ''; //支付的方式
+					var url;
+					mui.each(document.getElementsByClassName("icon-xuanzhong"), function(index, element) {
+						if(element.className.indexOf("color-active") != -1) {
+							payType = this.id;
+						}
+					});
+					if(payType.length == 0) {
+						mui.toast('请选择支付方式')
+						return;
+					}
+					dataSource.payType = payType;
+					plus.nativeUI.showWaiting("订单创建中...")
+					url = postPhoneCallOrderURL(app.getCustomerId());
+					//向服务器发送数据,创建订单
+					app.tokenAjax({
+						url: url,
+						data: JSON.stringify(dataSource),
+						success: function(result) {
+							if(result.status == 1) {
+								//获取支付信息
+								var orderId = result.data.quickcallId;
+								app.tokenAjax_Get({
+									url: getPayString(app.getCustomerId(), orderId),
+									success: function(result) {
+										plus.nativeUI.closeWaiting();
+										if(result.status == 1) {
+											//打开支付页面并传参
+											app.openWindow("confirmPay.html", "call_confirmPay", {
+												"dataSource": result.data
+											});
+										} else {
+											mui.toast(result.msg);
+										}
+									},
+									error: function(xhr) {
+										plus.nativeUI.closeWaiting();
+										mui.toast('订单创建失败');
+									}
+								});
+							} else {
+								plus.nativeUI.closeWaiting();
+								mui.toast("订单创建失败");
+							}
+						},
+						error: function(xhr) {
+							plus.nativeUI.closeWaiting();
+							mui(document.getElementById('confirm')).button('reset'); //切换为reset状态(即重置为原始的button)
+							app.httpError(xhr);
+						}
+					});
+
+				})
+			})
+
+			function accSub(arg1, arg2) {　　
+				var r1, r2, m, n;　　
+				try {
+					r1 = arg1.toString().split(".")[1].length
+				} catch(e) {
+					r1 = 0
+				}　　
+				try {
+					r2 = arg2.toString().split(".")[1].length
+				} catch(e) {
+					r2 = 0
+				}　　
+				m = Math.pow(10, Math.max(r1, r2));　　 //last modify by deeka
+				　　 //动态控制精度长度
+				　　
+				n = (r1 >= r2) ? r1 : r2;　　
+				return((arg1 * m - arg2 * m) / m).toFixed(n);
+			}
+
+			function convertAddress(p, a) {
+				var address = p + " " + a;
+				if(address.length > 36) {
+					address = address.substring(0, 34) + "...";
+				}
+				return address;
+			}
+		</script>
+
+	</body>
+
+</html>

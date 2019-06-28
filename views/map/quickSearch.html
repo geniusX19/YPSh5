@@ -1,0 +1,440 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+
+	</head>
+	<style>
+		body,
+		html,
+		.mui-content {
+			background-color: #F0FFFF;
+		}
+		
+		#ajaxbar1 {
+			position: absolute;
+			top: 48%;
+			left: calc((100% - 75px) / 2);
+			overflow: hidden;
+			height: 30px;
+			z-index: 1000;
+			display: none;
+		}
+		
+		#ajaxbar1 .barlittle {
+			background-color: #C8C7CC;
+			background-image: -webkit-linear-gradient(45deg, #C8C7CC 25%, #f1ffea);
+			background-image: -moz-linear-gradient(45deg, #C8C7CC 25%, #f1ffea);
+			border: 1px solid #C8C7CC;
+			width: 10px;
+			height: 10px;
+			border-radius: 5px;
+			float: left;
+			margin-left: 5px;
+			opacity: 0.1;
+			-webkit-animation: pulse 1s linear infinite normal;
+			-moz-animation: pulse 1s linear infinite normal;
+			-ms-animation: pulse 1s linear infinite normal;
+			animation: pulse 1s linear infinite normal;
+			-webkit-animation-delay: 0;
+			-moz-animation-delay: 0;
+			-o-animation-delay: 0;
+			animation-delay: 0;
+		}
+		
+		#ajaxbar1 #block1 {
+			-webkit-animation-delay: 0.3s;
+			-moz-animation-delay: 0.3s;
+			-o-animation-delay: 0.3s;
+			animation-delay: 0.3s;
+		}
+		
+		#ajaxbar1 #block2 {
+			-webkit-animation-delay: 0.2s;
+			-moz-animation-delay: 0.2s;
+			-o-animation-delay: 0.2s;
+			animation-delay: 0.2s;
+		}
+		
+		#ajaxbar1 #block3 {
+			-webkit-animation-delay: 0.1s;
+			-moz-animation-delay: 0.1s;
+			-o-animation-delay: 0.1s;
+			animation-delay: 0.1s;
+		}
+		
+		#ajaxbar1 #block4 {
+			-webkit-animation-delay: 0.2s;
+			-moz-animation-delay: 0.2s;
+			-o-animation-delay: 0.2s;
+			animation-delay: 0.2s;
+		}
+		
+		#ajaxbar1 #block5 {
+			-webkit-animation-delay: 0.3s;
+			-moz-animation-delay: 0.3s;
+			-o-animation-delay: 0.3s;
+			animation-delay: 0.3s;
+		}
+		
+		@keyframes pulse {
+			from {
+				transform: scale(1.2);
+				opacity: 1;
+			}
+			to {
+				transform: scale(0.7);
+				opacity: 0.1;
+			}
+		}
+		
+		@-moz-keyframes pulse {
+			from {
+				-moz-transform: scale(1.2);
+				opacity: 1;
+			}
+			to {
+				-moz-transform: scale(0.7);
+				opacity: 0.1;
+			}
+		}
+		
+		@-webkit-keyframes pulse {
+			from {
+				-webkit-transform: scale(1.2);
+				opacity: 1;
+			}
+			to {
+				-webkit-transform: scale(0.7);
+				opacity: 0.1;
+			}
+		}
+		
+		.mui-table-view-cell {
+			font-size: 14px;
+			padding-top: 6px;
+			color: #8F8F94;
+			list-style: none;
+			padding-left: 19px !important;
+		}
+		
+		.poi-title {
+			font-family: "黑体";
+			color: #000000;
+			font-weight: 700;
+			font-size: 16px;
+			display: inline-block;
+			margin-top: 5px;
+		}
+		
+		.address-name {
+			display: inline-block;
+			font-size: 14px;
+			color: #8F8F94;
+			padding-top: 4px;
+			padding-bottom: 4px;
+		}
+		
+		.poi-sreach {
+			padding: 5px;
+		}
+		
+		.history {
+			font-size: 16px;
+			color: #000000;
+			font-weight: 700;
+		}
+		
+		#history {
+			position: absolute;
+			top: 86px;
+			background-color: white;
+			border-top: 1px solid #D8D8D8;
+			border-bottom: 1px solid #D8D8D8;
+			width: 100%;
+			z-index: 10;
+			list-style: none;
+			padding: 0px;
+		}
+		
+		em {
+			color: #FF5053 !important;
+			font-style: normal;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left "></a>
+			<h1 class="mui-title" style="color: white;">地址检索</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<div class="mui-input-row" style="height: 40px;">
+				<input type="text" class="mui-input-speech" id="search" style="font-size: 15px;" placeholder="小区、大厦、街道">
+			</div>
+			<ul id="history" style=" display: none;">
+			</ul>
+
+			<div class="mui-scroll-wrapper" style="top:104px;background-color:#FFFFFF;">
+
+				<div class="mui-scroll" id="resultList" style="background-color: #FFFFFF;">
+
+				</div>
+			</div>
+		</div>
+		<div id="ajaxbar1">
+			<div id="block1" class="barlittle "></div>
+			<div id="block2" class="barlittle"></div>
+			<div id="block3" class="barlittle"></div>
+			<div id="block4" class="barlittle"></div>
+			<div id="block5" class="barlittle"></div>
+		</div>
+		<div id='bmap' style="display: none;"></div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script src="https://api.map.baidu.com/api?v=3.0&ak=iOYBmDKHicYmzZigGIGnurrPf1YMKlEj"></script>
+		<!--<script src="https://api.map.baidu.com/api?v=2.0&ak=B9wXVqeX0Qpcy7Mp2sZQe9h7VE2GardO"></script>-->
+		<script type="text/javascript">
+			var nativeWebview, imm, InputMethodManager, pointCenter;
+			var arr = new Array();
+			var flag = true;
+			var initNativeObjects = function() {
+				if(mui.os.android) {
+					var main = plus.android.runtimeMainActivity();
+					var Context = plus.android.importClass("android.content.Context");
+					InputMethodManager = plus.android.importClass("android.view.inputmethod.InputMethodManager");
+					imm = main.getSystemService(Context.INPUT_METHOD_SERVICE);
+				} else {
+					nativeWebview = plus.webview.currentWebview().nativeInstanceObject();
+				}
+			};
+			var showSoftInput = function() {
+				if(mui.os.android) {
+					imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+				} else {
+					nativeWebview.plusCallMethod({
+						"setKeyboardDisplayRequiresUserAction": false
+					});
+				}
+				setTimeout(function() {
+					document.getElementById("search").focus();
+				}, 200);
+
+			};
+			mui.init();
+			mui.plusReady(function() {
+				if(plus.device.model === IPHONEX) {
+					document.getElementsByClassName('mui-scroll-wrapper')[0].style.top = '123px';
+					document.getElementById("history").style.top = '105px';
+				}
+				mui('.mui-scroll-wrapper').scroll({
+					deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				});
+				plus.webview.currentWebview().addEventListener('show', function() {
+					//显示键盘
+					setTimeout(function() {
+						initNativeObjects();
+						showSoftInput();
+					}, 50)
+					showHistory();
+				});
+				/**
+				 * 快捷搜索
+				 */
+				document.getElementById('search').addEventListener('compositionstart', function() {
+					flag = false;
+				});
+				document.getElementById('search').addEventListener('compositionend', function() {
+					flag = true;
+				})
+				document.getElementById("search").addEventListener('input', function() {
+					setTimeout(function() {
+						if(flag) {
+							searchResult();
+						}
+					}, 100)
+				});
+				function searchResult() {
+					// 将检索到结果作为标点添加到地图中
+					var searchVal = document.getElementById("search").value;
+					var resultList = document.getElementById("resultList");
+					if(!searchVal) {
+						resultList.innerHTML = "";
+					}
+					if(app.isAllCharacter(searchVal)) {
+						return;
+					}
+					var local = null;
+					document.getElementById("ajaxbar1").style.display = "block";
+					document.getElementById("history").style.display = "none";
+					mui('.mui-scroll-wrapper').scroll().scrollTo(0, 0); //100毫秒滚动到顶
+					resultList.innerHTML = "";
+					getCityQueryResult(searchVal, function(status, data) {
+						if(status != 0) {
+							mui.toast('查询失败！！');
+						}
+						if(Array.isArray(data)) {
+							var s = "";
+							mui.each(data, function(index, element) {
+								try {
+									s = s + '<li class="mui-table-view-cell poi-sreach" style="height:auto;"><span class="poi-title">' + element.name + '</span><input type="hidden" class="poi_input" value="' + element.name + '"><br/><span class="address-name">' + element.address + '</span><input type="hidden" class="address_input"  value ="' + element.address + '"><input class="poi-lng" type="hidden" value ="' + element.location.lng + '" /><input class="poi-lat" type="hidden" value="' + element.location.lat + '"/></li>'
+								} catch(e) {}
+							});
+							if(s) {
+								resultList.innerHTML = s;
+							} else {
+								resultList.innerHTML = '<li class="mui-table-view-cell">未找到相似的结果</li>'
+							}
+						}
+						document.getElementById("ajaxbar1").style.display = "none";
+					});
+				}
+
+				//选中事件
+				mui('.mui-scroll-wrapper').on('tap', '.poi-sreach', function() {
+					var addressName = this.getElementsByClassName("address_input")[0].value;
+					var poiName = this.getElementsByClassName("poi_input")[0].value;
+					var lng = this.getElementsByClassName('poi-lng')[0].value;
+					var lat = this.getElementsByClassName("poi-lat")[0].value;
+					//记录历史记录
+					pushSearchHistory(document.getElementById("search").value);
+
+					//回传值到map页面
+					var webview = plus.webview.getWebviewById("map");
+					mui.fire(webview, 'quick_search', {
+						lng: lng,
+						lat: lat,
+						poiName: poiName,
+						addressName: addressName
+					});
+					mui.back();
+				})
+				mui('#history').on('tap', '.history_list', function() {
+					document.getElementById("search").value = this.getElementsByClassName("content")[0].innerText;
+					//触发submit按钮的点击事件
+					mui.trigger(document.getElementById('search'), 'input');
+
+					document.getElementById("history").style.display = "none";
+				});
+
+				mui('#history').on('tap', '.delete-history', function() {
+					mui.confirm('确认删除历史记录吗？', '提示', ['取消', '确认'], function(e) {
+						if(e.index == 1) {
+							document.getElementById("history").style.display = "none";
+							app.clearHistoryArrary();
+							mui.toast('清理完成！');
+						}
+					}, 'div');
+				});
+
+				mui('#history').on('tap', '.close_history', function() {
+					document.getElementById("history").style.display = "none";
+				});
+
+				//重写返回方法
+				var old_back = mui.back;
+				mui.back = function() {
+					document.getElementById("search").blur();
+					setTimeout('clearResult()',500);
+					old_back();
+				}
+
+			});
+
+			function showUserLocation() {
+				plus.geolocation.getCurrentPosition(function(p) {
+					pointCenter = new BMap.Point(p.coords.longitude, p.coords.latitude);
+				}, function(e) {
+					mui.toast('获取位置信息失败');
+				}, {
+					provider: 'baidu',
+					coordsType: "bd09ll",
+					geocode: false
+				});
+			}
+
+			function pushSearchHistory(searchVal) {
+				if(!searchVal) {
+					return;
+				}
+				var arr = app.getHistorArrary();
+				//判断数组中是否已经包含了本次的搜索的关键字
+				var index = arr.indexOf(searchVal);
+				if(index == -1) { //之前数组没有
+					var length = arr.length;
+					if(length < 6) {
+						arr.push(searchVal);
+					} else {
+						//已满，删除第一个
+						arr.shift();
+						arr.push(searchVal);
+					}
+				} else { //数组已经有了
+					//删除之前的位置
+					arr.splice(index, 1);
+					arr.push(searchVal);
+				}
+				//保存
+				app.saveHistoryArrary(arr);
+			}
+
+			function showHistory() {
+
+				//获取历史数组
+				var historyArr = app.getHistorArrary();
+				var len = historyArr.length;
+				if(len == 0) {
+					return;
+				}
+				var h = "";
+				for(var i = len - 1; i >= 0; i--) {
+					var v = historyArr[i];
+					h += '<li class="mui-table-view-cell history history_list" ><img src="../../images/map/history.png" width="15px" height="15px" style="vertical-align:middle ;" /> <span class="content"  style="padding-left: 10px;">' + v + '    </span> <span class="mui-icon mui-icon-arrowthinleft" style="float: right;color: #888888;"></span>   </li>';
+				}
+
+				h += '<li class="history" style="padding:7px;color: #888888;font-size: 14px; font-weight:400;background-color: #F7F7F7;"><span class="delete-history">删除历史记录</span> <span style="float:right;padding-right: 5px;" class ="close_history">关闭</span> </li>';
+				var ele = document.getElementById("history");
+				ele.style.display = "";
+				ele.innerHTML = h;
+			}
+
+			function convertToEM(s, v) {
+				return s.indexOf(v) >= 0 ? s.replace(v, "<em>" + v + "</em>") : s;
+			}
+			function getCityQueryResult(queryName, callback) {
+				if(!queryName) {
+					return callback(0, null);
+				}
+				if(!queryName.trim()) {
+					return callback(0, null);
+				}
+				var url = "http://api.map.baidu.com/place/v2/search?query=" + queryName + "&region=" + myStorage.getItem("area_city") + "&output=json&ak=nWXvZoBNqbfXuPvGM6GOAyzjzGNzphsY";
+				mui.ajax(url, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'GET', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						return callback(data.status, data.results);
+					},
+					error: function(xhr, type, errorThrown) {}
+				});
+			}
+
+			function clearResult() {
+				document.getElementById("search").value = "";
+				document.getElementById("resultList").innerHTML = "";
+			}
+			
+			
+		</script>
+	</body>
+
+</html>

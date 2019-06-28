@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style>
+		html,
+		body {
+			height: calc(100% - 44px);
+			/*height: 100%;*/
+			/*background-color: white !important;*/
+		}
+		
+		.list {
+			height: 90px;
+			width: 96%;
+			margin-left: 2%;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			border-radius: 10px;
+			padding-top: 5px;
+			padding-left: 5px;
+			background-color: #FFFFFF;
+		}
+		
+		.body {
+			margin-top: -6px !important;
+			height: 50px;
+		}
+		
+		.listBody {
+			float: left;
+			padding: 5px;
+			height: 50px;
+			color: #929292;
+			overflow: auto;
+			width: 80%;
+			font-size: 16px;
+		}
+		
+		.shanchu {
+			float: right;
+			width: 20%;
+			height: 50px;
+		}
+		
+		.listHeaher {
+			padding: 6px;
+			height: 40px;
+		}
+		
+		em {
+			color: #fc3a0d !important;
+			font-style: normal;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title"></h1>
+		</header>
+		<div class="mui-content" id="dcontent" style="height: calc(100% + 64px);">
+			<div class="mui-input-row mui-search">
+				<input id="quickFind" style="background-color: rgba(0, 0, 0, 0.03);border-radius: 0px;" type="search" class="mui-input-clear" placeholder="请输入姓名或手机号">
+			</div>
+			<div class="mui-scroll-wrapper" style="position:relative !important;height: calc(100% - 39px);margin-top:-10px;padding-bottom: 35px;">
+				<div class="mui-scroll">
+					<div id="list-content"></div>
+				</div>
+			</div>
+
+		</div>
+		<div class="list" id="A2" style="display:none;">
+			<!--
+                	作者：wanping89@yeah.net
+                	时间：2017-12-12
+                	描述：地址的id和经纬度
+                -->
+			<div class="sublist">
+				<input name="id" class="id" type="hidden" value="" />
+				<input name="lon" class="lon" type="hidden" value="" />
+				<input name="lat" class="lat" type="hidden" value="" />
+				<input name="address" class="address" type="hidden" />
+				<input name="detailAddress" class="detailAddress" type="hidden" value="" />
+				<div class="listHeaher">
+					<span class="name" style="padding-right: 10px;"></span>
+					<span class="phone"></span>
+				</div>
+				<div class="body">
+					<div class="listBody poiName">
+					</div>
+					<div class="shanchu" style="display: none;">
+						<div class="mui-input-row mui-checkbox ">
+							<label style="height: 30px"></label>
+							<input class="checkbox" name="Checkbox" type="checkbox" disabled="disabled">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/showLoading.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+
+		<script type="text/javascript">
+			var flag;
+			mui.init()
+
+			mui.plusReady(function() {
+				plus.webview.getWebviewById("subpage_senderList").close("none", 0);
+				mui(".mui-scroll-wrapper").scroll({
+					deceleration: 0.0005
+				});
+				var self = plus.webview.currentWebview();
+				flag = self.flag;
+				var titleEle = document.getElementById("title");
+				if(flag == "send") {
+					titleEle.innerHTML = "快速查找发件人";
+				} else {
+					titleEle.innerHTML = "快速查找收件人";
+				}
+				//快速搜索
+				document.getElementById('quickFind').addEventListener('input', function() {
+					var sreachVal = this.value;
+					if(!sreachVal) {
+						return;
+					}
+					var url;
+					if(flag == "send") {
+						url = quickFindStarterAddressURL(app.getCustomerId(), sreachVal);
+					} else {
+						url = quickFindReceiverAddressURL(app.getCustomerId(), sreachVal);
+					}
+					app.tokenAjax_Get({
+						url: encodeURI(url),
+						success: function(result) {
+							if(result.status == 1) {
+								var data = result.data;
+								var parentNode = document.getElementById("list-content");
+								parentNode.innerHTML = "";
+								if(data.length == 0) {
+									parentNode.innerHTML = "<ul><li>未找到相关联系人</li></ul>"
+									return;
+								}
+								mui.each(result.data, function(index, element) {
+									node = document.getElementById("A2").cloneNode(true);
+									if(flag == 'send') {
+										//收件人
+										node.style.display = '';
+										var a = node.getElementsByClassName("shanchu")[0];
+										a.getElementsByClassName("checkbox")[0].checked = false;
+										node.getElementsByClassName("id")[0].value = element.id;
+										var name = element.starter.name
+										var phone = element.starter.phonenumber;
+
+										if(sreachVal) {
+											name = convertToEM(name, sreachVal);
+											phone = convertToEM(phone, sreachVal);
+										}
+
+										node.getElementsByClassName('name')[0].innerHTML = name;
+										node.getElementsByClassName('phone')[0].innerHTML = phone;
+										//快速检索的位置
+										node.getElementsByClassName('poiName')[0].innerHTML = element.starter.poiName || element.starter.addressName;
+										node.getElementsByClassName('address')[0].value = element.starter.addressName;
+										node.getElementsByClassName('lon')[0].value = element.starter.longitude;
+										node.getElementsByClassName('lat')[0].value = element.starter.latitude;
+										node.getElementsByClassName('detailAddress')[0].value = element.starter.addressDetail;
+
+										parentNode.appendChild(node);
+									} else {
+										node.style.display = '';
+										var a = node.getElementsByClassName("shanchu")[0];
+										a.getElementsByClassName("checkbox")[0].checked = false;
+
+										node.getElementsByClassName("id")[0].value = element.id;
+										var name = element.receiver.name;
+										var phone = element.receiver.phonenumber;
+
+										if(sreachVal) {
+											name = convertToEM(name, sreachVal);
+											phone = convertToEM(phone, sreachVal);
+										}
+
+										node.getElementsByClassName('name')[0].innerHTML = name;
+										node.getElementsByClassName('phone')[0].innerHTML = phone;
+										//快速检索的位置
+										node.getElementsByClassName('poiName')[0].innerHTML = element.receiver.poiName || element.receiver.addressName;
+										node.getElementsByClassName('address')[0].value = element.receiver.addressName;
+										node.getElementsByClassName('lon')[0].value = element.receiver.longitude;
+										node.getElementsByClassName('lat')[0].value = element.receiver.latitude;
+
+										node.getElementsByClassName('detailAddress')[0].value = element.receiver.addressDetail;
+										parentNode.appendChild(node);
+									}
+								})
+							}
+						},
+						error: function(xhr) {
+							app.httpError(xhr.status);
+						}
+					});
+
+				});
+				mui('.mui-content').on('tap', '.list', function() {
+					chooseAddress(this);
+				})
+
+				function chooseAddress(ele) {
+					app.inputBlur();
+
+					var name = ele.getElementsByClassName("name")[0].innerHTML;
+					var phone = ele.getElementsByClassName("phone")[0].innerHTML;
+					//快速检索的位置
+					var address = ele.getElementsByClassName("address")[0].value;
+					var poiName = ele.getElementsByClassName("poiName")[0].innerHTML;
+					var detailAddress = ele.getElementsByClassName('detailAddress')[0].value;
+					var lon = ele.getElementsByClassName('lon')[0].value;
+					var lat = ele.getElementsByClassName('lat')[0].value;
+					var addressId = ele.getElementsByClassName("id")[0].value;
+					var data = {
+						name: clearEM(name),
+						phonenumber: clearEM(phone),
+						addressName: clearEM(address),
+						addressDetail: clearEM(detailAddress),
+						longitude: lon,
+						latitude: lat,
+						addressId: addressId,
+						poiName: poiName
+					};
+					var flag = myStorage.getItem('flag');
+					var event; //自定义的事件名
+					if(flag == 'send') {
+						event = 'sender';
+					}
+					if(flag == 'receive') {
+						event = 'receiver';
+					}
+					var main = plus.webview.getWebviewById('order');
+					mui.fire(main, event, {
+						'data': data
+					});
+					plus.webview.currentWebview().close();
+				}
+			});
+
+			function convertToEM(s, v) {
+				return s.indexOf(v) >= 0 ? s.replace(v, "<em>" + v + "</em>") : s;
+			}
+			function clearEM(s){
+				var s1 = s.replace("<em>","");
+				return s1.replace("</em>","");
+			}
+		</script>
+	</body>
+
+</html>

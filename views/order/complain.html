@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style type="text/css">
+		.mui-content {
+			height: calc(100% - 45px);
+			font-family: "仿宋";
+			color: #777777;
+		}
+		
+		.order-evaluation-check {
+			background-color: gray;
+			font-size: 14px;
+			color: white;
+			padding: 4px;
+			margin: 5px;
+			border-radius: 12px;
+			text-align: center;
+		}
+		
+		#icon {
+			margin-top: 2px;
+			height: 80px;
+		}
+		
+		#head-icon {
+			height: 140px;
+		}
+		
+		.mui-btn-blue,
+		.mui-btn-primary,
+		input[type=submit] {
+			width: 90%;
+		}
+		
+		.mui-checkbox.mui-left label,
+		.mui-radio.mui-left label {
+			margin-top: -2px;
+			text-align: left;
+			color: #000000;
+		}
+		
+		.mui-checkbox input[type=checkbox]:checked:before,
+		.mui-radio input[type=radio]:checked:before {
+			color: #4dbeca;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">投诉</h1>
+		</header>
+		<div class="mui-content" align="center" id="dcontent">
+			<div align="center" id="head-icon" style="">
+				<img id="icon" src="../../images/estimate/headericon.png" />
+				<div id="senderName"> </div>
+				<div><span>订单号: </span><span id="orderId" style="font-size: 14px;"></span></div>
+			</div>
+			<div class="estimateArea" align="center">
+
+			</div>
+			<button type="button" class="mui-btn mui-btn-primary mui-btn-block" style="margin-top: 30px;" id="submitEstimate">提交</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var orderId;
+			
+			mui.plusReady(function() {
+				//查找快递员
+				var self = plus.webview.currentWebview();
+				orderId = self.orderId;
+				app.tokenAjax_Get({
+					url: getComplainList(app.getCustomerId(), orderId),
+					success: function(e) {
+						
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show('slide-in-right',300);
+						
+						if(e.status === 1) {
+							var data = e.data;
+							var parentNode = document.getElementsByClassName('estimateArea')[0];
+							for(var o in data) {
+								var child = document.createElement('div');
+								child.setAttribute('class', 'mui-input-row mui-radio mui-left');
+								child.innerHTML = '<label>' + data[o] + '</label>\
+												<input name="radio" data="' + o + '" type="radio">\
+								';
+								if(o == 0) {
+									child.innerHTML = '<label>' + data[o] + '</label>\
+												<input name="radio" data="' + o + '" type="radio" checked>\
+								';
+								}
+								parentNode.appendChild(child);
+							}
+						}else{
+							mui.toast('订单已投诉');
+						}
+					},
+					error: function(xhr) {
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show('slide-in-right',300);
+						app.httpError(xhr.status);
+					}
+				});
+				//订单号
+				document.getElementById("orderId").innerHTML = orderId.replace(/\-/g, "");
+				document.getElementById("senderName").innerHTML = self.sender;
+				/**
+				 * 提交评价
+				 */
+				document.getElementById('submitEstimate').addEventListener('click', function() {
+					var tab = mui('input[name = radio]');
+					var num;
+					mui.each(tab, function(index, element) {
+						if(element.checked) {
+							num = element.getAttribute('data');
+						}
+					});
+					var url = customerComplain(app.getCustomerId(), orderId, num);
+					plus.nativeUI.showWaiting("提交中..");
+					app.tokenAjax({
+						url: url,
+						data: {},
+						success: function(e) {
+							plus.nativeUI.closeWaiting();
+							if(e.status === 1) {
+								mui.toast('投诉成功');
+								mui.back();
+							}
+						},
+						error: function(xhr) {
+							plus.nativeUI.closeWaiting();
+							app.httpError(xhr.status);
+						}
+					})
+				});
+			})
+		</script>
+	</body>
+
+</html>

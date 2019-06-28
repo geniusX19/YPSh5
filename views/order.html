@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<title>壹客送</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/icons-extra.css" />
+		<link rel="stylesheet" href="../css/mui.picker.min.css" />
+		<script src="https://api.map.baidu.com/api?v=3.0&ak=iOYBmDKHicYmzZigGIGnurrPf1YMKlEj"></script>
+		<!--<script src="https://api.map.baidu.com/api?v=2.0&ak=B9wXVqeX0Qpcy7Mp2sZQe9h7VE2GardO"></script>-->
+
+		<style>
+			.mui-content {
+				width: 100%;
+				height: 100%;
+				background-color: white !important;
+			}
+			
+			.mui-table-view-cell>a:not(.mui-btn) {
+				margin: -10px -26px !important;
+			}
+			
+			html,
+			body {
+				background-color: white !important;
+			}
+			
+			#map {
+				width: 100%;
+				height: 130px;
+			}
+			
+			.anchorBL {
+				position: absolute;
+				top: 4px;
+				text-align: center;
+				width: 100%;
+			}
+			
+			.img {
+				border-radius: 12px;
+				position: relative;
+				text-align: center;
+				width: 65px;
+				padding-top: 3px;
+				padding-bottom: 3px;
+				display: inline-block;
+				color: #FFFFFF;
+				background: #4dbeca;
+			}
+			
+			.img-order {
+				float: left;
+				margin-left: 2% !important;
+				width: 22%;
+				text-align: center;
+			}
+			
+			.simple {
+				top: 4px;
+			}
+			
+			#AA {
+				width: 300px;
+			}
+			
+			#mbody {
+				width: 100%;
+				position: relative;
+			}
+			
+			.img-icon {
+				height: 25px;
+				position: relative;
+				right: -4px;
+			}
+			
+			#help_explain {
+				position: absolute;
+				left: 80px;
+				color: #3da0c5;
+				font-size: 21px;
+				display: block;
+				z-index: 2 !important;
+				width: 80px;
+				height: 40px;
+				padding-top: 13px;
+				padding-left: 14px;
+			}
+			
+			.fill-content {
+				position: relative;
+				top: -9px;
+				color: #222222;
+				font-size: 13px;
+				display: inline-block;
+				left: 12px;
+				width: calc(60%);
+				text-align: center !important;
+			}
+			
+			.mui-table-view-cell>a:not(.mui-btn) {
+				padding-bottom: 2px !important;
+			}
+			
+			.mui-navigate-right {
+				height: 38px;
+			}
+			
+			.mui-card {
+				height: 21px;
+				padding-top: 1px;
+				padding-bottom: 2px;
+				margin: 0px;
+				margin-left: 2.5% !important;
+				color: #999999;
+				width: 30% !important;
+				text-align: center;
+				float: left !important;
+			}
+			
+			.mui-card-address {
+				margin-left: 1% !important;
+				width: 48.5% !important;
+			}
+			
+			.mui-slider {
+				position: relative;
+				z-index: 1;
+				overflow: hidden;
+				width: 100%;
+				padding-bottom: 3px;
+			}
+			
+			.mui-table-view-cell:after {
+				background: none;
+			}
+			
+			.mui-slider-indicator {
+				position: static !important;
+				background-color: #fff !important;
+				height: 30px !important;
+				margin-bottom: 4px;
+			}
+			
+			.mui-table-view:before,
+			.mui-table-view:after {
+				background-color: white !important;
+			}
+			
+			#mergePrice,
+			#directPrice,
+			#samedayPrice{
+				position: absolute;
+				top: -26px;
+				height: 30px;
+				width: 50px;
+				display: none;
+				z-index: 10;
+			}
+			
+			#mergePrice {
+				left: 20%;
+			}
+			
+			#directPrice {
+				right: 18%;
+			}
+			
+			#samedayPrice{
+				right: 1%;
+			}
+			
+			.order-price {
+				font-size: 13px;
+				font-weight: 700;
+			}
+			
+			.history {
+				display: inline-block;
+				width: 40%;
+				margin: 0px !important;
+				font-size: 13px;
+			}
+			
+			.history-active {
+				border: #DDDDDD solid 1px;
+				border-radius: 6px;
+				color: darkgrey;
+				text-align: center;
+				margin-left: 1% !important;
+			}
+			
+			.more {
+				display: inline-block;
+				width: 14% !important;
+				text-align: right !important;
+				padding: 2px 3px 2px 0px;
+				font-size: 14px;
+			}
+			
+			.mui-input-row {
+				height: 30px;
+				padding-bottom: 0px;
+				padding-top: 5px;
+			}
+			
+			.mui-input-row input,
+			.mui-input-row label {
+				height: 30px !important;
+				font-size: 13px;
+				padding-top: 5px;
+				font-size: 14px !important;
+				padding-right: 0px !important;
+			}
+			
+			.div-bottom {
+				border-bottom: 1px solid #efeff4;
+				margin-left: 4%;
+				width: 96%;
+			}
+			
+			input {
+				font-size: 13px !important;
+			}
+			
+			a {
+				font-size: 15px;
+			}
+			
+			.mui-card-active {
+				background: #4dbeca;
+				border: none;
+				color: #FFFFFF;
+			}
+			
+			.title_5 {
+				vertical-align: calc(7px);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<!--
+            	作者：wanping89@yeah.net
+            	时间：2017-12-06
+            	描述：地图
+            -->
+			<div id="map"></div>
+			<!--
+            	作者：wanping89@yeah.net
+            	时间：2018-07-06
+            	描述：内容
+            -->
+			<div class="" style="margin-bottom: 3px;">
+				<ul class="mui-table-view">
+					<span class="mui-icon mui-icon-help" id="help_explain"></span>
+					<li class="mui-table-view-cell" id="sender">
+						<a class="mui-navigate-right"><img src="../images/order/senderIcon.svg" class="img-icon" /> <span class="title_5">发件信息</span>
+							<i class="fill-content" id="fill_sender"><i style="color: #8A6DE9;display: inline-block;width: 100%;text-align: right;padding-right: 20px;">帮你取&nbsp;&nbsp;帮你送</i></i>
+						</a>
+					</li>
+				</ul>
+				<div class="div-bottom"></div>
+			</div>
+			<div style="margin-top: 5px;margin-bottom: 5px;">
+				<div class="mui-input-row" style="width:40%;display: inline-block;">
+					<label style="width:40%;">姓名:</label>
+					<input id="sender_name" type="text" style="width:60%;" placeholder="发件人姓名">
+				</div>
+				<div class="mui-input-row" style="width:45%;display: inline-block;">
+					<label>号码:</label>
+					<input id="sender_phone" type="number" placeholder="发件人号码">
+				</div>
+				<div style="width:10%;display: inline-block;" id="sender_person" align="center" class="contact_person">
+					<img src="../images/order/phonebook.png" class="img-icon" style="position: relative;left:-5px;width: 22px;height: 22px; top: -2px;" />
+				</div>
+			</div>
+			<div class="div-bottom"></div>
+			<div style="margin-top: 8px;margin-bottom: 6px;" id="starterRecord">
+				<span class="history mui-card-starter" data='0'></span>
+				<span class="history mui-card-starter" data='1'></span>
+				<span class="more" id="starterAddress">更多..</span>
+			</div>
+			<div style="margin-top: 3px;margin-bottom: 3px;">
+				<ul class="mui-table-view mui-table-view-middle" style="font-size: 15px;">
+					<li class="mui-table-view-cell" id="receiver">
+						<a class="mui-navigate-right"><img src="../images/order/receiveIcon.svg" class="img-icon" />&nbsp;<span class="title_5">
+								收件信息</span> <i class="fill-content" id="poi_name"><span style="color: grey;">请选择收件地址</span></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="div-bottom"></div>
+			<div style="margin-top: 5px;margin-bottom: 5px;">
+				<span class="mui-table-view-cell" style=" width: 35%;color: #FFFFFF;padding-left: 15px !important;" id="smartInput">
+					<span class="mui-navigate" style="background: #4dbeca;padding: 5px;font-size: 12px;letter-spacing: 1px;">智能填写</span>
+				</span>
+				<input id="address_detail" class="mui-input-clear" type="text" placeholder="楼层或门牌号(可不填)" style="border: none;text-align: center;height: 32px;margin:0px 0px 0px 0px;font-size: 14px;width: 62%;">
+			</div>
+			<div class="div-bottom"></div>
+			<div style="margin-top: 5px;margin-bottom: 5px;">
+				<div class="mui-input-row" style="width:40%;display: inline-block;">
+					<label style="width:40%;">姓名:</label>
+					<input id="receive_name" type="text" style="width:60%;" placeholder="收件人姓名">
+				</div>
+				<div class="mui-input-row" style="width:45%;display: inline-block;">
+					<label>号码:</label>
+					<input id="receive_phone" type="number" placeholder="收件人号码">
+				</div>
+				<div style="width:10%;display: inline-block;" id="person" align="center" class="contact_person">
+					<img src="../images/order/phonebook.png" class="img-icon" style="position: relative;left:-5px;width: 22px;height: 22px; top: -2px;" />
+				</div>
+			</div>
+			<div class="div-bottom"></div>
+			<div style="margin-top: 8px;" id="receiverRecord">
+				<span class="history mui-card-receiver" data='0'></span>
+				<span class="history mui-card-receiver" data='1'></span>
+				<span class="more" id="receiverAddress">更多..</span>
+			</div>
+			<div class="" id="goods_title" style="display: none;margin-top: 3px;margin-bottom: 3px;">
+				<ul class="mui-table-view ">
+					<li class="mui-table-view-cell" id="goods">
+						<a class="mui-navigate-right"><img src="../images/order/goodsIcon.svg" class="img-icon" />&nbsp;<span class="title_5">
+								物品信息</span> <i class="fill-content" id="fill_goods"></i></a>
+					</li>
+				</ul>
+				<div class="div-bottom"></div>
+			</div>
+			<div id="goodsRecord" style="margin-top: 8px;margin-bottom: 6px;display: none;">
+				<span class="history mui-card-goods" data='0'></span>
+				<span class="history mui-card-goods" data='1'></span>
+				<span class="more" id="frequentItem">更多..</span>
+			</div>
+			<div id="mbody" align="center" style="margin-top: 30px;display: none; padding-bottom: 20px;">
+				<!--
+            	作者：wanping89@yeah.net
+            	时间：2017-12-06
+            	描述：按钮区域
+            	-->
+				<div class="btn" align="center">
+					<div class="img-order">
+						<span class="img contact">拼单</span>
+					</div>
+					<div id="mergePrice">
+						<img src="../images/order/merge.png" height="30px" width="50px" />
+						<div class="anchorBL"><span style="font-size: 9px;">¥</span><span class="order-price"></span></div>
+					</div>
+					<div class="img-order">
+						<span class="img reservation">预约 </span>
+					</div>
+					<div class="img-order" style="margin-top: -3px;">
+						<span class="img simple">直发</span>
+					</div>
+					<div id="directPrice">
+						<img src="../images/order/direct.png" height="30px" width="50px" />
+						<div class="anchorBL"><span style="font-size: 9px;">¥</span><span class="order-price"></span></div>
+					</div>
+					<div class="img-order">
+						<span class="img sameday">当日达</span>
+					</div>
+					<div id="samedayPrice">
+						<img src="../images/order/direct.png" height="30px" width="50px" />
+						<div class="anchorBL"><span style="font-size: 9px;">¥</span><span class="order-price"></span></div>
+					</div>
+				</div>
+			</div>
+			<!--
+                	作者：wanping89@yeah.net
+                	时间：2018-01-04
+                	描述：普通和高级预约选择页面
+                -->
+			<div class="mui-popup mui-popup-in" style="display:none;" id="aa">
+				<div class="mui-popup-inner">
+					<div class="mui-popup-title" style="border-bottom: 1px solid #D8D8D8;">请选择预约类型</div>
+					<div class="mui-popup-text" style="font-size: 14px; margin-top: 5px;" align="center">
+						<div style="color:#007AFF !important;font-size: 17px;padding-top: 15px;padding-bottom: 10px;" id="normal">普通预约</div>
+						<div style="color:#007AFF !important;font-size: 17px;padding-top: 10px;padding-bottom: 15px;" id="advanced">高级预约</div>
+						<div style="color:#007AFF !important;font-size: 17px;padding-top: 10px;padding-bottom: 15px;" id="closed">关闭</div>
+						<span style="font-size: 14px;color: #ACACB4; ">提示：如需精准的送达时间，请选高级预约</span>
+						<span style="font-size: 14px;color: #ACACB4; ">(高级预约的价格是普通的1.5倍)</span>
+					</div>
+				</div>
+			</div>
+			<!--
+                	作者：wanping89@yeah.net
+                	时间：2018-01-04
+                	描述：普通预约
+                -->
+			<div class="mui-popup mui-popup-in" style="display:none; " id="normal_aa">
+				<div class="mui-popup-inner">
+					<div class="mui-popup-title" style="border-bottom: 1px solid #D8D8D8;">普通预约</div>
+					<div class="mui-popup-text" style="font-size: 14px; margin-top: 5px;">
+						<div class="mui-input-row" style="height: 35px;">
+							<label style="width: 40%; text-align: left ;line-height: 150%;">取件时间</label>
+							<label class='timePick' style="width: 60%;color: #ACACB4;" id="normal_startTime"><span class="mui-icon-extra mui-icon-extra-regist"
+								 style="color: orange;vertical-align: middle"></span>请选择时间 </label>
+						</div>
+						<div style="font-size: 14px;color: #ACACB4; text-align: left;padding: 10px;">提示：物品会在取到件之后的2~3小时内送达。</div>
+					</div>
+				</div>
+				<div class="mui-popup-buttons"><span class="mui-popup-button cancel">取消</span><span class="mui-popup-button mui-popup-button-bold"
+					 id="normal_submit">确定</span></div>
+			</div>
+			<!--
+            	作者：wanping89@yeah.net
+            	时间：2017-12-06
+            	描述：高级预约订单时间选择
+           		-->
+			<div class="mui-popup mui-popup-in" style="display:none;" id="AA">
+				<div class="mui-popup-inner" id="AA_content">
+					<div class="mui-popup-title" style="border-bottom: 1px solid #D8D8D8;">请选择预约时间</div>
+					<div class="mui-popup-text" style="font-size: 14px; margin-top: 5px;">
+						<div class="mui-input-row" style="height: 35px;">
+							<label style="width: 40%; text-align: left ;line-height: 150%;">取件时间</label>
+							<label class='timePick' style="width: 60%;color: #ACACB4;" id="startTime"><span class="mui-icon-extra mui-icon-extra-regist"
+								 style="color: orange;vertical-align: middle"></span>请选择时间 </label>
+						</div>
+						<div class="mui-input-row" style="height: 35px;" id="AA_arrive">
+							<label style="width: 40%; text-align: left ;line-height: 150%;">送达时间</label>
+							<label class='timePick' style="width: 60%;color: #ACACB4;" id="endTime"><span class="mui-icon-extra mui-icon-extra-regist"
+								 style="color: orange;vertical-align: middle"></span>请选择时间 </label>
+							<div class="mui-input-row" style="margin-bottom:-11px ;">
+								<div style="font-size: 12px;color: #ACACB4;text-align:left;padding: 5px;">提示:物品会根据选择的送达时间，准确送到。请您根据当前的实际情况（如上下班高峰期、恶劣天气等因素）慎重的选择送达时间。</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mui-popup-buttons"><span class="mui-popup-button cancel">取消</span><span class="mui-popup-button mui-popup-button-bold"
+					 id="submit">确定</span></div>
+			</div>
+			<div class="mui-popup-backdrop mui-active" style="display: none;" id="AAA"></div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/myStorage.js"></script>
+		<script type="text/javascript" src="../js/immersed.js"></script>
+		<script src="../js/config.js"></script>
+		<script type="text/javascript" src="../js/showLoading.js"></script>
+		<script type="text/javascript" src="../js/mui.picker.min.js"></script>
+		<script>
+			var goodsInformation = null; //记录用户输入的物品信息对象
+			var sender = null; //记录发件人的具体信息
+			var receiver = null; //收件人的具体信息
+			var em = null,
+				map = null;
+			var sendMarker = null,
+				receiveMarker = null,
+				userMarker = null,
+				routeMarker = null;
+			var goodsArr;
+			var starterArr, defaultStarter = null;
+			var receiverArr;
+			var mapHeight = 0,
+				maskView = null;
+			/**
+			 * 后台返回来的订单的id、价格、距离
+			 */
+			var orderId;
+			var price;
+			var samedayMoney;
+			var distance;
+			var pointArray = new Array(2);
+			var isNeedSave = 1; //默认需要保存		
+
+			window.onload = function() {
+
+				function setReceivInfo(data) {
+					receiver = data;
+					if (receiver == null) {
+						//清除信息
+						document.getElementById("poi_name").innerHTML = '<span style="color: grey;">请选择发件地址</span>';
+						document.getElementById("address_detail").value = '';
+						document.getElementById("receive_name").value = '';
+						document.getElementById("address_detail").value = '';
+						document.getElementById("receive_phone").value = '';
+						pointArray[1] = null;
+					} else {
+						//显示信息
+						document.getElementById("poi_name").innerHTML = app.spliStringTo(receiver.poiName || receiver.addressName, 13);
+						document.getElementById("address_detail").value = receiver.addressDetail;
+						document.getElementById("receive_name").value = receiver.name;
+						document.getElementById("receive_phone").value = receiver.phonenumber;
+						document.getElementById("address_detail").value = receiver.addressDetail;
+						pointArray[1] = new plus.maps.Point(receiver.longitude, receiver.latitude);
+					}
+					showAndDrawLine();
+				}
+
+				function setItem(data, i) {
+					goodsInformation = data;
+					var n;
+					if (i === 1) {
+						n = app.spliStringTo(goodsInformation.name, 12) + "(默认)";
+					} else {
+						n = app.spliStringTo(goodsInformation.name, 14);
+					}
+					document.getElementById("fill_goods").innerHTML = n;
+				}
+
+				function setSender(data, i) {
+					sender = data;
+					if (data != null) {
+						var n;
+						var d = sender.poiName || sender.addressName;
+						if (i == 1) {
+							n = app.spliStringTo(d, 13) + "(默认)";
+						} else {
+							n = app.spliStringTo(d, 14);
+						}
+						document.getElementById("fill_sender").innerHTML = n;
+						document.getElementById("sender_name").value = data.name || "";
+						document.getElementById("sender_phone").value = data.phonenumber || "";
+						pointArray[0] = new plus.maps.Point(sender.longitude, sender.latitude);
+					} else {
+						document.getElementById("fill_sender").innerHTML =
+							'<i style="color: #8A6DE9;display: inline-block;width: 100%;text-align: right;padding-right: 20px;">帮你取&nbsp;&nbsp;帮你送</i>';
+						document.getElementById("sender_name").value = "";
+						document.getElementById("sender_phone").value = "";
+						pointArray[0] = null;
+					}
+					showAndDrawLine();
+				}
+				/**
+				 * 从地图页面接受参数
+				 */
+				window.addEventListener("reLonLatAddress", function(e) {
+					var data = e.detail;
+					showItemAndOrderingType();
+					if (receiver == null) {
+						receiver = new Object();
+					}
+					if (data) {
+						receiver.longitude = data.lon;
+						receiver.latitude = data.lat;
+						receiver.poiName = data.address;
+						receiver.addressName = data.addressDescription;
+						calculatePrice();
+						pointArray[1] = new plus.maps.Point(receiver.longitude, receiver.latitude);
+						showAndDrawLine();
+						document.getElementById("poi_name").innerHTML = app.spliStringTo(data.address || data.addressDescription, 13);
+					}
+					setTimeout(function() {
+						//详细地址处调起键盘
+						app.showInput(document.getElementById("address_detail"));
+					}, 800);
+				});
+				//物品页面传过来的信息
+				window.addEventListener('goods', function(e) {
+					setItem(e.detail.data);
+					//计算价格
+					calculatePrice();
+					mui.each(document.getElementsByClassName("mui-card-goods"), function(index, element) {
+						if (element.classList.contains("mui-card-active")) {
+							element.className = element.className.replace("mui-card-active", "");
+						}
+					});
+				});
+				//发件人地址信息
+				window.addEventListener('sender', function(e) {
+					setSender(e.detail.data);
+					//计算价格
+					calculatePrice();
+					mui.each(document.getElementsByClassName("mui-card-starter"), function(index, element) {
+						if (element.classList.contains("mui-card-active")) {
+							element.className = element.className.replace("mui-card-active", "");
+						}
+					})
+				});
+				//收件人地址信息
+				window.addEventListener('receiver', function(e) {
+					isNeedSave = 0; //不保存
+					receiver = e.detail.data;
+					//计算价格
+					calculatePrice();
+					mui.each(document.getElementsByClassName("mui-card-receiver"), function(index, element) {
+						if (element.classList.contains("mui-card-active")) {
+							element.className = element.className.replace("mui-card-active", "");
+						}
+					});
+					setReceivInfo(receiver);
+					showItemAndOrderingType();
+				});
+				/***
+				 * 自定义事件
+				 */
+				window.addEventListener("chooseContact", function(e) {
+					var elementId = e.detail.elementId;
+					var name = e.detail.name;
+					var phone = e.detail.phoneNumber;
+					if (elementId === "sender_person") {
+						document.getElementById("sender_name").value = name;
+						document.getElementById("sender_phone").value = app.outputCurrentPhoneNumber(phone);
+					} else {
+						document.getElementById("receive_name").value = name;
+						document.getElementById("receive_phone").value = app.outputCurrentPhoneNumber(phone);
+					}
+				});
+				// 创建地图实例  
+				// 创建点坐标  
+				var pointCenter;
+				mui.init({
+					gestureConfig: {
+						tap: true, //默认为true
+						doubletap: false, //默认为false
+						longtap: false, //默认为false
+						swipe: false, //默认为true
+						drag: true, //默认为true
+						hold: false, //默认为false，不监听
+						release: false //默认为false，不监听
+					},
+					preloadPages: [{
+						url: 'phoneBook/phoneBook.html',
+						id: 'phoneBook',
+						extras: {
+							"html": "order"
+						}
+					}]
+				});
+				mui.plusReady(function() {
+					//从服务器获取数据
+					//注意：若为ajax请求，则需将如下代码放在处理完ajax响应数据之后；
+					app.tokenAjax_Get({
+						url: API_URL_GET_FIND_LATEST_TEN_ORDERS + app.getCustomerId(),
+						success: function(result) {
+							if (result.status == 1) {
+								var data = result.data;
+								goodsArr = data.items;
+								starterArr = data.starters;
+								receiverArr = data.receivers;
+								if (goodsArr.length > 0) {
+									showGoods(goodsArr);
+								}
+								if (starterArr.length > 0) {
+									showStarter(starterArr);
+								}
+								if (receiverArr.length > 0) {
+									showReceiver(receiverArr);
+								}
+								var reHight = plus.display.resolutionHeight;
+								mapHeight = calculateMapHeight(reHight, 320);
+							}
+							mapHeight = calculateMapHeight(plus.display.resolutionHeight, 320);
+							showmap();
+							plus.nativeUI.closeWaiting();
+							//显示当前页面
+							mui.currentWebview.show('slide-in-right', 400);
+						},
+						error: function(xhr) {
+							mapHeight = calculateMapHeight(plus.display.resolutionHeight, 320);
+							showmap();
+							plus.nativeUI.closeWaiting();
+							//显示当前页面
+							mui.currentWebview.show('slide-in-right', 400);
+						}
+					});
+					//设置默认的信息
+					app.tokenAjax_Get({
+						url: API_URL_GET_DEFAULT_ITEM_STARTER + app.getCustomerId(),
+						success: function(result) {
+							if (result.status == 1) {
+								var data = result.data;
+								if (data.default_item) {
+									setItem(dBItemConvert(data.default_item), 1);
+								}
+								if (data.default_starter) {
+									defaultStarter = dBDataDefault(data.default_starter);
+									setSender(defaultStarter, 1);
+								}
+							}
+						},
+						error: function(err) {}
+					});
+					//初始化软件键盘
+					app.initNativeObjects();
+
+					//给按钮添加点击事件
+					mui('.btn').on('tap', '.img', function() {
+						if (goodsInformation == undefined || !goodsInformation.name) {
+							mui.toast('请填写物品信息');
+							return;
+						}
+						if (sender == undefined || sender.phonenumber == undefined || sender.phonenumber == null || sender.phonenumber ==
+							'') {
+							mui.toast('请填写发件人信息');
+							return;
+						}
+						if (receiver == undefined || receiver == null) {
+							mui.toast('请填写收件人信息');
+							return;
+						}
+						//获取手机号和姓名
+						var name = document.getElementById("receive_name").value;
+						var phone = document.getElementById("receive_phone").value;
+						if (phone) {
+							receiver.phonenumber = phone;
+						} else {
+							mui.toast('请输入收件人号码！');
+							return;
+						}
+						if (name) {
+							receiver.name = name;
+						} else {
+							mui.toast('请输入收件人姓名！');
+							return;
+						}
+						receiver.addressDetail = document.getElementById("address_detail").value;
+						//保存收件地址
+						if (isNeedSave === 1) {
+							app.tokenAjax({
+								url: API_URL_POST_SAVE_RECEIVER_ADDRESS + app.getCustomerId(),
+								data: receiver,
+								success: function(data) {},
+								error: function(xhr) {
+									plus.nativeUI.closeWaiting()
+									app.httpError(xhr.status);
+								}
+							});
+
+						}
+						var orderType;
+						var classList = this.classList;
+						//判断是否需要发放
+						app.tokenAjax({
+							url: API_URL_POST_GIVE_AREA_COUPON,
+							data: {
+								'customerId': app.getCustomerId(),
+								'lng': myStorage.getItem("user_longitude"),
+								'lat': myStorage.getItem("user_latitude")
+							},
+							success: function(r) {},
+							error: function(e) {}
+						});
+						//单件直发
+						if (classList.contains('simple')) {
+							var data = {
+								"item": goodsInformation,
+								"starter": sender,
+								"receiver": receiver,
+								"vehicle": goodsInformation.vehicle || null
+							};
+							mui.showLoading("");
+							app.tokenAjax({
+								url: API_URL_POST_PREVIEW_ORDER_DIRECT + app.getCustomerId(),
+								data: data,
+								success: function(data) {
+									mui.hideLoading();
+									if (data.status == 1) {
+										var dataSource = data.data;
+										setTimeout(function() {
+											mapMaskClose();
+										}, 200)
+										app.openWindow('pay/pay.html', 'pay', {
+											"dataSource": dataSource,
+											"orderType": "SO"
+										});
+									} else {
+										isBindPhonenumber(data);
+									}
+								},
+								error: function(xhr) {
+									mui.hideLoading();
+									app.httpError(xhr.status);
+								}
+							});
+						}
+						//拼单
+						if (classList.contains('contact')) {
+							mui.showLoading("");
+							var data = {
+								"item": goodsInformation,
+								"starter": sender,
+								"receiver": receiver,
+								"vehicle": goodsInformation.vehicle || null
+							};
+							/**
+							 * tokenajax 传到后台
+							 */
+							app.tokenAjax({
+								url: API_URL_POST_PREVIEW_ORDER_MERGE + app.getCustomerId(),
+								data: data,
+								success: function(data) {
+									mui.hideLoading();
+									if (data.status == 1) {
+										var dataSource = data.data;
+										document.getElementById("closed").addEventListener('tap', function() {
+											mapMaskClose();
+										})
+										app.openWindow('pay/pay.html', 'pay', {
+											"dataSource": dataSource,
+											"orderType": "TO"
+										});
+									} else {
+										isBindPhonenumber(data);
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									mui.hideLoading();
+									app.httpError(xhr.status);
+								}
+							});
+						}
+						//当日达
+						if (classList.contains('sameday')) {
+							mui.showLoading("");
+							var data = {
+								"item": goodsInformation,
+								"starter": sender,
+								"receiver": receiver,
+								"vehicle": goodsInformation.vehicle || null
+							};
+							/**
+							 * tokenajax 传到后台
+							 */
+							app.tokenAjax({
+								url: API_URL_POST_PREVIEW_ORDER_DIRECT + app.getCustomerId(),
+								data: data,
+								success: function(data) {
+									mui.hideLoading();
+									if (data.status == 1) {
+										var dataSource = data.data;
+										document.getElementById("closed").addEventListener('tap', function() {
+											mapMaskClose();
+										})
+										app.openWindow('pay/pays.html', 'pay', {
+											"dataSource": dataSource,
+											"orderType": "Three",
+											"samedayMoney": samedayMoney
+										});
+									} else {
+										isBindPhonenumber(data);
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									mui.hideLoading();
+									app.httpError(xhr.status);
+								}
+							});
+						}
+						//预约
+						if (classList.contains('reservation')) {
+							mapMaskShow();
+						}
+
+					});
+					//智能填写
+					document.getElementById('smartInput').addEventListener('tap', function() {
+						app.openWindow('addressOrder/senderAddress_receive.html', 'senderAddress_receive', {});
+					});
+					/*
+					 *预约订单时间选择div的事件
+					 * 
+					 */
+					//普通预约
+					document.getElementById('normal').addEventListener('tap', function() {
+						document.getElementById("aa").style.display = "none";
+						document.getElementById("AA").style.display = "none";
+						document.getElementById("normal_aa").style.display = "";
+					});
+
+					//高级预约
+					document.getElementById('advanced').addEventListener('tap', function() {
+						document.getElementById("aa").style.display = "none";
+						document.getElementById("AA").style.display = "";
+						document.getElementById("normal_aa").style.display = "none";
+					})
+					document.getElementById("closed").addEventListener('tap', function() {
+						mapMaskClose();
+					})
+					//普通预约的开始时间
+					document.getElementById('normal_startTime').addEventListener('tap', function() {
+						//开始时间往后移1小时
+						var startDate = delay(5, 1, new Date());
+						var endDate = delay(5, 13, new Date());
+						//获取日历
+						getCalendar('normal_startTime', startDate, endDate);
+					});
+					//高级预约单的开始时间
+					document.getElementById('startTime').addEventListener('tap', function() {
+						//开始时间往后移1小时
+						var startDate = delay(35, 1, new Date());
+						var endDate = delay(5, 13, new Date());
+						//获取日历
+						getCalendar('startTime', startDate, endDate);
+					});
+					//预约单的送达时间
+					document.getElementById('endTime').addEventListener('tap', function() {
+						//获取预约取件的时间
+						var time = document.getElementById("startTime").innerHTML;
+						var ss = convertStrToDate(time);
+						if (!ss.getDate()) {
+							mui.toast('请先选择预约取件时间！');
+							return;
+						}
+						//往后延时1小时30分做为开始时间
+						var startDate = delay(35, 1, ss);
+						var endDate = delay(5, 13, ss);
+						//					获取日历
+						getCalendar('endTime', startDate, endDate);
+					});
+
+					//取消按钮
+					mui('.mui-content').on('tap', '.cancel', function() {
+						document.getElementById("AAA").style.display = 'none';
+						this.parentNode.parentNode.style.display = 'none';
+						mapMaskClose();
+					});
+					/**
+					 * 普通预约单
+					 */
+					document.getElementById('normal_submit').addEventListener('tap', function() {
+						var start = document.getElementById("normal_startTime").innerHTML;
+						start = convertStrToDate(start).getTime();
+						if (!start) {
+							mui.toast('请先选择预约取件时间');
+							return;
+						}
+						var data = {
+							"item": goodsInformation,
+							"starter": sender,
+							"receiver": receiver,
+							"fetchTime": start,
+							"vehicle": goodsInformation.vehicle || null
+						};
+						mui.showLoading("");
+						app.tokenAjax({
+							url: API_URL_POST_PREVIEW_ORDER_APPOINTMENT + app.getCustomerId(),
+							data: data,
+							success: function(data) {
+								mui.hideLoading();
+								if (data.status == 1) {
+									var dataSource = data.data;
+									mapMaskClose();
+									app.openWindow('pay/pay.html', 'pay', {
+										"dataSource": dataSource,
+										"orderType": "AO"
+									});
+								} else {
+									isBindPhonenumber(data);
+								}
+							},
+							error: function(xhr) {
+								mui.hideLoading();
+								app.httpError(xhr.status);
+							}
+						});
+					});
+
+					/**
+					 *高级预约订单确认 
+					 */
+					document.getElementById('submit').addEventListener('tap', function() {
+						var start = document.getElementById("startTime").innerHTML;
+						var arrive = document.getElementById("endTime").innerHTML;
+						arrive = convertStrToDate(arrive).getTime();
+						start = convertStrToDate(start).getTime();
+						if (!start) {
+							mui.toast('请先选择预约取件时间');
+							return;
+						}
+						if (!arrive) {
+							mui.toast('请选择预约送件时间');
+							return;
+						}
+						var data = {
+							"item": goodsInformation,
+							"starter": sender,
+							"receiver": receiver,
+							"sendTime": arrive,
+							"fetchTime": start,
+							"vehicle": goodsInformation.vehicle || null
+						};
+						var url = API_URL_POST_PREVIEW_ORDER_ADVANEDAPPOINTMENT + app.getCustomerId();
+						mui.showLoading("");
+						app.tokenAjax({
+							url: url,
+							data: data,
+							success: function(data) {
+								mui.hideLoading();
+
+								if (data.status == 1) {
+									var dataSource = data.data;
+									mapMaskClose();
+									app.openWindow('pay/pay.html', 'pay', {
+										"dataSource": dataSource,
+										"orderType": "AOA"
+									});
+								} else {
+									isBindPhonenumber(data);
+								}
+							},
+							error: function(xhr) {
+								mui.hideLoading();
+								app.httpError(xhr.status);
+							}
+						});
+
+					});
+					mui('.mui-content').on('tap', '.contact_person', function() {
+						var elementId = this.id;
+						var phonebookWebview = plus.webview.getWebviewById("phoneBook");
+						if (phonebookWebview) {
+							mui.fire(phonebookWebview, 'TransValue', {
+								"elementId": elementId
+							});
+							phonebookWebview.show("slide-in-right", 300);
+						} else {
+							app.openWindow('phoneBook/phoneBook.html', "phoneBook", {
+								"html": "order",
+								"elementId": elementId
+							})
+						}
+					});
+
+					/**
+					 * 历史记录选择
+					 * 
+					 */
+					//物品
+					mui('#goodsRecord').on('tap', '.mui-card-goods', function() {
+						//选中
+						app.chooseStatusDoubleCancel(this, 'mui-card-goods', 'mui-card-active', function(e, s) {
+							if (s == 1) { //选中
+								//取出数据
+								var data = goodsArr[e.getAttributeNode("data").value];
+								//将数据存储到goodsinformation里
+								document.getElementById("fill_goods").innerHTML = app.spliStringTo(data.item.itemName || data.item.itemType,
+									15);
+								goodsInformation = dBItemConvert(data);
+							} else { //取消选中
+								document.getElementById("fill_goods").innerHTML = "";
+								goodsInformation = null;
+							}
+						})
+						//计算价格
+						calculatePrice();
+
+					});
+
+					mui('.mui-content').on('tap', '#frequentItem', function() {
+						app.openWebView(
+							"goods/goodsList.html", "goodsList"
+						);
+					})
+
+					/**
+					 * 发件人地址
+					 */
+					mui('#starterRecord').on('tap', '.mui-card-starter', function() {
+						//选中
+						app.chooseStatusDoubleCancel(this, 'mui-card-starter', 'mui-card-active', function(e, s) {
+							if (s == 1) { //选中
+								//取出数据
+								var data = starterArr[e.getAttributeNode('data').value];
+								//将数据存储到 sender 里
+								sender = dBDataConvertToObj(data);
+							} else { //取消选中
+								sender = null;
+							}
+						})
+						setSender(sender);
+						//计算价格
+						calculatePrice();
+					});
+					/**
+					 * 收件人地址
+					 */
+					mui('#receiverRecord').on('tap', '.mui-card-receiver', function() {
+						showItemAndOrderingType();
+						//选中
+						app.chooseStatusDoubleCancel(this, 'mui-card-receiver', 'mui-card-active', function(e, s) {
+							if (s == 1) { //选中
+								isNeedSave = 0;
+								//取出数据
+								var data = receiverArr[e.getAttributeNode('data').value];
+								//取出数据
+								//将数据存储到 receiver 里
+								receiver = dBDataConvertToObj(data);
+							} else { //取消选中
+								isNeedSave = 1;
+								receiver = null;
+							}
+						});
+						//计算价格
+						calculatePrice();
+						setReceivInfo(receiver);
+					});
+
+					/*
+					 * 列表的事件
+					 */
+					document.getElementById('sender').addEventListener('tap', function() {
+						myStorage.setItem('flag', 'send');
+						app.openWindow("addressOrder/senderAddress.html", 'senderAddress', {
+							'flag': 'add' + myStorage.getItem('flag'),
+							'contact': sender
+						});
+					});
+
+					//常用发件人
+					mui('.mui-content').on('tap', '#starterAddress', function() {
+						myStorage.setItem('flag', 'send');
+						var addressId;
+						if (sender) {
+							myStorage.setItem("sender_addressId", sender.addressId);
+						}
+						app.openWindow("addressOrder/subpage_senderList.html", "subpage_senderList", {
+							"title": "请选择一个发件人地址",
+						});
+					})
+
+					//收件人
+					document.getElementById('receiver').addEventListener('tap', function() {
+						var data = {
+							"html": 'order'
+						};
+						if (receiver) {
+							data.lon = receiver.longitude;
+							data.lat = receiver.latitude;
+							data.poiName = receiver.poiName;
+							data.address = receiver.addressName;
+						}
+						app.openReceiveMapWindow("map/map_receive.html", "map_receive", data);
+					});
+					//常用收件人
+					mui('.mui-content').on('tap', '#receiverAddress', function() {
+						myStorage.setItem('flag', 'receive');
+						var addressId;
+						if (receiver) {
+							myStorage.setItem("receiver_addressId", receiver.addressId);
+						}
+						app.openWindow("addressOrder/subpage_senderList.html", "subpage_senderList", {
+							"title": "请选择一个收件人地址"
+						});
+					})
+					//物品信息
+					document.getElementById('goods').addEventListener('tap', function() {
+						app.openWindow('goods/orderGoods.html', 'orderGoods', {
+							"goodsInformation": goodsInformation
+						});
+					});
+					document.getElementById('help_explain').addEventListener('tap', function() {
+						app.openWebView("help_explain.html", "help_explain");
+					});
+					destroyHongbaoPage();
+					var old_back = mui.back;
+					mui.back = function() {
+						mapMaskClose();
+						old_back();
+					}
+				});
+				/**
+				 * date时间往后延迟hour个小时和min分钟 的时间
+				 * @param {Object} min 分钟
+				 * @param {Object} hour 小时
+				 * @param {Object} date 日期
+				 */
+				function delay(min, hour, date) {
+					var oldTime = date.getTime();
+					oldTime += min * 60 * 1000;
+					oldTime += hour * 60 * 60 * 1000;
+					return new Date(oldTime);
+				}
+				/**
+				 * 获取日历,并在标签的id为id中显示
+				 * @param {Object} id
+				 * @param {Object} starDate 开始时间
+				 * @param {Object} endDate 结束时间
+				 */
+				function getCalendar(id, starDate, endDate) {
+					var dtpicker = new mui.DtPicker({
+						type: 'minute', //设置日历初始视图模式 
+						beginDate: starDate, //设置开始日期 
+						endDate: endDate, //设置结束日期 
+						labels: ['年', '月', '日', '时', "分"] //设置默认标签区域提示语 
+					})
+					dtpicker.show(function(e) {
+						document.getElementById(id).innerHTML = e.y.value + "-" + e.m.value + "-" + e.d.value + " " + e.h.value + ":" +
+							e.i.value;
+						dtpicker.dispose(); //释放资源
+					})
+				}
+
+				function showAndDrawLine() {
+					if (userMarker) {
+						map.removeOverlay(userMarker);
+					}
+					if (map == null) {
+						return;
+					}
+					map.removeOverlay(sendMarker);
+					map.removeOverlay(receiveMarker);
+					map.removeOverlay(routeMarker);
+					if (pointArray[0] && pointArray[1]) {
+						var distance = 0;
+						//计算两点之间的距离
+						plus.maps.Map.calculateDistance(pointArray[0], pointArray[1], function(event) { // JS code.
+							distance = event.distance;
+						}, function() {});
+						/**
+						 * 检索路线
+						 */
+						var searchObj = new plus.maps.Search(map);
+						searchObj.onRouteSearchComplete = function(state, result) {
+							var p = getItude(pointArray[0], pointArray[1]);
+							var zoom;
+							if (distance < 1500 && distance > 0) {
+								zoom = 15;
+							} else if (1500 <= distance && distance < 5000) {
+								zoom = 13;
+							} else if (5000 <= distance && distance < 10000) {
+								zoom = 12;
+							} else {
+								zoom = 11;
+							}
+							map.close();
+							map = new plus.maps.Map('map');
+							map.centerAndZoom(p, zoom);
+							map.show();
+							if (state == 0) {
+								if (result.routeNumber <= 0) {
+									drawLine(map, pointArray);
+								} else {
+									routeMarker = result.getRoute(0);
+									map.addOverlay(routeMarker);
+									routeMarker.show();
+								}
+							} else {
+								drawLine(map, pointArray);
+							}
+						}
+						if (distance < 1500) {
+							searchObj.walkingSearch(pointArray[0], "", pointArray[1], "");
+						} else {
+							searchObj.drivingSearch(pointArray[0], "", pointArray[1], "");
+						}
+					} else {
+						if (pointArray[0]) {
+							sendMarker = app.addMarkerByDrawLine(map, "../images/map/send32.png", pointArray[0]);
+						}
+						if (pointArray[1]) {
+							receiveMarker = app.addMarkerByDrawLine(map, '../images/map/receive128.png', pointArray[1]);
+						}
+					}
+				}
+
+				/**
+				 * 销毁红包页面
+				 */
+				function destroyHongbaoPage() {
+					var redPacketList = plus.webview.getWebviewById("redPacketList");
+					if (redPacketList) {
+						plus.webview.close(redPacketList, "none");
+					}
+					var redPacketHistory = plus.webview.getWebviewById("redPacketHistory");
+					if (redPacketHistory) {
+						plus.webview.close(redPacketHistory, "none");
+					}
+				}
+
+				function isBindPhonenumber(data) {
+					if (data.status == "-2") {
+						//未绑定手机，让用户去绑定手机号
+						mui.toast('请绑定手机号');
+						app.openWebView("setting/bindPhone.html", "bindPhone");
+
+					} else {
+						mui.toast(data.msg);
+					}
+				}
+
+				function convertStrToDate(strDate) {
+					var arr = strDate.split(" ");
+					var ymd = arr[0].split("-");
+					var hm = arr[1].split(":");
+					return new Date(ymd[0], parseInt(ymd[1]) - 1, ymd[2], hm[0], hm[1]);
+				}
+
+				/**
+				 * 显示物品记录
+				 * @param {Object} goodsArr
+				 */
+				function showGoods(goodsArr) {
+					var eles = document.getElementsByClassName('mui-card-goods');
+					mui.each(goodsArr, function(index, obj) {
+						var info = (obj.item.itemName || obj.item.itemType) + "-" + app.show_itemSize(obj.item.itemSize);
+						if (index === 0) {
+							eles[0].innerHTML = app.spliStringTo(info, 14);
+							eles[0].className = eles[0].className + " history-active";
+						} else if (index === 1) {
+							eles[1].innerHTML = app.spliStringTo(info, 14);
+							eles[1].className = eles[1].className + " history-active";
+						} else {
+							return;
+						}
+					});
+				}
+				/**
+				 * 显示发件人的记录
+				 * @param {Object} objectArr 服务器拿到的数据
+				 */
+				function showStarter(objectArr) {
+					var eles = document.getElementsByClassName('mui-card-starter');
+					mui.each(objectArr, function(index, obj) {
+						var info = obj.name + "" + obj.phonenumber;
+						if (index === 0) {
+							eles[0].innerHTML = app.spliStringTo(info, 14);
+							eles[0].className = eles[0].className + " history-active";
+						} else if (index === 1) {
+							eles[1].innerHTML = app.spliStringTo(info, 14);
+							eles[1].className = eles[1].className + " history-active";
+						} else {
+							return;
+						}
+					});
+				}
+
+				/**
+				 * 显示收件人的记录
+				 * @param {Object} objectArr 服务器拿到的数据
+				 * @param {Object} pages  总页数
+				 * @param {Object} length  每页的显示的条数
+				 * @param {Object} title  标题
+				 */
+				function showReceiver(objectArr) {
+					var eles = document.getElementsByClassName('mui-card-receiver');
+					mui.each(objectArr, function(index, obj) {
+						var info = obj.name + "" + obj.phonenumber;
+						if (index === 0) {
+							eles[0].innerHTML = app.spliStringTo(info, 14);
+							eles[0].className = eles[0].className + " history-active";
+						} else if (index === 1) {
+							eles[1].innerHTML = app.spliStringTo(info, 14);
+							eles[1].className = eles[1].className + " history-active";
+						} else {
+							return;
+						}
+					});
+				}
+
+				function dBItemConvert(data) {
+					var obj = {
+						name: data.item.itemName || data.item.itemType,
+						type: data.item.itemType,
+						size: data.item.itemSize,
+						vehicle: data.vehicle,
+						weight: data.item.itemWeight,
+						remark: data.item.itemRemark
+					}
+					return obj;
+				}
+
+				/**
+				 * 将从数据库中的数据对象转变成本地对象
+				 * @param {Object} data 发件人、收件人
+				 */
+				function dBDataConvertToObj(data) {
+
+					var obj = {
+						name: data.name,
+						phonenumber: data.phonenumber,
+						addressName: data.address.name,
+						addressDetail: data.address.detail,
+						longitude: data.address.longitude,
+						latitude: data.address.latitude,
+						addressId: "",
+						poiName: data.address.poiName
+					}
+					return obj;
+				}
+
+				function dBDataDefault(data) {
+					return {
+						name: data.starter.name,
+						phonenumber: data.starter.phonenumber,
+						addressName: data.starter.addressName,
+						addressDetail: data.starter.addressDetail,
+						longitude: data.starter.longitude,
+						latitude: data.starter.latitude,
+						addressId: data.id,
+						poiName: data.starter.poiName
+					};
+				}
+
+				/**
+				 * 
+				 * @param {Object} map 地图对象
+				 * @param {Object} pointArray 两点数组，0：为起点；1为终点
+				 */
+				function drawLine(map, pointArray) {
+					var polylineObj = new plus.maps.Polyline(pointArray);
+					polylineObj.setLineWidth(6);
+					polylineObj.setStrokeColor("#3557ea");
+					polylineObj.setStrokeOpacity(1);
+					routeMarker = polylineObj;
+					map.addOverlay(polylineObj);
+				}
+
+				function showmap() {
+					var point = pointArray[0];
+					em = document.getElementById("map");
+					map = new plus.maps.Map("map");
+					app.getCurrentLocation(false, function(p) {
+							myStorage.setItem('user_longitude', p.coords.longitude);
+							myStorage.setItem('user_latitude', p.coords.latitude);
+							pointCenter = new plus.maps.Point(p.coords.longitude, p.coords.latitude);
+							if (point) {
+								showAndDrawLine();
+							} else {
+								map.centerAndZoom(pointCenter, 17);
+								userMarker = app.addMarker(map, '', pointCenter, 0);
+							}
+							//判断是否有默认地址
+							if (!defaultStarter) { //没有默认地址
+								//拿出最新的下单地址
+								if (starterArr != null || starterArr != undefined) {
+									var starter_lastest = starterArr[0];
+									//取出经纬度
+									if (starter_lastest) {
+										var l = new plus.maps.Point(starter_lastest.address.longitude, starter_lastest.address.latitude);
+										plus.maps.Map.calculateDistance(pointCenter, l, function(e) {
+											var distance = e.distance;
+											if (distance <= 100) {
+												//将数据存储到 sender 里
+												sender = dBDataConvertToObj(starter_lastest);
+												setSender(sender);
+												return;
+											} 
+										});
+									}
+								}
+								//默认地址用户当前地址和注册时的手机号
+								var uPoint = new BMap.Point(p.coords.longitude, p.coords.latitude);
+								new BMap.Geocoder().getLocation(uPoint, function(result) {
+									//地址描述
+									var pi = "",
+										poa = "";
+									var data = result.surroundingPois
+									if (data.length > 0) {
+										var arr = new Array();
+										for (var i = 0; i < data.length; i++) {
+											var element = data[i];
+											if (element.point.lat && element.point.lng) {
+												element.distance = new BMap.Map('hiddenmap').getDistance(uPoint, element.point);
+												arr.push(element);
+											}
+										}
+										arr.sort(function comparator(o1, o2) {
+											return o1.distance - o2.distance;
+										});
+										pi = arr[0].title;
+										poa = arr[0].address;
+									} else {
+										var addComp = result.addressComponents;
+										poa = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+									}
+									var resultData = new Object();
+									resultData.poiName = pi;
+									resultData.addressName = poa;
+									resultData.latitude = p.coords.latitude;
+									resultData.longitude = p.coords.longitude;
+									//手机号和用户名
+									var phonenumber = app.getSettings().phonenumber || '';
+									if (!phonenumber) {
+										//拉取一次用户的信息
+										app.tokenAjax_Get({
+											url: API_URL_GET_USER_INFO + app.getCustomerId(),
+											success: function(data) {
+												if (data.status == 1) {
+													resultData.phonenumber = data.data.phonenumber || "";
+													resultData.name = data.data.username || "壹用户";
+													resultData.addressDetail = "";
+													setSender(resultData);
+												}
+											},
+											error: function(xhr) {
+												app.httpError(xhr.status);
+											}
+										});
+									} else {
+										resultData.phonenumber = phonenumber || "";
+										resultData.name = myStorage.getItem("username") || '壹用户';
+										resultData.addressDetail = "";
+										setSender(resultData);
+									}
+
+								});
+							}
+
+						},
+						function(e) {});
+				}
+
+				/**
+				 * 计算拼单和直发的价格
+				 */
+				function calculatePrice() {
+					var mergeELe = document.getElementById("mergePrice");
+					var directEle = document.getElementById("directPrice");
+					var samedayEle = document.getElementById("samedayPrice")
+					if (goodsInformation == undefined || !goodsInformation.name) {
+						directEle.style.display = "none";
+						mergeELe.style.display = "none";
+						return;
+					}
+					if (sender == undefined || sender.phonenumber == undefined || sender.phonenumber == null || sender.phonenumber ==
+						'') {
+						directEle.style.display = "none";
+						mergeELe.style.display = "none";
+						return;
+					}
+
+					if (receiver == undefined || receiver == null) {
+						directEle.style.display = "none";
+						mergeELe.style.display = "none";
+						return;
+					}
+					if (!receiver.name) {
+						receiver.name = '';
+					}
+					if (!receiver.phonenumber) {
+						receiver.phonenumber = '';
+					}
+					if (!receiver.addressDetail) {
+						receiver.addressDetail = '';
+					}
+					var size = goodsInformation.size;
+					if (size === "SMALL" || size === "MIDDLE") {
+						goodsInformation.vehicle = null;
+					}
+					var data = {
+						"item": goodsInformation,
+						"starter": sender,
+						"receiver": receiver,
+						"vehicle": goodsInformation.vehicle || null
+					};
+					console.log(JSON.stringify(data),"计算价格")
+					app.tokenAjax({
+						url: API_URL_POST_ORDER_CALCULATE,
+						data: data,
+						success: function(result) {
+							if (result.status == 1) {
+								var data = result.data;
+								var mergePrice = data.mergePrice;
+								var directPrice = data.directPrice;
+								if (mergePrice > 0) {
+									mergeELe.getElementsByClassName("order-price")[0].innerHTML = mergePrice;
+									mergeELe.style.display = "block";
+								}
+								if (directPrice > 0) {
+									directEle.getElementsByClassName("order-price")[0].innerHTML = directPrice;
+									directEle.style.display = "block";
+								}
+							} else {
+								mui.toast(result.msg);
+							}
+						},
+						error: function(err) {} 
+					});
+					console.log("测试测试")
+					//计算当日达的价格
+					app.tokenAjax({
+						url: API_SERVER+"/api/customer/drd/order/calcDrdOrderPrice",
+						data: data,
+						success: function(result) {
+							console.log(JSON.stringify(result),"计算当日达的价格")
+							if (result.status == 1) {
+								var samedayPrices = result.data.data;
+								samedayMoney = result.data.data
+								if (samedayPrices > 0) {
+									samedayEle.getElementsByClassName("order-price")[0].innerHTML = samedayPrices;
+									samedayEle.style.display = "block";
+								}
+							} else {
+								mui.toast(result.msg);
+							}
+						},
+						error: function(err) { 
+							console.log(JSON.stringify(err),"计算价格错误");
+						}
+					});
+					console.log("测试测试到达低端，请求了接口")
+				}
+
+				/**
+				 * 计算map视图的高度
+				 * @param {Object} resolutionHeight 手机屏幕高度
+				 * @param {Object} contentHeight 内容的高度
+				 * @param {String} 可选，如果是all
+				 */
+				function calculateMapHeight(resolutionHeight, contentHeight, showAll) {
+					var h = resolutionHeight - STATUSBARHEIGHT - 44 - contentHeight;
+					document.getElementById("map").style.height = h + "px";
+					return h;
+				}
+
+				function getItude(p1, p2) {
+					var lng = accDiv(accAdd(p1.getLng(), p2.getLng()), 2);
+					var lat = accDiv(accAdd(p1.getLat(), p2.getLat()), 2);
+					return new plus.maps.Point(lng, lat);
+				}
+
+				function accAdd(arg1, arg2) {
+					var r1, r2, m;
+					try {
+						r1 = arg1.toString().split(".")[1].length
+					} catch (e) {
+						r1 = 0;
+					}
+					try {
+						r2 = arg2.toString().split(".")[1].length
+					} catch (e) {
+						r2 = 0
+					}
+					m = Math.pow(10, Math.max(r1, r2))
+					return (arg1 * m + arg2 * m) / m
+				}
+
+				function accDiv(arg1, arg2) {
+					var t1 = 0,
+						t2 = 0,
+						r1, r2;
+					try {
+						t1 = arg1.toString().split(".")[1].length
+					} catch (e) {}
+					try {
+						t2 = arg2.toString().split(".")[1].length
+					} catch (e) {}
+					with(Math) {
+						r1 = Number(arg1.toString().replace(".", ""))
+						r2 = Number(arg2.toString().replace(".", ""))
+						return (r1 / r2) * pow(10, t2 - t1);
+					}
+				}
+
+				function mapMaskShow() {
+					var h = (mapHeight + 44 + STATUSBARHEIGHT);
+					if (!maskView) {
+						maskView = new plus.nativeObj.View('test', {
+							top: '0px',
+							left: '0px',
+							height: h + 'px',
+							width: '100%',
+							backgroundColor: "rgba(0,0,0,0.2)"
+						});
+					}
+					maskView.show();
+					if ((plus.display.resolutionHeight / 2) <= h) {
+						document.getElementById("aa").style.top = (h + 15 + STATUSBARHEIGHT) + "px";
+						document.getElementById("normal_aa").style.top = (h + 15 + STATUSBARHEIGHT) + "px";
+						document.getElementById("AA").style.top = (h + 15 + STATUSBARHEIGHT) + "px";
+					}
+					document.getElementById("aa").style.display = '';
+					document.getElementById("AAA").style.display = '';
+				}
+
+				function mapMaskClose() {
+					if (maskView) {
+						maskView.close();
+						maskView = null;
+					}
+					document.getElementById("aa").style.display = "none";
+					document.getElementById("AA").style.display = 'none';
+					document.getElementById("AAA").style.display = 'none';
+					document.getElementById("normal_aa").style.display = 'none';
+				}
+
+				function showItemAndOrderingType() {
+					document.getElementById("goods_title").style.display = "";
+					document.getElementById("goodsRecord").style.display = '';
+					document.getElementById("mbody").style.display = '';
+					var oldMapHeight = mapHeight;
+					mapHeight = calculateMapHeight(plus.display.resolutionHeight, 420);
+					if (oldMapHeight === mapHeight) {
+						return;
+					}
+					map.resize();
+				}
+			}
+		</script>
+	</body>
+
+</html>

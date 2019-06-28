@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style>
+		p {
+			font-family: "宋体";
+			text-indent: 20px;
+		}
+		
+		label {
+			font-family: "宋体" !important;
+			text-indent: 5px !important;
+		}
+		
+		.mui-input-row {
+			background: white !important;
+			font-size: 15px;
+		}
+		
+		#textarea {
+			border: none;
+		}
+		
+		input,
+		textarea {
+			font-size: 14px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">反馈与建议</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<p style="margin-top: 15px;">
+				App功能正在不断完善中，如果原因App功能不完善，给您带来使用的不便，我们深感抱歉！
+			</p>
+			<p>
+				如果您什么好的建议或在使用的过程遇到了问题，请您及时反馈给我们，以便我们更好的完善功能，为您提供更优质的服务！
+			</p>
+
+			<div class="mui-input-row">
+				<label>联系方式 :</label>
+				<input type="text" class="" placeholder="请输入手机号或QQ、邮箱" id="number">
+			</div>
+			<div class="mui-input-row" style="margin: 10px 5px;">
+				<textarea id="textarea" rows="5" placeholder="有什么好的意见或建议，请在这里告诉我们" class="mui-input-speech"></textarea>
+			</div>
+
+			<button id="submit" type="button" class="mui-btn mui-btn-blue mui-btn-block" style="width: 40%;float: right;margin-right: 30%;">提交</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				mui('.mui-input-row textarea').input();
+
+				document.getElementById('submit').addEventListener('tap', function() {
+					var contact = document.getElementById("number").value;
+					var content = document.getElementById("textarea").value;
+					if(!contact) {
+						mui.toast('联系方式不能为空');
+						return;
+					}
+					if(!content) {
+						mui.toast("内容不能为空");
+						return;
+					}
+					mui.ajax(API_URL_FEEDBACK, {
+						data: {
+							"contact": contact,
+							"content": content
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						crossDomain: true,
+						headers: {
+							"Content-Type": "application/json"
+						},
+						success: function(data) {
+							if(data.status == 1) {
+								mui.alert('感谢您提出的宝贵建议！', '提交成功', '确认', function(e) {
+									plus.webview.currentWebview().close('none',0);
+								}, 'div');
+							} else {
+								mui.toast(data.msg);
+							}
+						},
+						error: function(xhr, type, errorThrown) {}
+					});
+				});
+			})
+		</script>
+	</body>
+
+</html>

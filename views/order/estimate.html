@@ -1,0 +1,261 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+	<style type="text/css">
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			background-color: #FFFFFF;
+		}
+		
+		.mui-content {
+			height: calc(100% - 45px);
+			font-family: "仿宋";
+			color: #777777;
+		}
+		
+		ul,
+		li {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: inline-block;
+			text-align: center;
+		}
+		
+		.order-evaluation-check {
+			background-color: gray;
+			font-size: 14px;
+			color: white;
+			padding: 4px;
+			margin: 5px;
+			border-radius: 14px;
+			text-align: center;
+		}
+		
+		#icon {
+			margin-top: 2px;
+			height: 80px;
+		}
+		
+		#head-icon {
+			height: 140px;
+		}
+		
+		.star {
+			padding-left: 3px;
+			padding-right: 3px;
+			color: orangered;
+		}
+		
+		#estimate {
+			display: block;
+			color: orangered;
+		}
+		
+		#textarea {
+			border: 1px solid orange;
+			height: 100px;
+		}
+		
+		.estimateArea {
+			height: 80px;
+		}
+		
+		.mui-btn-blue,
+		.mui-btn-primary,
+		input[type=submit] {
+			color: #fff;
+			border: 1px solid orangered;
+			background-color: orangered;
+			width: 90%;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">评价</h1>
+		</header>
+		<div class="mui-content" align="center" id="dcontent">
+			<div align="center" id="head-icon" style="">
+				<img id="icon" src="../../images/estimate/headericon.png" />
+				<div id="senderName"></div>
+				<div style="margin-top: 10px;"><span>订单号: </span><span id="orderId" style="font-size: 14px;"></span></div>
+			</div>
+			<div class="estimateArea" align="center">
+				<div> 匿名评价 </div>
+				<img class="star" src="../../images/estimate/greyStar.png" name="0" />
+				<img class="star" src="../../images/estimate/greyStar.png" name="1" />
+				<img class="star" src="../../images/estimate/greyStar.png" name="2" />
+				<img class="star" src="../../images/estimate/greyStar.png" name="3" />
+				<img class="star" src="../../images/estimate/greyStar.png" name="4" />
+				<span id="estimate"></span>
+			</div>
+			<div class="mui-input-row" style="width: 90%;">
+				<textarea id="textarea" placeholder="您的评论对我们非常重要" class="mui-input-speech "></textarea>
+			</div>
+			<div class="order-evaluation-checkbox">
+				<ul class="clearfix">
+					<li class="order-evaluation-check" data-impression="1">很专业</li>
+					<li class="order-evaluation-check" data-impression="2">交付准时</li>
+					<li class="order-evaluation-check" data-impression="3">速度快</li>
+					<li class="order-evaluation-check" data-impression="4">很帅</li>
+					<li class="order-evaluation-check" data-impression="5">非常热情</li>
+					<li class="order-evaluation-check" data-impression="6">态度好</li>
+					<li class="order-evaluation-check" data-impression="7">小鲜肉</li>
+				</ul>
+			</div>
+
+			<button type="button" class="mui-btn mui-btn-primary mui-btn-block" style="margin-top: 6%;" id="submitEstimate">提交评价</button>
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript">
+			var starArr = [
+				["yellowStar.png", "greyStar.png", "greyStar.png", "greyStar.png", "greyStar.png"],
+				["yellowStar.png", "yellowStar.png", "greyStar.png", "greyStar.png", "greyStar.png"],
+				["yellowStar.png", "yellowStar.png", "yellowStar.png", "greyStar.png", "greyStar.png"],
+				["yellowStar.png", "yellowStar.png", "yellowStar.png", "yellowStar.png", "greyStar.png"],
+				["yellowStar.png", "yellowStar.png", "yellowStar.png", "yellowStar.png", "yellowStar.png"]
+			];
+
+			var subsrc = "../../images/estimate/";
+			var countStar;
+			mui.init();
+			mui.plusReady(function() {
+				//查找配送员
+				var self = plus.webview.currentWebview();
+				var orderId = self.orderId;
+				var displayOrder = self.displayOrder
+				//订单号
+				document.getElementById("orderId").innerHTML = orderId.replace(/\-/g, "");
+				document.getElementById("senderName").innerHTML = self.senderName;
+				/**
+				 * 提交评价
+				 */
+				document.getElementById('submitEstimate').addEventListener('tap', function() {
+					if(displayOrder == 0){
+						var url = estimate(orderId);
+						var EstimateDto = {
+							"stars": countStar,
+							"comment": document.getElementById("textarea").value
+						}
+					}else{
+						var url = API_SERVER + "/api/drd/app/order/" + orderId + "/" + app.getCustomerId() + "/estimate";
+						var EstimateDto = {
+							"stars": countStar,
+							"comment": document.getElementById("textarea").value
+						}
+					}
+					console.log(JSON.stringify(EstimateDto))
+					app.tokenAjax({
+						url: url,
+						data: EstimateDto,
+						success: function(result) {
+							if(result.status == 1) {
+								var orderDetail = plus.webview.getWebviewById("orderDetail");
+								var orderHistoryListPage = plus.webview.getWebviewById("sub-sevenDays");
+								var sub_oneMonth = plus.webview.getWebviewById("sub-oneMonth");
+								var sub_oneYear = plus.webview.getWebviewById("sub-oneYear");
+								var sub_define = plus.webview.getWebviewById("sub-define");
+								if(orderDetail) {
+									mui.fire(orderDetail, 'refresh', {});
+								}
+								if(orderHistoryListPage) {
+									mui.fire(orderHistoryListPage, 'refresh', {});
+								}
+								if(sub_oneMonth) {
+									mui.fire(sub_oneMonth, 'refresh', {});
+								}
+								if(sub_oneYear) {
+									mui.fire(sub_oneYear, 'refresh', {});
+								}
+								if(sub_define) {
+									mui.fire(sub_define, 'refresh', {});
+								}
+								mui.back();
+							} else {
+								mui.toast(result.msg);
+							}
+						},
+						error: function(xhr) {
+							app.httpError(xhr, status);
+						}
+					});
+				})
+				mui('.estimateArea').on('tap', '.star', function() {
+					var star = document.getElementsByClassName("star");
+					var index = this.name;
+					countStar = parseInt(index) + 1;
+					//星星数组
+					var starNameArr = starArr[index];
+					mui.each(star, function(idx, ele) {
+						ele.src = subsrc + starNameArr[idx];
+					});
+					document.getElementById("estimate").innerHTML = showResult(index);
+				})
+				mui('.clearfix').on('tap', '.order-evaluation-check', function() {
+					var val = document.getElementById("textarea").value;
+					if(this.style.backgroundColor != "orange") {
+						this.style.backgroundColor = "orange";
+						if(val != "" && val != undefined && val != null) {
+							document.getElementById("textarea").value = val + "," + this.innerHTML;
+						} else {
+							document.getElementById("textarea").value = this.innerHTML;
+						}
+					} else {
+						this.style.backgroundColor = "gray";
+						var sub = "," + this.innerHTML;
+						var start = val.indexOf(sub);
+						if(start == -1) {
+							sub = this.innerHTML;
+							start = val.indexOf(sub);
+							if(start == -1) {
+								return;
+							}
+						}
+						var end = start + sub.length;
+						var result = val.substring(0, start) + val.substring(end, val.length);
+						if(result.indexOf(",") == 0) {
+							result = result.substr(1);
+						}
+						document.getElementById("textarea").value = result;
+
+					}
+				})
+			})
+
+			function showResult(index) {
+				switch(index) {
+					case "0":
+						return "极其糟糕，干掉他";
+					case "1":
+						return "比较差，准备开了他";
+					case "2":
+						return "马马虎虎，有待提高";
+					case "3":
+						return "比较满意，还需加油";
+					case "4":
+						return "非常满意，给他涨工资";
+					default:
+						break;
+				}
+			}
+		</script>
+	</body>
+
+</html>

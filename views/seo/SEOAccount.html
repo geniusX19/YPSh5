@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+	</head>
+	<style>
+		#header {
+			box-shadow: none;
+		}
+		
+		.mui-poppicker-btn-ok {
+			background: #4dbeca !important;
+			border: #4dbeca !important;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">开通推广</h1>
+		</header>
+		<div class="mui-content" id="dcontent">
+			<img src="../../images/share/seo.png" width="100%" />
+			<div style="margin-top: 6px;margin-left: 20px;">
+				<div class="mui-input-row">
+					<label>姓名:</label>
+					<input type="text" class="mui-input" placeholder="请输入姓名" value="" id="customerName">
+				</div>
+				<div class="mui-input-row">
+					<label>业务城市:</label>
+					<input type="text" class="mui-input" placeholder="请选择" readonly="readonly" value="" id="agentId">
+				</div>
+			</div>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block" style="background:#4dbeca;border-color:#4dbeca;width: 80%;margin-left: 10%;margin-top: 20px;"
+			 id="openAccount">申请</button>
+			<div style="margin-top: 20px;">
+				<span style="padding-left: 15px;font-weight: 500;font-size: 15px;">奖励说明</span>
+				<ul type="decimal" style="font-size: 15px;padding-right: 5px;">
+					<li><span style="font-weight: 700;">用户首单<span id="customerFirstOrderReward">8</span>元奖励：</span><span>邀请好友注册用户，注册成功后并完成首单可获得奖励</span></li>
+					<li style="display: none;"><span style="font-weight: 700;">用户每单<span id="customerOrderReward">0.03</span>元奖励：</span>用户在完成首单以后每完成一单都可获得奖励</li>
+					<li><span style="font-weight: 700;">配送员首单<span id="senderFirstTaskReward">8</span>元奖励：</span>邀请好友注册配送员，注册成功后并完成首单可获得奖励</li>
+					<li style="display: none;"><span style="font-weight: 700;">配送员每单<span id="senderTaskReward">0.03</span>元奖励：</span>配送员在完成首单以后每完成一单都可获得奖励</li>
+				</ul>
+			</div>
+			<p style="padding-left: 15px;font-size: 13px;padding-right:5px;">备注：获取的奖励可提现，不同区域奖励金额可能会有所不同，请以实际到账的金额为准。</p>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<script type="text/javascript" src="../../js/mui.picker.min.js"></script>
+		<script type="text/javascript" src="../../js/mui.poppicker.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var cityList = null,
+				picker = null,
+				agentId = null,
+				cityName = null;
+
+			mui.plusReady(function() {
+				mui.ajax(API_URL_GET_PUBLIC_AGENT_LIST, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					crossDomain: true,
+					success: function(data) {
+						if (data.status === 1) {
+							cityList = new Array();
+							mui.each(data.data, function(index, e) {
+								var o = new Object();
+								o.text = e.city;
+								o.value = e.agentId;
+								cityList.push(o);
+							})
+							//初始化picker选择器
+							picker = new mui.PopPicker();
+							picker.setData(cityList);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						app.httpError(xhr.status);
+					}
+				});
+				//获取奖励金
+				app.tokenAjax_Get({
+					url: getSEORewardDefault(app.getCustomerId()),
+					success: function(e) {
+						if (e.status === 1) {
+							document.getElementById("customerFirstOrderReward").innerText = e.data.customerFirstOrderReward;
+							document.getElementById("senderFirstTaskReward").innerText = e.data.senderFirstTaskReward;
+							var customerOrderReward = e.data.customerOrderReward;
+							var senderTaskReward = e.data.senderTaskReward;
+							if (customerOrderReward && customerOrderReward > 0) {
+								var co = document.getElementById("customerOrderReward");
+								co.innerText = customerOrderReward;
+								co.parentNode.style.display = '';
+							}
+
+							if (senderTaskReward && senderTaskReward > 0) {
+								var st = document.getElementById("senderTaskReward");
+								st.innerText = senderTaskReward;
+								st.parentNode.style.display = '';
+							}
+							//获取城市和代理商列表
+							plus.nativeUI.closeWaiting();
+							mui.currentWebview.show('slide-in-right', 300);
+						}
+
+					},
+					error: function(xhr) {
+						app.httpError(xhr.status);
+					}
+				});
+				document.getElementById('agentId').addEventListener('tap', function() {
+					var _this = this;
+					picker.show(function(item) {
+						_this.value = item[0].text;
+						agentId = item[0].value;
+						cityName = item[0].text;
+					});
+				});
+				document.getElementById('openAccount').addEventListener('tap', function() {
+					var customer = document.getElementById("customerName").value;
+					if (!customer || customer.trim().length === 0) {
+						mui.toast('请输入姓名');
+						return;
+					}
+					if (!agentId) {
+						mui.toast('请选择业务城市');
+						return;
+					}
+					mui.confirm('你选择的是<b style="color:#5E5E5E;">' + cityName + "</b>,选择后无法更改，是否确认？", '确认', ['取消', '确认'], function(
+						e) {
+						if (e.index === 1) {
+							plus.nativeUI.showWaiting('申请中');
+							app.tokenAjax({
+								url: becomeBusinessMan(app.getCustomerId()),
+								data: {
+									'agentId': agentId,
+									'name': customer,
+									'cityName': document.getElementById("agentId").value
+								},
+								success: function(e) {
+									plus.nativeUI.closeWaiting();
+									if (e.status === 1) {
+										mui.alert('申请提交成功，预计在24小时内审核通过', '温馨提示', '确认', function(e) {
+											if (e.index === 0) {
+												mui.back();
+											}
+										});
+									} else {
+										mui.toast(e.msg);
+									}
+								},
+								error: function(xhr) {
+									plus.nativeUI.closeWaiting();
+									app.httpError(xhr.status);
+								}
+							})
+						}
+					}, 'div')
+
+				})
+			});
+		</script>
+	</body>
+
+</html>
