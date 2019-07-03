@@ -13,6 +13,8 @@ MESSAGE = "对不起，您有长时间未被配送员接单的订单，可以取
 VEHICLE_TYPE_ARRARY = ['ELECTRIC_BICYCLE', 'MOBILE_TRICYCLE', 'CAR', 'VAN', 'TRUCK'];
 
 /********************   接口   ****************************/
+
+//API = "http://192.168.100.110";
 API = "https://yikesong.cc";
 //API="http://192.168.100.119";
 //API = "https://peter.xiaomiqiu.com"

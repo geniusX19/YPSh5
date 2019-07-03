@@ -1143,6 +1143,7 @@
 			"password": loginInfo.password
 		};
 		mui(ele).button("loading");
+		console.log(API_LOGIN)
 		//后台登录
 		mui.ajax(API_LOGIN, {
 			data: JSON.stringify(params), //参数
