@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>壹配送</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="../../css/mui.min.css">
+	<style type="text/css">
+		/* //code */
+		/* .mui-content>.mui-table-view:first-child {
+			margin-top: -1px;
+		}
+
+		.list {
+			margin-top: 10px;
+			margin-left: 3%;
+			width: 94%;
+			padding: 15px;
+			padding-left: 15px;
+			background-color: #FFFFFF;
+			border-radius: 10px;
+		} */
+	</style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav" id="header">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 id="title" class="mui-title">地址管理</h1>
+	</header>
+	<style>
+		.queryBox{position: relative;}
+		.queryBox img{width: 1.8rem;height:1.8rem;margin:.4rem;}
+		.queryInputBox{position: absolute;top: 0;left: 2.6rem;right: 0;bottom: 0;}
+		.queryInputBox input{width: 100%;height: 100%;}
+	</style>
+	<div class="mui-content" id="dcontent">
+		<div class="queryBox">
+			<img src="../../images/weixin.png" alt="">
+			<div class="queryInputBox">
+				<input type="text" placeholder="xxxc">
+			</div>
+		</div>
+		<!-- 请输入:<input type="text" id="suggestId" size="" value="" /> -->
+		<!-- <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"> -->
+			=== 开始 ===<br />
+			111<br />
+			222<br />
+			333<br />
+			444<br />
+			555<br />
+			=== END ===<br />
+		<input type="text">
+
+		</div>
+		<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://api.map.baidu.com/api?v=3.0&ak=iOYBmDKHicYmzZigGIGnurrPf1YMKlEj"></script>
+
+		<script type="text/javascript" src="../../js/config.js"></script>
+		<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript" src="../../js/myStorage.js"></script>
+		<script type="text/javascript" src="../../js/immersed.js"></script>
+		<!-- 适配rem -->
+		<!-- <script src="../../js/common/self.js"></script> -->
+		<script>
+			// 下单页面传递标识 0=收 1发
+			var chose_flag;
+
+			mui.init(
+				console.log('mui.init')
+			);
+
+			mui.plusReady(function () {
+				// mui.scrollTo(plus.screen.resolutionHeight-60,0);
+				// getNotifications(count);
+
+				// 接受上个页面的参数
+				var self = plus.webview.currentWebview();
+				// console.log("=== 接受参数 ===")
+				// console.log(JSON.stringify(self))
+				chose_flag = self.chose_flag
+				console.log("=== 接受参数 END ===")
+			});
+
+
+			// *
+			// **百度地图API功能-下拉模糊搜索
+			// */
+			function G(id) {
+				return document.getElementById(id)
+			}
+
+			var ac = new BMap.Autocomplete( //建立一个自动完成的对象
+				{
+					"input": "suggestId",
+					// "location": map
+				});
+
+			ac.addEventListener("onhighlight", function (e) { //鼠标放在下拉列表上的事件
+				var str = "";
+				var _value = e.fromitem.value;
+				var value = "";
+				if (e.fromitem.index > -1) {
+					value = _value.province + _value.city + _value.district + _value.street + _value.business;
+				}
+				str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+				value = "";
+				if (e.toitem.index > -1) {
+					_value = e.toitem.value;
+					value = _value.province + _value.city + _value.district + _value.street + _value.business;
+				}
+				str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+				G("searchResultPanel").innerHTML = str;
+			});
+
+			// var myValue;
+			// ac.addEventListener("onconfirm", function (e) { //鼠标点击下拉列表后的事件
+			// 	var _value = e.item.value;
+			// 	myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+			// 	G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " +
+			// 		myValue;
+			// });
+
+		</script>
+</body>
+
+</html>

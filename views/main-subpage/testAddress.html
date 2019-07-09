@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+<!--
+    	作者：wanping89@yeah.net
+    	时间：2017-12-07
+    	描述：首页
+    -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>壹客送</title>
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+    <link href="../../css/mui.min.css" rel="stylesheet" />
+    <!-- <link href="../../css/style.css" rel="stylesheet" /> -->
+    <!-- <link rel="stylesheet" href="../../css/hongbao/style.css" /> -->
+    <link rel="stylesheet" href="../../css/common/reset.css">
+</head>
+<style>
+    .mui-content {
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 20px);
+    }
+
+    html,
+    body,
+    .mui-content {
+        background: white !important;
+    }
+
+    #slider {
+        position: relative;
+        height: 30%;
+        width: 100%;
+    }
+
+    .chickenSoup {
+        padding-top: 4%;
+        height: 10%;
+        font-size: 14px;
+    }
+
+    p {
+        opacity: 0.6;
+        background-color: white;
+    }
+
+    .l1 {
+        height: 60% !important;
+    }
+
+    .mui-slider-group,
+    .mui-slider-item,
+    .mui-slider-item a,
+    .sliderImg {
+        width: 100%;
+        height: 100% !important;
+    }
+
+    .sliderImg {
+        width: 100%;
+        height: calc(100%) !important;
+    }
+
+    #messsage {
+        position: absolute;
+        right: 15px;
+        z-index: -1;
+    }
+
+    #badge {
+        position: absolute;
+        top: 32px;
+        right: 12px;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background: red !important;
+        z-index: 1;
+    }
+
+    div.mui-slider-indicator {
+        top: calc(85%);
+    }
+
+    .button1 {
+        height: calc((100% - 44px) / 2);
+    }
+
+    .mui-indicator {
+        width: 12px !important;
+        height: 3px !important;
+        border-radius: 0px !important;
+        border: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        margin: 2px !important;
+        opacity: 0.5;
+    }
+
+    .mui-active {
+        opacity: 0.9;
+    }
+
+    a.mui-navigate-right::after {
+        color: #4dbeca !important;
+    }
+
+    .mui-table-view-cell {
+        padding: 9px 15px 9px !important;
+    }
+
+    .special-font {
+        color: #ba3a3a;
+        font-size: 12px;
+    }
+
+    .area-left {
+        float: left !important;
+        height: 100%;
+        width: 40%;
+        letter-spacing: 1px;
+    }
+
+    .middle-font {
+        display: inline-block;
+        margin-top: 35%;
+        font-family: '宋体';
+        color: #6D6D72;
+        font-size: 15px;
+        letter-spacing: 1.5px;
+    }
+
+    .area-middle {
+        float: left !important;
+        height: 100%;
+        width: 20%;
+    }
+
+    .area-right {
+        float: left !important;
+        height: 100%;
+        width: 40%;
+    }
+
+    .btn-img {
+        width: 64px;
+        margin-top: 30%;
+    }
+
+    /* new css */
+
+    html {
+        height: 100%
+    }
+
+    body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+    }
+
+    #container {
+    	width: 100%;
+        height: 500px;
+    }
+
+    .mapicon {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100%);
+        width: 52px;
+        /* margin-top: -200px; */
+    }
+
+    /* new css end */
+</style>
+
+<body>
+    <header class="mui-bar mui-bar-nav" id="header">
+        <h1 class="mui-title" style="color: white;" id="city"><span id="city_1">下单</span></h1>
+        <span class="mui-icon mui-icon-chat" id="messsage"></span>
+        <div id="badge" style="display: none;"></div>
+    </header>
+    <div class="mui-content" id="dcontent">
+
+        <div id="container"></div>
+        <img src="icon-map.png" class="mapicon" alt="">
+        <!-- 冲内容 -->
+        ========冲内容========<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />====到底了====<br />
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://api.map.baidu.com/api?v=3.0&ak=iOYBmDKHicYmzZigGIGnurrPf1YMKlEj"></script>
+    <script type="text/javascript" src="../../js/config.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <script type="text/javascript" src="../../js/app.js"></script>
+    <script type="text/javascript" src="../../js/immersed.js"></script>
+    <script type="text/javascript" src="../../js/myStorage.js"></script>
+    <!-- 适配rem -->
+    <!-- <script src="../../js/common/self.js"></script> -->
+    <script type="text/javascript">
+        console.log("===xxx===")
+        console.log($('#header').css('height'))
+
+
+        // $("#dcontent").css('backgroundcolor','color')
+        $(".tabBar_title").on("click", function (e) {
+            console.log("=====点击了LI")
+            $(this).addClass("tabBar_act").siblings().removeClass('tabBar_act');
+            // 获取当前tabbar下标
+            var index = $(this).index();
+            // 对应内容显示
+            $('.tabBar_cont .cont').eq(index).show().siblings().hide();
+        })
+
+
+        mui.plusReady(function () {
+            if (plus.device.model === IPHONEX) {
+                $("#badge").css('top', '52px')
+                $("#dcontent").css('height', 'calc(100% - 44px)')
+            }
+        });
+
+        /**
+         * 主要通过地图的地理位置与像素转换实现效果
+         */
+        var map = new BMap.Map("container");
+        var point = new BMap.Point(116.404, 39.915);
+        /**
+         * Y轴偏移量，即地图可视区域中心点在Y轴的偏移量
+         * 当你的地图底部还有一些输入框的时候，可视区域集中在
+         * 手机的上部，增加偏移量能够将定位地点上移到可视区的
+         * 中间，这个量根据页面情况自行设定
+         * @type {number}
+         */
+        var offsetY = 200;
+        offsetY = 0
+        map.centerAndZoom(point, 15);
+
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function (r) {
+            if (this.getStatus() === BMAP_STATUS_SUCCESS) {
+                var mk = new BMap.Marker(r.point);
+                map.addOverlay(mk);
+                //将地图中心移动到可视区中点
+                map.panTo(r.point);
+                var centerPixel = map.pointToOverlayPixel(map.getCenter());
+                //通过设置地图的中心点，使定位点显示在手机上部分区域
+                map.setCenter(map.overlayPixelToPoint({
+                    x: centerPixel.x,
+                    y: centerPixel.y + offsetY
+                }));
+                map.addEventListener('dragend', function () {
+                    //获得移动之后地图中心点的像素位置
+                    var pixel = map.pointToOverlayPixel(map.getCenter());
+                    //获得定位图标所在位置在地图上的地理位置，实际上定位图标的像素位置就在地图中心像素位置相应的偏移量处
+                    var Point = map.overlayPixelToPoint({
+                        x: pixel.x,
+                        y: pixel.y - offsetY
+                    });
+                    // var mkn = new BMap.Marker(Point);
+                    // map.addOverlay(mkn);
+                });
+            } else {
+                alert('failed' + this.getStatus());
+            }
+        });
+    </script>
+</body>
+
+</html>
