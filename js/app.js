@@ -1373,13 +1373,14 @@
 	 * @param {Object} id 页面id
 	 */
 	owner.openWebView = function(url, id) {
+		console.log()
 		owner.inputBlur();
 		mui.openWindow({
 			url: url,
 			id: id,
 			show: {
 				autoShow: true, //页面loaded事件发生后自动显示，默认为true
-				//				aniShow: "zoom-fade-out" //页面显示动画，默认为”slide-in-right“；
+				//aniShow: "zoom-fade-out" //页面显示动画，默认为”slide-in-right“；
 			}
 		})
 	}

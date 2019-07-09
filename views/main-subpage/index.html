@@ -16,317 +16,56 @@
 	<!-- <link href="../../css/style.css" rel="stylesheet" /> -->
 	<!-- <link rel="stylesheet" href="../../css/hongbao/style.css" /> -->
 	<link rel="stylesheet" href="../../css/common/reset.css">
+	<link rel="stylesheet" href="../../css/mui.picker.min.css">
 </head>
 <style>
-	.mui-content {
-		position: absolute;
-		width: 100%;
-		height: calc(100% - 20px);
-	}
-
-	html,
-	body,
-	.mui-content {
-		background: #F2F2F2 !important;
-	}
-
-	#slider {
-		position: relative;
-		height: 30%;
-		width: 100%;
-	}
-
-	.chickenSoup {
-		padding-top: 4%;
-		height: 10%;
-		font-size: 14px;
-	}
-
-	p {
-		opacity: 0.6;
-		background-color: white;
-	}
-
-	.l1 {
-		height: 60% !important;
-	}
-
-	.mui-slider-group,
-	.mui-slider-item,
-	.mui-slider-item a,
-	.sliderImg {
-		width: 100%;
-		height: 100% !important;
-	}
-
-	.sliderImg {
-		width: 100%;
-		height: calc(100%) !important;
-	}
-
-	#messsage {
-		position: absolute;
-		right: 15px;
-		z-index: -1;
-	}
-
-	#badge {
-		position: absolute;
-		top: 32px;
-		right: 12px;
-		width: 10px;
-		height: 10px;
-		border-radius: 5px;
-		background: red !important;
-		z-index: 1;
-	}
-
-	/* 	
-	div.mui-slider-indicator {
-		top: calc(85%);
-	}
-
-	.button1 {
-		height: calc((100% - 44px) / 2);
-	}
-
-	.mui-indicator {
-		width: 12px !important;
-		height: 3px !important;
-		border-radius: 0px !important;
-		border: none !important;
-		-webkit-box-shadow: none !important;
-		box-shadow: none !important;
-		margin: 2px !important;
-		opacity: 0.5;
-	}
-
-	.mui-active {
-		opacity: 0.9;
-	}
-
-	a.mui-navigate-right::after {
-		color: #4dbeca !important;
-	}
-
-	.mui-table-view-cell {
-		padding: 9px 15px 9px !important;
-	}
-
-	.special-font {
-		color: #ba3a3a;
-		font-size: 12px;
-	}
-
-	.area-left {
-		float: left !important;
-		height: 100%;
-		width: 40%;
-		letter-spacing: 1px;
-	}
-
-	.middle-font {
-		display: inline-block;
-		margin-top: 35%;
-		font-family: '宋体';
-		color: #6D6D72;
-		font-size: 15px;
-		letter-spacing: 1.5px;
-	}
-
-	.area-middle {
-		float: left !important;
-		height: 100%;
-		width: 20%;
-	}
-
-	.area-right {
-		float: left !important;
-		height: 100%;
-		width: 40%;
-	}
-
-	.btn-img {
-		width: 64px;
-		margin-top: 30%;
-	} */
-
+	.mui-content { position: absolute; width: 100%; height: calc(100% - 20px); }
+	html, body, .mui-content { background: #F2F2F2 !important; }
+	#slider { position: relative; height: 30%; width: 100%; }
+	.chickenSoup { padding-top: 4%; height: 10%; font-size: 14px; }
+	p { opacity: 0.6; background-color: white; }
+	.l1 { height: 60% !important; }
+	.mui-slider-group, .mui-slider-item, .mui-slider-item a, .sliderImg { width: 100%; height: 100% !important; }
+	.sliderImg { width: 100%; height: calc(100%) !important; }
+	#messsage { position: absolute; right: 15px; z-index: -1; }
+	#badge { position: absolute; top: 32px; right: 12px; width: 10px; height: 10px; border-radius: 5px; background: red !important; z-index: 1; }
 	/* new css */
-	.mapBox {
-		background-color: red;
-		text-align: center;
-		font-size: 0.72rem;
-		width: 100%;
-		height: 6.6rem;
-		position: relative;
-	}
-
-	.tabBar {
-		margin: 0 0 0.16rem 0;
-		display: flex;
-		padding-bottom: 0.26rem;
-		border-bottom: 1px solid #E6E6E6;
-		box-sizing: border-box;
-	}
-
-	.tabBar_title {
-		flex: 1;
-		text-align: center;
-		font-size: 0.26rem;
-	}
-
-	.tabBar_act {
-		/* background-color: red; */
-		color: #4DBDC9;
-		border-bottom: 2px solid #4DBDC9;
-		padding-bottom: 0.08rem;
-	}
-
-	.tabBar_cont .cont {
-		display: none;
-	}
-
-	.mapicon {
-		position: absolute;
-		top: 34%;
-		left: 50%;
-		transform: translateX(-50%) translateY(-100%);
-		/* z-index: 999; */
-		width: 1.04rem;
-		/* margin-top: -200px; */
-	}
-
-	.box {
-		position: fixed;
-		bottom: 0.36rem;
-		left: 0.3rem;
-		right: 0.3rem;
-		height: 5.2rem;
-		background-color: #fff;
-		padding: 0.24rem;
-		border-radius: .3rem .3rem .1rem .1rem;
-	}
+	.mapBox { background-color: red; text-align: center; font-size: 0.72rem; width: 100%; height: 5.6rem; position: relative; }
+	.tabBar { margin: 0 0 0.16rem 0; display: flex; padding-bottom: 0.26rem; border-bottom: 1px solid #E6E6E6; box-sizing: border-box; }
+	.tabBar_title { flex: 1; text-align: center; font-size: 0.26rem; }
+	.tabBar_act { color: #4DBDC9; border-bottom: 2px solid #4DBDC9; padding-bottom: 0.08rem; }
+	.tabBar_cont .cont { display: none; }
+	.mapicon { position: absolute; top: 34%; left: 50%; transform: translateX(-50%) translateY(-100%); width: 1.04rem; }
+	.box { position: fixed; bottom: 0.36rem; left: 0.3rem; right: 0.3rem; background-color: #fff; padding: 0.24rem; border-radius: .3rem .3rem .1rem .1rem;max-height: 6rem;overflow-y: scroll;}
 
 	/* <!-- tab1 --> */
-	.addressBox {
-		/* background-color: red; */
-		position: relative;
-	}
-
-	.circleIcon {
-		width: .48rem;
-		height: .48rem;
-		margin: .4rem;
-	}
-
-	.userMsg {
-		position: absolute;
-		top: .2rem;
-		left: 1.2rem;
-		right: 1.28rem;
-		bottom: .2rem;
-		/* background-color: azure; */
-	}
-
-	.userAddress {
-		font-size: .32rem;
-		width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		height: .4rem;
-		line-height: .4rem;
-	}
-
-	.userName {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		color: #666666;
-		font-size: .26rem;
-	}
-
-	.userPhone {
-		font-size: .2rem;
-		margin-left: .3rem;
-	}
-
-	.more {
-		width: .64rem;
-		height: .44rem;
-		right: .32rem;
-		top: .48rem;
-		position: absolute;
-		padding: 0;
-		line-height: .44rem;
-		border: none;
-		border-radius: .12rem;
-		font-size: .24rem;
-		background-color: #000;
-		color: #FFF;
-	}
-
+	.addressBox { position: relative; }
+	.circleIcon { width: .48rem; height: .48rem; margin: .4rem .4rem .4rem .3rem; }
+	.userMsg { position: absolute; top: .2rem; left: 1.2rem; right: 1.28rem; bottom: .2rem; }
+	.userAddress { font-size: .32rem; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; height: .4rem; line-height: .4rem; }
+	.userName { position: absolute; bottom: 0; left: 0; width: 100%; color: #666666; font-size: .26rem; }
+	.userPhone { font-size: .2rem; margin-left: .3rem; }
+	.chose { width: .64rem; height: .44rem; right: .32rem; top: .48rem; position: absolute; padding: 0; line-height: .44rem; border: none; border-radius: .12rem; font-size: .24rem; background-color: #4DBDC9; color: #FFF; }
 	/* <!-- 智能填写 --> */
-	.zNeng_box {
-		/* background-color: yellow; */
-		position: relative;
-		height: 1.2rem;
-	}
-
-	.zNeng_title {
-		width: 1.58rem;
-		height: 0.48rem;
-		line-height: 0.48rem;
-		text-align: center;
-		font-size: .3rem;
-		background-color: #4DBDC9;
-		color: #fff;
-		position: absolute;
-		top: .38rem;
-		left: 0;
-	}
-
-	.fill_in_box {
-		position: absolute;
-		left: 1.74rem;
-		top: 0;
-		bottom: 0;
-		right: 0;
-		/* background-color: aqua; */
-		display: flex;
-	}
-
-	.fill_sBox {
-		flex: 1;
-		/* background-color: bisque; */
-		padding: .14rem;
-		width: 50%;
-	}
-
-	.fill_address {
-		font-size: .28rem;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		color: #333;
-		height: .42rem;
-		line-height: .42rem;
-		margin-bottom: .1rem;
-	}
-
-	.fill_userName {
-		font-size: .2rem;
-		color: #666;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-	.fill_phone {
-		margin-left: .16rem;
-	}
-
+	.zNeng_box { position: relative; height: 1.2rem; }
+	.zNeng_title { width: 1.58rem; height: 0.48rem; line-height: 0.48rem; text-align: center; font-size: .3rem; background-color: #4DBDC9; color: #fff; position: absolute; top: .38rem; left: 0; }
+	.fill_in_box { position: absolute; left: 1.74rem; top: 0; bottom: 0; right: 0; display: flex; }
+	.fill_sBox { flex: 1; padding: .14rem; width: 50%; }
+	.fill_address { font-size: .28rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #333; height: .42rem; line-height: .42rem; margin-bottom: .1rem; }
+	.fill_userName { font-size: .2rem; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	.fill_phone { margin-left: .16rem; }
+	/* 物品遮罩 */
+	.shareBody{ background-color: #fff; }
+	.am-share1 .btnBox { display: flex; border-top: 1px solid #ccc; margin: auto; }
+	.shareBody .btnBox button { flex: 1; border: 0; background-color: #fff; height: 0.8rem; color: #000; }
+	.am-share .btnBox button:first-child { color: #333; border-right: 1px solid #ccc; }
+	.am-share .btnBox button.sureBtn{ background-color: #4DBDC9; color: #fff;border-radius: .4rem;}
+	.shareBody .btnBox { display: flex; margin: auto; }
+	/* 遮罩end */
+	/* 物品遮罩-选择 */
+	.goodsMsg{font-size: 0.28rem;color: #666;position: relative;height: .8rem;line-height: 0.8rem;border-top: .02rem #eee solid;border-bottom: .02rem #eee solid;margin-top: .16rem;color: #333;}
+	.goodsMsg span,.Reward span.Reward_num,.Discount span,.timeBox span{position: absolute;right: 0;top: 0;bottom: 0;color: #999;}
+	/* 物品遮罩-选择 end*/
 	/* new css end */
 </style>
 
@@ -354,18 +93,19 @@
 						<img class="circleIcon" src="../../images/senderIcon.png" alt="">
 						<div class="userMsg">
 							<div class="userAddress" id="txtposition">正在定位...请稍后</div>
-							<div class="userName">壹配送<span class="userPhone">13856012345</span></div>
+							<div class="userName">壹配送1<span class="userPhone">13856012345</span></div>
 						</div>
-						<button class="more">常用</button>
+						<button class="chose" data-flag="0">选择</button>
 					</div>
+					<div class="Reward_line"></div>
 					<!-- 发 -->
 					<div class="addressBox">
 						<img class="circleIcon" src="../../images/senderIcon.png" alt="">
 						<div class="userMsg">
-							<div class="userAddress" id="">要送到哪里去？</div>
-							<div class="userName">点击填写收件地址<span class="userPhone"></span></div>
+							<div class="userAddress" id="">请选择收件地址...</div>
+							<div class="userName"><span class="userPhone"></span></div>
 						</div>
-						<button class="more">常用</button>
+						<button class="chose" data-flag="1">选择</button>
 					</div>
 					<!-- 智能填写 -->
 					<div class="zNeng_box">
@@ -381,6 +121,51 @@
 							</div>
 						</div>
 					</div>
+
+					<!-- 隐藏区域 -->
+					<div class="hideArea">
+						<!-- 物品 -->
+						<div class="goodsMsg">
+							物品<span>请选择物品信息</span>
+						</div>
+						<style>
+							.DiscountMod{border-bottom: 0.02rem solid #eee;}
+							.Reward,.Discount{font-size: .28rem;height: .7rem;line-height: .7rem;color: #333;position: relative;}
+							.Reward span.Reward_sTitle{font-size: .22rem;color: #999;}
+							.Reward_line{height:1px; background-color: #eee;margin: 0 0.26rem;}
+						</style>
+						<!-- 优惠 Discount -->
+						<div class="DiscountMod">
+							<div class="Reward">打赏<span class="Reward_sTitle">（更快接单哟）</span><span class="Reward_num">暂未开放</span></div>
+							<div class="Reward_line"></div>
+							<div class="Discount">红包<span>1个</span></div>
+						</div>
+						<!-- 下单方式 -->
+						<style>
+						.orderMode{padding: 0.2rem 0;border-bottom: .02rem solid #eee;}
+						.orderMode ul{display: flex;}
+						.orderMode ul li{flex: 1;text-align: center;margin: 0 .1rem;border-radius: .2rem;border: .01rem solid #eee;}
+						</style>
+						<div class="orderMode">
+							<ul>
+								<li class="act" data-type="1">拼单</li>
+								<li data-type="2">预约</li>
+								<li data-type="3">高级</li>
+								<li data-type="4">专送</li>
+							</ul>
+						</div>
+						<!-- 取送件时间 -->
+						<style>
+							.timeBox{height: .7rem;line-height: .7rem;position: relative;}
+						</style>
+						<div class="timeMod" style="display: none;">
+							<div class="pick timeBox " data-options='{}'>预约取件时间<span id="pickTime">--请选择--</span></div>
+							<div class="Reward_line"></div>
+							<div class="give timeBox" data-options='{}'>预约送件时间<span id="giveTime">--请选择--</span></div>
+						</div>
+					</div>
+					
+
 					<!-- 当前位置：<input type="text" value="正在定位..." />
 					请输入:<input type="text" id="suggestId" size="20" value="" />
 					<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div> -->
@@ -393,6 +178,79 @@
 			</div>
 
 		</div>
+		<style>
+		.choseGoods_title{text-align: center;height:.6rem;line-height: .6rem;font-size: .3rem;font-weight: bold;}
+		.choseGoods_title span{position: absolute;left: 0;width: .6rem;font-weight: normal;}
+		.goodsTypeBox{font-size: 0.27rem;position: relative;}
+		.goodsTypeBox p{text-align: left;padding: 0 0.6rem;color: #000;font-weight: bold;height: .36rem;line-height: .36rem;}
+		.choseGoodsType ul,.choseSize ul,.choseWeight ul{width: 100%;margin-bottom: .2rem;overflow: hidden;}
+		.choseGoodsType ul li,.choseSize ul li,.choseWeight ul li{display: inline-block;width: 17%;margin: 0.2rem;margin-bottom: 0;background-color: #EFEDEE;border-radius: .3rem;height: .36rem;line-height: .36rem;color: #333;}
+		.choseGoodsType ul li.act,.choseSize ul li.act,.choseWeight ul li.act,.orderMode ul li.act{color: #FFF;background-color: #4DBDC9;}
+		.goodsTypeBox span{position:absolute;right: 0.6rem;top: 0;}
+		.choseSize ul li{width: 40%;}
+		.choseWeight ul{margin-left: 0.4rem;}
+		.choseWeight ul li{float: left;}
+		.choseWeight ul li:last-child{clear: both;display: none;}
+		.weightInput{position: absolute;bottom: 0;left: 2.2rem;height: .36rem;overflow: hidden;width: 2rem;border-bottom: 1px solid #666;padding-right: 0.5rem;}
+		.weightInput input{width: 100%;height: 100%;font-size: 0.28rem;border: none;padding: 0;}
+		.weightInput span{position: absolute;right: 0;}
+		</style>
+		<!-- 物品遮罩-选择 -->
+		<div class="am-share">
+			<div class="shareBody">
+				<div class="choseGoods_title"><span class="share_btn">x</span>选择物品重量和类型</div>
+				<div class="goodsTypeBox choseGoodsType">
+					<p>选择物品类型</p>
+					<ul>
+						<li class="act">食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+						<li>食品</li>
+					</ul>
+				</div>
+				<div class="goodsTypeBox choseSize">
+					<p>总体积（cm*cm*cm）</p>
+					<span>尺寸说明</span>
+					<ul>
+						<li class="act">1</li>
+						<li>1</li>
+						<li>1</li>
+						<li>1</li>
+						<li>1</li>
+					</ul>
+
+				</div>
+				<div class="goodsTypeBox choseWeight">
+					<p>预估重量（kg）</p>
+					<ul>
+						<li class="act">1</li>
+						<li>1</li>
+						<li>1</li>
+						<li>1</li>
+						<li>1</li>
+						<li>1</li>
+					</ul>
+					<div class="weightInput">
+						<input type="text" placeholder="手动输入">
+						<span>KG</span>
+					</div>
+				</div>					
+				<div class="btnBox">
+					<button class="sureBtn">保存</button>
+				</div>
+			</div>
+		</div>
 
 
 
@@ -401,26 +259,16 @@
 	<script src="https://api.map.baidu.com/api?v=3.0&ak=iOYBmDKHicYmzZigGIGnurrPf1YMKlEj"></script>
 	<script type="text/javascript" src="../../js/config.js"></script>
 	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/mui.picker.min.js"></script>
 	<script type="text/javascript" src="../../js/app.js"></script>
 	<script type="text/javascript" src="../../js/immersed.js"></script>
 	<script type="text/javascript" src="../../js/myStorage.js"></script>
 	<!-- 适配rem -->
 	<script src="../../js/common/self.js"></script>
 	<script type="text/javascript">
-		console.log("===xxx===")
-		console.log($('#header').css('height'))
-
-
-		// $("#dcontent").css('backgroundcolor','color')
-		$(".tabBar_title").on("click", function (e) {
-			console.log("=====点击了选项卡")
-			$(this).addClass("tabBar_act").siblings().removeClass('tabBar_act');
-			// 获取当前tabbar下标
-			var index = $(this).index();
-			console.log("当前选项卡下标：" + index)
-			// 对应内容显示
-			$('.tabBar_cont .cont').eq(index).show().siblings().hide();
-		})
+		mui.init();
+		//物品信息标识
+		var hideArea = false;
 
 		// 在这里调用5+ API
 		mui.plusReady(function () {
@@ -431,6 +279,193 @@
 			}
 			console.log("=== 调用5+ API End===")
 		});
+		console.log("===xxx===")
+		console.log($('#header').css('height'))
+
+		// 导航切换
+		$(".tabBar_title").on("click", function (e) {
+			console.log("=====点击了选项卡")
+			$(this).addClass("tabBar_act").siblings().removeClass('tabBar_act');
+			// 获取当前tabbar下标
+			var index = $(this).index();
+			console.log("当前选项卡下标：" + index)
+			// 对应内容显示
+			$('.tabBar_cont .cont').eq(index).show().siblings().hide();
+		})
+
+		// 选择地址
+		$(".chose").on("click", function () {
+			console.log("=== 常用 ===")
+			var _flag = $(this).attr("data-flag")
+			console.log(_flag)
+			if (_flag == 0) {
+				console.log("=== 收 ===")
+				
+				// app.openWindow("../test/test.html", "test", {
+				// 	"chose_flag": _flag
+				// });
+
+				hideArea = false;
+				showGoodsMsg();
+			} else if (_flag == 1) {
+				console.log("=== 发 ===")
+				hideArea = true;
+				showGoodsMsg();
+			}
+		})
+
+		// 物品信息填写栏判断 - 页面进入加载
+		showGoodsMsg();
+
+		// 选择物品规格弹窗
+		$(".goodsMsg").on("click",function(){
+			toshare()
+		})
+
+		// 物品类型选择
+		$(".choseGoodsType ul li").on("click",function(){
+			$(this).addClass("act").siblings().removeClass("act")
+		})
+
+		// 总体积选择
+		$(".choseSize ul li").on("click",function(){
+			$(this).addClass("act").siblings().removeClass("act")
+		})
+
+		// 预估重量
+		$(".choseWeight ul li").on("click",function(){
+			$(this).addClass("act").siblings().removeClass("act");
+			$(".weightInput input").val("")
+		})
+
+		//预估重量（手动输入）
+		$(".weightInput input").focus(function(){
+			console.log("==获取了焦点==")
+			$(".choseWeight ul li").removeClass("act")
+		})
+
+		// 保存物品信息
+		$(".sureBtn").on("click",function(){
+			console.log("=== 保存信息 ===")
+			console.log("=== 保存信息 END ===")
+		})
+
+		// <!-- 下单方式 -->
+		$(".orderMode ul li").on("click",function(){
+			$(this).addClass("act").siblings().removeClass("act")
+			var mode = $(this).attr("data-type")
+			if(mode == 1){
+				console.log("拼单")
+				$(".timeMod").hide();
+			}else if(mode == 2){
+				console.log("预约")
+				$(".timeMod").show();
+				$(".pick").show()
+				$(".give").hide()
+			}else if(mode == 3){
+				console.log("高级")
+				$(".timeMod").show();
+				$(".pick").show()
+				$(".give").show()
+			}else if(mode == 4){
+				console.log("专送")
+				$(".timeMod").show();
+				$(".pick").show()
+				$(".give").show()
+			}
+		})
+
+
+		// 物品信息填写显示
+		function showGoodsMsg(){
+			if(hideArea){
+				// 显示
+				console.log(hideArea)
+				$(".hideArea").css("display","block");
+			}else{
+				// 不显示
+				console.log(hideArea)
+				$(".hideArea").hide()
+			}
+		}
+
+		// 取送时间选择
+		var resultPick = document.querySelector('#pickTime');
+		var resultGive = document.querySelector('#giveTime');
+
+		var pickBtn = document.querySelector('.pick')
+		var giveBtn = document.querySelector('.give')
+		// 取
+		pickBtn.addEventListener('tap',function(){
+			let _self = this;
+			console.log("== 进来了。。取 ==")
+
+			if(_self.picker) {
+				_self.picker.show(function (rs) {
+					console.log(rs)
+					resultPick.innerText = rs.text;
+					_self.picker.dispose();
+					_self.picker = null;
+				});
+			} else {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				
+				_self.picker = new mui.DtPicker(options);
+				_self.picker.show(function(rs) {
+					console.log(rs)
+					/*
+						* rs.value 拼合后的 value
+						* rs.text 拼合后的 text
+						* rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+						* rs.m 月，用法同年
+						* rs.d 日，用法同年
+						* rs.h 时，用法同年
+						* rs.i 分（minutes 的第二个字母），用法同年
+						*/
+					resultPick.innerHTML = rs.text;
+					_self.picker.dispose();
+					_self.picker = null;
+				});
+			}
+		})
+
+		// 送
+		giveBtn.addEventListener('tap',function(){
+			let _self = this;
+			console.log("== 进来了。。送 ==")
+
+			if(_self.picker) {
+				_self.picker.show(function (rs) {
+					console.log(rs)
+					resultGive.innerText = rs.text;
+					_self.picker.dispose();
+					_self.picker = null;
+				});
+			} else {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				
+				_self.picker = new mui.DtPicker(options);
+				_self.picker.show(function(rs) {
+					console.log(rs)
+					/*
+						* rs.value 拼合后的 value
+						* rs.text 拼合后的 text
+						* rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+						* rs.m 月，用法同年
+						* rs.d 日，用法同年
+						* rs.h 时，用法同年
+						* rs.i 分（minutes 的第二个字母），用法同年
+						*/
+					resultGive.innerHTML = rs.text;
+					_self.picker.dispose();
+					_self.picker = null;
+				});
+			}
+		})
 
 
 		// 百度地图API功能2
@@ -443,7 +478,7 @@
 
 		map.centerAndZoom(point, 20);
 		map.enableScrollWheelZoom(); // 启用滚轮放大缩小
-		map.addControl(new BMap.NavigationControl()); // 启用放大缩小 尺
+		// map.addControl(new BMap.NavigationControl()); // 启用放大缩小 +-
 		var geolocation = new BMap.Geolocation();
 		//自动定位
 		geolocation.getCurrentPosition(function (r) {
@@ -518,13 +553,15 @@
 
 				// 	map.clearOverlays(); //清除地图上所有覆盖物
 				// });
-				showInfo(r);
 
+				showInfo(r);
+					
 				function showInfo(e) {
 					var gc = new BMap.Geocoder();
 					gc.getLocation(e.point, function (rs) {
 						var addComp = rs.addressComponents;
-						var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber; //获取地址
+						var address = addComp.province + addComp.city + addComp.district + addComp.street +
+							addComp.streetNumber; //获取地址
 						document.getElementById("txtposition").innerHTML = rs.address;
 						//画图 ---》显示地址信息
 						var label = new BMap.Label(address, {
@@ -601,6 +638,26 @@
 		// 	local.search(myValue);
 		// }
 		console.log("=== 百度地图API功能2 End===")
+
+		// 遮罩
+		function toshare() {
+			$(".am-share").addClass("am-modal-active");
+			if ($(".sharebg").length > 0) {
+				$(".sharebg").addClass("sharebg-active");
+			} else {
+				$("body").append('<div id="share_bg" class="sharebg"></div>');
+				$(".sharebg").addClass("sharebg-active");
+			}
+
+			$(".share_btn,.sureBtn").click(function () {
+				$(".am-share").removeClass("am-modal-active");
+				setTimeout(function () {
+					$(".sharebg-active").removeClass("sharebg-active");
+					$(".sharebg").remove();
+				}, 300);
+			})
+		}
+		// 遮罩end
 	</script>
 </body>
 
